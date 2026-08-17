@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.arsalanrc</groupId>
+  <artifactId>fanout</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>fanout</name>
+  <description>A metasearch architecture in Java: fan out to unreliable suppliers under one deadline, and return the best partial answer</description>
+
+  <!--
+    Two services and the domain they share.
+
+    `core` holds the model and knows nothing about the network. `integration`
+    owns the connectors and the normalisation, which is where supplier
+    differences are absorbed. `search` fans out, merges and ranks.
+
+    The split is the point of the repository, so it is a module boundary rather
+    than a package boundary: a package can be reached across by accident, and a
+    module cannot.
+  -->
+  <modules>
+    <module>core</module>
+    <module>integration</module>
+    <module>search</module>
+  </modules>
+
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>5.11.3</junit.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <!--
+    No runtime dependencies anywhere in this build, and that is a constraint
+    rather than an accident.
+
+    Java 21 already ships everything two HTTP services need: `HttpClient` for
+    calling out, `com.sun.net.httpserver` for listening, and virtual threads,
+    which are what make a fan-out over eight slow suppliers cost one thread each
+    without a pool to size. A framework would hide the deadline handling that
+    this repository exists to show.
+
+    The one thing the JDK does not provide is a JSON parser, so this writes its
+    own. That is on purpose too: normalising supplier responses is where the
+    real bugs live, and owning the parser keeps them visible.
+  -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>
