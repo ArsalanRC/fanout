@@ -1,0 +1,29 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": { "amount": 19.99, "type": "value" },
+      "holdsUntil": "2026-09-01T06:15:00Z",
+      "legs": [
+        { "airline": "SH", "flightNo": "8542",
+          "from": "DUS", "to": "STN",
+          "departsAt": "2026-09-01T07:00:00+02:00",
+          "arrivesAt": "2026-09-01T07:20:00+01:00" }
+      ],
+      "extras": { "cabinBag": 0, "checkedBag": 25.5, "seat": 8, "paymentFee": 6 }
+    },
+    {
+      "currency": "EUR",
+      "fare": { "amount": 14.99, "type": "value" },
+      "holdsUntil": "2026-09-01T06:15:00Z",
+      "legs": [
+        { "airline": "SH", "flightNo": "8560",
+          "from": "DUS", "to": "STN",
+          "departsAt": "2026-09-01T17:40:00+02:00",
+          "arrivesAt": "2026-09-01T18:00:00+01:00" }
+      ],
+      "extras": { "cabinBag": 0, "checkedBag": 55, "seat": 8, "paymentFee": 6 }
+    }
+  ]
+}
