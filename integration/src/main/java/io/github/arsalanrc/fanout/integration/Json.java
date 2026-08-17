@@ -103,6 +103,24 @@ public final class Json {
         return kind == Kind.STRING || kind == Kind.NUMBER ? Optional.of(text()) : Optional.empty();
     }
 
+    /**
+     * A boolean, accepting a quoted one as well.
+     *
+     * <p>Suppliers disagree about whether flags are quoted, exactly as they do
+     * about numbers, and both mean the same thing. Booleans were parsed from the
+     * start and had no accessor, so the first payload carrying one failed with a
+     * type error rather than a wrong answer, which is the right way round.
+     */
+    public boolean bool() {
+        if (kind == Kind.BOOLEAN) return (Boolean) value;
+        if (kind == Kind.STRING) {
+            String text = (String) value;
+            if (text.equals("true")) return true;
+            if (text.equals("false")) return false;
+        }
+        throw new WrongType("boolean", describe());
+    }
+
     public boolean isMissing() {
         return kind == Kind.MISSING || kind == Kind.NULL;
     }

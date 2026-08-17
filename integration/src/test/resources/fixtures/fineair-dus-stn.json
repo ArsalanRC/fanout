@@ -1,0 +1,25 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": { "amount": 14.99, "type": "value" },
+      "holdsUntil": "2026-09-01T06:15:00Z",
+      "legs": [
+        { "airline": "FE", "flightNo": "1108", "from": "DUS", "to": "STN",
+          "departsAt": "2026-09-01T06:35:00+02:00", "arrivesAt": "2026-09-01T06:55:00+01:00" }
+      ],
+      "extras": { "cabinBag": 0, "checkedBag": 46.5, "seat": 9, "paymentFee": 6.5 }
+    },
+    {
+      "currency": "EUR",
+      "fare": { "amount": 22.49, "type": "value" },
+      "holdsUntil": "2026-09-01T06:15:00Z",
+      "legs": [
+        { "airline": "FE", "flightNo": "1142", "from": "DUS", "to": "STN",
+          "departsAt": "2026-09-01T14:10:00+02:00", "arrivesAt": "2026-09-01T14:30:00+01:00" }
+      ],
+      "extras": { "cabinBag": 0, "checkedBag": 32, "seat": 9, "paymentFee": 6.5 }
+    }
+  ]
+}

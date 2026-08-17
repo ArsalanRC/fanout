@@ -141,12 +141,12 @@ class AmadeusClientTest {
 
     @Test
     void the_live_client_and_the_fixture_produce_the_same_fares() throws Exception {
-        searchBody = new String(getClass().getResourceAsStream("/fixtures/altair-dus-stn.json")
+        searchBody = new String(getClass().getResourceAsStream("/fixtures/openfare-dus-stn.json")
                 .readAllBytes(), StandardCharsets.UTF_8);
 
         List<Fare> live = client().search(QUERY, Deadline.in(Duration.ofSeconds(10)));
         List<Fare> fromDisk = new FixtureConnector(new AmadeusParser("amadeus"),
-                "/fixtures/altair-dus-stn.json").search(QUERY, Deadline.in(Duration.ofSeconds(10)));
+                "/fixtures/openfare-dus-stn.json").search(QUERY, Deadline.in(Duration.ofSeconds(10)));
 
         // The whole argument for the demo: one parser, one code path, and the
         // only difference is where the bytes came from.
