@@ -2,6 +2,9 @@ package io.github.arsalanrc.fanout.search;
 
 import io.github.arsalanrc.fanout.core.*;
 import io.github.arsalanrc.fanout.integration.Connector;
+import io.github.arsalanrc.fanout.telemetry.Span;
+import io.github.arsalanrc.fanout.telemetry.SpanSink;
+import io.github.arsalanrc.fanout.telemetry.Tracer;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -34,14 +37,20 @@ public final class Fanout {
 
     private final List<Connector> connectors;
     private final Breaker breaker;
+    private final Tracer tracer;
 
     public Fanout(List<Connector> connectors) {
-        this(connectors, new Breaker(3, Duration.ofSeconds(30)));
+        this(connectors, new Breaker(3, Duration.ofSeconds(30)), new Tracer(SpanSink.NONE));
     }
 
     public Fanout(List<Connector> connectors, Breaker breaker) {
+        this(connectors, breaker, new Tracer(SpanSink.NONE));
+    }
+
+    public Fanout(List<Connector> connectors, Breaker breaker, Tracer tracer) {
         this.connectors = List.copyOf(connectors);
         this.breaker = Objects.requireNonNull(breaker, "breaker");
+        this.tracer = Objects.requireNonNull(tracer, "tracer");
     }
 
     public SearchResult search(Query query, Basket basket, Duration budget) {
@@ -54,6 +63,13 @@ public final class Fanout {
      */
     public SearchResult search(Query query, Basket basket, Deadline deadline, Instant now) {
         List<SupplierOutcome> outcomes = new ArrayList<>();
+        Tracer.Trace trace = tracer.trace("metasearch");
+        trace.root()
+                .attribute("route", query.origin() + "-" + query.destination())
+                .attribute("passengers", query.passengers())
+                .attribute("basket", basket.toString())
+                .attribute("suppliers.asked", connectors.size());
+
         ExecutorService pool = Executors.newVirtualThreadPerTaskExecutor();
 
         try {
@@ -61,11 +77,19 @@ public final class Fanout {
 
             for (Connector connector : connectors) {
                 if (!breaker.allows(connector.id())) {
+                    // A skipped supplier still gets a span. A trace that showed
+                    // nothing for it would look like it was never configured,
+                    // when the truth is that it was deliberately not called.
+                    trace.child("supplier.skipped", Span.Kind.INTERNAL)
+                            .attribute("supplier", connector.id())
+                            .attribute("reason", "breaker open")
+                            .end();
+
                     outcomes.add(SupplierOutcome.skipped(connector.id(),
                             "breaker open after repeated failures"));
                     continue;
                 }
-                running.put(connector.id(), pool.submit(() -> call(connector, query, deadline)));
+                running.put(connector.id(), pool.submit(() -> call(connector, query, deadline, trace)));
             }
 
             for (Map.Entry<String, Future<SupplierOutcome>> entry : running.entrySet()) {
@@ -87,25 +111,40 @@ public final class Fanout {
             pool.shutdownNow();
         }
 
-        return new SearchResult(query, merge(outcomes, basket, now), outcomes);
+        List<PricedItinerary> merged = merge(outcomes, basket, now);
+        trace.root()
+                .attribute("suppliers.answered", outcomes.stream().filter(SupplierOutcome::contributed).count())
+                .attribute("itineraries", merged.size())
+                .attribute("complete", outcomes.stream().allMatch(SupplierOutcome::contributed));
+        trace.end();
+
+        return new SearchResult(query, merged, outcomes);
     }
 
     /** Runs on the virtual thread. Times itself and never throws. */
-    private SupplierOutcome call(Connector connector, Query query, Deadline deadline) {
+    private SupplierOutcome call(Connector connector, Query query, Deadline deadline, Tracer.Trace trace) {
         long started = System.nanoTime();
+        Tracer.Trace.Recording span = trace.child("supplier.search", Span.Kind.CLIENT)
+                .attribute("supplier", connector.id());
 
         try {
             List<Fare> fares = connector.search(query, deadline);
             breaker.succeeded(connector.id());
+            span.attribute("fares", fares.size()).ok().end();
             return SupplierOutcome.answered(connector.id(), since(started), fares);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            // Recorded as an error on the span even though it is not a breaker
+            // failure. A trace exists to show where the budget went, and a
+            // supplier that missed it is exactly what a reader is looking for.
+            span.failed("deadline exceeded").end();
             // Interrupted means the deadline took it, which is lateness rather
             // than breakage. Counting it as a failure would trip the breaker on
             // every slow day and drop a supplier that works.
             return SupplierOutcome.timedOut(connector.id(), since(started));
         } catch (Exception e) {
             breaker.failed(connector.id());
+            span.failed(describe(e)).end();
             return SupplierOutcome.failed(connector.id(), since(started), describe(e));
         }
     }

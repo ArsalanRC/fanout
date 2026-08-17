@@ -2,6 +2,9 @@ package io.github.arsalanrc.fanout.search;
 
 import io.github.arsalanrc.fanout.core.*;
 import io.github.arsalanrc.fanout.integration.Connector;
+import io.github.arsalanrc.fanout.telemetry.OtlpJson;
+import io.github.arsalanrc.fanout.telemetry.Span;
+import io.github.arsalanrc.fanout.telemetry.Tracer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -276,6 +279,60 @@ class FanoutTest {
         assertTrue(result.complete());
         assertTrue(result.missing().isEmpty());
         assertEquals(2, result.itineraries().size());
+    }
+
+    @Test
+    @DisplayName("the trace says which supplier ate the deadline")
+    void the_trace_records_every_supplier_including_the_ones_never_called() {
+        List<List<Span>> traces = new java.util.ArrayList<>();
+
+        Fanout fanout = new Fanout(
+                List.of(new Fixed("altair", List.of(fare("altair", MORNING, 8_900))),
+                        new Broken("glacier"),
+                        new Hangs("borealis")),
+                new Breaker(1, Duration.ofSeconds(30)),
+                new Tracer(traces::add));
+
+        fanout.search(QUERY, Basket.SEAT_ONLY, Deadline.in(Duration.ofMillis(200)), NOON);
+
+        List<Span> first = traces.getFirst();
+        // One root plus one per supplier called.
+        assertEquals(4, first.size());
+
+        Span root = first.stream().filter(s -> s.parentSpanId() == null).findFirst().orElseThrow();
+        assertEquals("metasearch", root.name());
+        assertEquals("DUS-STN", root.attributes().get("route"));
+        assertEquals(3, root.attributes().get("suppliers.asked"));
+
+        // The broken one carries the reason, which is the whole point of
+        // looking at a trace rather than a counter.
+        Span broken = named(first, "glacier");
+        assertEquals(Span.Status.ERROR, broken.status());
+        assertTrue(broken.statusMessage().contains("certificate expired"));
+
+        // The slow one is an error on the span even though it is not a breaker
+        // failure, because "who spent the budget" is what a reader wants.
+        assertEquals(Span.Status.ERROR, named(first, "borealis").status());
+        assertEquals(Span.Status.OK, named(first, "altair").status());
+
+        // Second search: glacier tripped a breaker of one, so it is skipped and
+        // still gets a span. A trace showing nothing for it would read as
+        // "never configured" rather than "deliberately not called".
+        fanout.search(QUERY, Basket.SEAT_ONLY, Deadline.in(Duration.ofMillis(200)), NOON);
+        Span skipped = named(traces.get(1), "glacier");
+        assertEquals("supplier.skipped", skipped.name());
+        assertEquals("breaker open", skipped.attributes().get("reason"));
+
+        // And the whole thing serialises to something a Collector accepts.
+        String json = OtlpJson.document(first);
+        assertTrue(json.startsWith("{\"resourceSpans\":["), json);
+        assertTrue(json.contains("\"stringValue\":\"fanout\""), json);
+    }
+
+    private static Span named(List<Span> spans, String supplier) {
+        return spans.stream()
+                .filter(s -> supplier.equals(s.attributes().get("supplier")))
+                .findFirst().orElseThrow(() -> new AssertionError("no span for " + supplier));
     }
 
     @Test
