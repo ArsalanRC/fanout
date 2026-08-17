@@ -54,8 +54,12 @@ public final class Recorder {
         AmadeusClient client = AmadeusClient.fromEnvironment("amadeus").orElseThrow(() ->
                 new IllegalStateException("""
                         No credentials. Set AMADEUS_CLIENT_ID and AMADEUS_CLIENT_SECRET in the \
-                        environment. They are free from developers.amadeus.com and they must not \
-                        be committed to this repository."""));
+                        environment, and never commit them.
+
+                        Note that Amadeus decommissioned its free Self-Service portal on 17 July \
+                        2026, so these now have to be Enterprise credentials. Without them the \
+                        repository runs on the modelled fixtures, which is the supported \
+                        default and is labelled as such."""));
 
         System.out.println("Asking Amadeus for " + query.origin() + " to " + query.destination()
                 + " on " + query.departure() + " for " + query.passengers());

@@ -25,6 +25,17 @@ import java.util.Objects;
  * the timezone resolution are one code path whether the bytes came from Amadeus
  * or from disk.
  *
+ * <p><b>There is no free tier to point this at any more.</b> Amadeus
+ * decommissioned its Self-Service portal on 17 July 2026, and what remains is
+ * the Enterprise API Portal, which is a commercial contract rather than a
+ * signup. Articles written before that date still describe the free tier as
+ * current; they are stale.
+ *
+ * <p>This class is kept because it speaks the real protocol. Anyone holding
+ * Enterprise credentials can use it unchanged, and {@link Recorder} will write a
+ * genuine fixture. Meanwhile the repository runs on modelled fixtures, which say
+ * so everywhere they appear.
+ *
  * <p><b>Credentials come from the environment and nowhere else.</b> Nothing here
  * reads a key from a file this repository controls, and no key is ever written
  * into a fixture. Same rule as the plinth deploy scripts.
@@ -40,7 +51,11 @@ import java.util.Objects;
  */
 public final class AmadeusClient implements Connector {
 
-    /** The test environment. Production is `api.amadeus.com`, and it is not free. */
+    /**
+     * The old Self-Service test host, kept as the default because it is the one
+     * the documented request shape belongs to. Enterprise credentials come with
+     * their own host, which is why this is injectable rather than fixed.
+     */
     private static final String HOST = "https://test.api.amadeus.com";
 
     private final AmadeusParser parser;
