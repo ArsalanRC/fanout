@@ -72,6 +72,15 @@ public final class Fanout {
 
         ExecutorService pool = Executors.newVirtualThreadPerTaskExecutor();
 
+        /*
+         * When the fan-out began, which is what a supplier that never answered
+         * is timed against. Submitting is fast enough that this is within a
+         * millisecond of when each task actually started, and it is the only
+         * honest number available: a task that was cancelled never got to
+         * report its own elapsed time.
+         */
+        long fannedOutAt = System.nanoTime();
+
         try {
             Map<String, Future<SupplierOutcome>> running = new LinkedHashMap<>();
 
@@ -93,7 +102,7 @@ public final class Fanout {
             }
 
             for (Map.Entry<String, Future<SupplierOutcome>> entry : running.entrySet()) {
-                outcomes.add(collect(entry.getKey(), entry.getValue(), deadline));
+                outcomes.add(collect(entry.getKey(), entry.getValue(), deadline, fannedOutAt));
             }
         } finally {
             /*
@@ -149,18 +158,29 @@ public final class Fanout {
         }
     }
 
-    private SupplierOutcome collect(String supplier, Future<SupplierOutcome> future, Deadline deadline) {
+    /**
+     * Waits for one supplier, for as long as the budget still allows.
+     *
+     * <p>Every outcome here is timed from {@code fannedOutAt} rather than
+     * reported as zero. A supplier that spent the entire budget and was then
+     * cancelled did not answer in no time at all, and printing {@code 0ms}
+     * beside {@code TIMED_OUT} is worse than printing nothing: it reads as the
+     * fastest supplier in the list. The rule that no latency on the page is
+     * invented cuts both ways, and a zero is an invented number too.
+     */
+    private SupplierOutcome collect(String supplier, Future<SupplierOutcome> future,
+                                    Deadline deadline, long fannedOutAt) {
         try {
             return future.get(deadline.remainingMillis(), TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
             future.cancel(true);
-            return SupplierOutcome.timedOut(supplier, Duration.ZERO);
+            return SupplierOutcome.timedOut(supplier, since(fannedOutAt));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return SupplierOutcome.timedOut(supplier, Duration.ZERO);
+            return SupplierOutcome.timedOut(supplier, since(fannedOutAt));
         } catch (ExecutionException e) {
             breaker.failed(supplier);
-            return SupplierOutcome.failed(supplier, Duration.ZERO, describe(e.getCause()));
+            return SupplierOutcome.failed(supplier, since(fannedOutAt), describe(e.getCause()));
         }
     }
 

@@ -134,6 +134,43 @@ class FanoutTest {
     }
 
     @Test
+    @DisplayName("and it is reported as having taken the budget, not as having taken no time")
+    void a_cancelled_supplier_is_timed_from_the_fan_out() {
+        /*
+         * This is the one path where the supplier's own timing is unavailable:
+         * the task was still running when the budget went, so it never got to
+         * report anything. `Stubborn` is what forces it, because a connector
+         * that honours interruption reports its own elapsed time on the way out.
+         *
+         * Reporting zero here is not a harmless placeholder. It renders as the
+         * fastest supplier in the list, directly beside the word TIMED_OUT.
+         */
+        Fanout fanout = new Fanout(List.of(new Stubborn("glacier", Duration.ofSeconds(5))));
+
+        long started = System.nanoTime();
+        SearchResult result = fanout.search(QUERY, Basket.SEAT_ONLY,
+                Deadline.in(Duration.ofMillis(200)), NOON);
+        long searchTook = Duration.ofNanos(System.nanoTime() - started).toMillis();
+
+        SupplierOutcome glacier = result.outcomes().getFirst();
+        assertEquals(SupplierOutcome.Status.TIMED_OUT, glacier.status());
+
+        /*
+         * Measured against the search rather than against the budget, and that
+         * is deliberate. A fixed floor near 200ms fails on a cold JVM, where
+         * class loading spends a third of the budget before the fan-out even
+         * starts: this assertion read 143ms the first time it ran alone. That
+         * is the same shape of test that made PR #4 pass here and fail in CI.
+         *
+         * Half of whatever the search actually took is immune to that, because
+         * a slow start makes both numbers slow together.
+         */
+        assertTrue(glacier.took().toMillis() >= searchTook / 2,
+                "a supplier that ran for the whole " + searchTook + "ms search reported "
+                        + glacier.took().toMillis() + "ms");
+    }
+
+    @Test
     void a_broken_supplier_is_reported_rather_than_raised() {
         SearchResult result = new Fanout(List.of(
                 new Fixed("altair", List.of(fare("altair", MORNING, 8_900))),

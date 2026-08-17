@@ -3,6 +3,7 @@ package io.github.arsalanrc.fanout.integration;
 import io.github.arsalanrc.fanout.core.Fare;
 import io.github.arsalanrc.fanout.core.Query;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -24,10 +25,21 @@ public interface SupplierParser {
     String supplier();
 
     /**
-     * @param body  the supplier's response, exactly as it arrived
-     * @param query what was asked, since some suppliers omit anything the
-     *              request already said, and passenger count decides whether a
-     *              quoted price is per person
+     * @param body       the supplier's response, exactly as it arrived
+     * @param query      what was asked, since some suppliers omit anything the
+     *                   request already said, and passenger count decides
+     *                   whether a quoted price is per person
+     * @param receivedAt when this response was produced, which is the only
+     *                   thing some suppliers give a parser to date an expiry
+     *                   from. It is a parameter rather than a call to
+     *                   {@link Instant#now()} inside the parser, and that is not
+     *                   a style preference: a parser reaching for the wall clock
+     *                   makes a recorded response permanently stale, because it
+     *                   is read years after it was written. The fare then parses
+     *                   correctly, arrives lapsed, and is dropped from the
+     *                   results without anything failing. One supplier quietly
+     *                   contributes nothing and the search still says it is
+     *                   complete.
      */
-    List<Fare> parse(String body, Query query);
+    List<Fare> parse(String body, Query query, Instant receivedAt);
 }
