@@ -19,6 +19,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>io.github.arsalanrc</groupId>
+      <artifactId>fanout-integration</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
     </dependency>
