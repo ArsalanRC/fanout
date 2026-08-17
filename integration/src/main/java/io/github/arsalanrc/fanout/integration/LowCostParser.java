@@ -111,8 +111,13 @@ public final class LowCostParser implements SupplierParser {
 
         Json fee = extras.get("paymentFee");
         if (!fee.isMissing()) {
-            out.add(Ancillary.at(Ancillary.Kind.PAYMENT_FEE,
-                    new Money(fee.minorUnits(digits), currency)));
+            Money amount = new Money(fee.minorUnits(digits), currency);
+            // Zero is a real answer meaning this carrier charges nothing to pay,
+            // and recording it as a sale worth nothing would be true and would
+            // read worse everywhere it is shown. Same rule as the bags above.
+            out.add(amount.isZero()
+                    ? Ancillary.included(Ancillary.Kind.PAYMENT_FEE, currency)
+                    : Ancillary.at(Ancillary.Kind.PAYMENT_FEE, amount));
         }
 
         return out;
