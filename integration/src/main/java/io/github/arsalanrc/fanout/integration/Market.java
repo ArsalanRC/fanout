@@ -1,6 +1,7 @@
 package io.github.arsalanrc.fanout.integration;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -63,13 +64,39 @@ public final class Market {
     public static List<Connector> suppliers() {
         return List.of(
                 new FixtureConnector(new AmadeusParser("openfare"),
-                        "/fixtures/openfare-dus-stn.json", Duration.ofMillis(120)),
+                        "/fixtures/openfare-dus-stn.json", Duration.ofMillis(120), asOf()),
                 new FixtureConnector(new LowCostParser("fineair"),
-                        "/fixtures/fineair-dus-stn.json", Duration.ofMillis(80)),
+                        "/fixtures/fineair-dus-stn.json", Duration.ofMillis(80), asOf()),
                 new FixtureConnector(new LowCostParser("bizzair"),
-                        "/fixtures/bizzair-dus-stn.json", Duration.ofMillis(200)),
+                        "/fixtures/bizzair-dus-stn.json", Duration.ofMillis(200), asOf()),
                 new FixtureConnector(new ResellerParser("voyago"),
-                        "/fixtures/voyago-dus-stn.json", Duration.ofMillis(650)));
+                        "/fixtures/voyago-dus-stn.json", Duration.ofMillis(650), asOf()));
+    }
+
+    /**
+     * The moment this market is quoted at.
+     *
+     * <p>Every fare in the fixtures is held until {@code 2026-09-01T06:15:00Z},
+     * because a real quote expires and pretending otherwise would throw away
+     * the freshness rule the whole model is built on. Judged against the wall
+     * clock, the demo therefore returns nothing at all from that date onward:
+     * the fares are still parsed, still merged, and then all dropped as lapsed.
+     *
+     * <p>An empty page is the worst possible way to demonstrate that, because
+     * it looks exactly like a broken search. So anything running on fixtures
+     * asks the market when it was quoted and judges freshness against that.
+     * This instant sits before the earliest departure and before every hold
+     * lapses, so the whole modelled market is live.
+     *
+     * <p><b>Only fixtures get this.</b> A connector reaching a real supplier
+     * uses the real clock, which is the only place the question means anything.
+     * The alternative, rewriting the timestamps in the payloads at load time,
+     * was rejected: it would put a step in front of the parser that the live
+     * path does not have, and the fixtures would stop being what a connector
+     * actually receives.
+     */
+    public static Instant asOf() {
+        return Instant.parse("2026-09-01T04:00:00Z");
     }
 
     /** The airline behind a two-letter code, for anything that shows one. */

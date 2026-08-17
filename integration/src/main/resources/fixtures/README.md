@@ -8,10 +8,24 @@ rather than skipping it.
 
 ## Provenance, stated rather than implied
 
-| File | Shape | Where the data comes from |
-|---|---|---|
-| `altair-dus-stn.json` | Amadeus Flight Offers Search | **Shape real, values modelled** |
-| `skyhop-dus-stn.json` | Low-cost carrier direct | **Shape and values modelled** |
+| File | Supplier | Shape | Where the data comes from |
+|---|---|---|---|
+| `openfare-dus-stn.json` | GDS aggregator | Amadeus Flight Offers Search | **Shape real, values modelled** |
+| `fineair-dus-stn.json` | Fineair direct | Low-cost carrier direct | **Shape and values modelled** |
+| `bizzair-dus-stn.json` | Bizzair direct | Low-cost carrier direct | **Shape and values modelled** |
+| `voyago-dus-stn.json` | Online travel agent | Reseller | **Shape and values modelled** |
+
+Every airline named here is invented, and that is deliberate. Fineair, Bizzair,
+Altair and Halcyon do not exist. Modelling a real carrier under its own name
+would put invented prices beside a real brand, and somebody would read them as
+that airline's actual charges.
+
+## Why these sit on the main classpath
+
+They are in `src/main/resources`, not `src/test/resources`, because the
+integration service serves them at runtime. A fixture only the tests could reach
+would make the running demo a different code path from the tested one, and that
+is the exact failure this arrangement exists to prevent.
 
 ## Why nothing here is a real recording
 
@@ -39,10 +53,18 @@ under commercial contracts. Scraping them breaks their terms and is not
 something a portfolio repository should contain.
 
 So the fixtures are modelled, and every place they appear says so. The shapes
-are real: `altair-dus-stn.json` follows the documented Amadeus Flight Offers
+are real: `openfare-dus-stn.json` follows the documented Amadeus Flight Offers
 Search structure, down to local departure times with no offset and prices quoted
 for the whole booking, because those are the two details that make normalisation
 worth writing.
+
+## They are quoted at a fixed moment
+
+Every fare here is held until `2026-09-01T06:15:00Z`, because a real quote
+expires. So the demo judges freshness against `Market.asOf()` rather than the
+wall clock, and the modelled market stays live instead of emptying itself on a
+date. Anything reaching a real supplier uses the real clock, which is the only
+place the question is genuine.
 
 ## The client is still real
 

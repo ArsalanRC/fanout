@@ -105,7 +105,8 @@ public final class AmadeusClient implements Connector {
 
     @Override
     public List<Fare> search(Query query, Deadline deadline) throws Exception {
-        return parser.parse(fetch(query, deadline), query);
+        // The real clock, because this response really did just arrive.
+        return parser.parse(fetch(query, deadline), query, Instant.now());
     }
 
     /** The raw response, which is exactly what the recorder writes to a fixture. */

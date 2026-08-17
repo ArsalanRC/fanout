@@ -47,8 +47,14 @@ public final class ResellerParser implements SupplierParser {
         return supplier;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>{@code receivedAt} is ignored: this seller sends
+     * {@code holdsUntilEpochMs}, so the hold is stated rather than guessed.
+     */
     @Override
-    public List<Fare> parse(String body, Query query) {
+    public List<Fare> parse(String body, Query query, Instant receivedAt) {
         Json root = Json.parse(body);
         List<Fare> fares = new ArrayList<>();
 

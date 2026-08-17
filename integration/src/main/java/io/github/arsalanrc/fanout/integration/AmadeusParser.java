@@ -44,7 +44,7 @@ public final class AmadeusParser implements SupplierParser {
     }
 
     @Override
-    public List<Fare> parse(String body, Query query) {
+    public List<Fare> parse(String body, Query query, Instant receivedAt) {
         Json root = Json.parse(body);
         List<Fare> fares = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public final class AmadeusParser implements SupplierParser {
 
             for (Json itinerary : offer.get("itineraries").arrayOrEmpty()) {
                 fares.add(new Fare(supplier, legsOf(itinerary), total,
-                        included(offer, currency), expiry(offer)));
+                        included(offer, currency), expiry(receivedAt)));
             }
         }
 
@@ -121,8 +121,17 @@ public final class AmadeusParser implements SupplierParser {
      * moment and is about ticketing rather than about the price holding. It is
      * not an expiry. A short fixed window is the honest reading of a search
      * result, and it is stated here rather than pretended to come from the API.
+     *
+     * <p>Measured from when the response arrived, never from the wall clock.
+     * The two are the same thing for a live call and nothing like each other for
+     * a recorded one, and this is the only supplier where the distinction bites:
+     * the other two payload shapes carry an absolute hold, so their fares are
+     * dated by the supplier rather than by us.
      */
-    private static Instant expiry(Json offer) {
-        return Instant.now().plus(Duration.ofMinutes(15));
+    private static Instant expiry(Instant receivedAt) {
+        return receivedAt.plus(HOLD);
     }
+
+    /** How long a search result is worth acting on. Stated, not received. */
+    private static final Duration HOLD = Duration.ofMinutes(15);
 }

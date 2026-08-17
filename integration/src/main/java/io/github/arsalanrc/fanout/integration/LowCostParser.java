@@ -50,8 +50,15 @@ public final class LowCostParser implements SupplierParser {
         return supplier;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>{@code receivedAt} is ignored here, and that is the good case. This
+     * supplier states {@code holdsUntil} in the payload, so the expiry is its
+     * own answer rather than something inferred on this side.
+     */
     @Override
-    public List<Fare> parse(String body, Query query) {
+    public List<Fare> parse(String body, Query query, Instant receivedAt) {
         Json root = Json.parse(body);
         List<Fare> fares = new ArrayList<>();
 

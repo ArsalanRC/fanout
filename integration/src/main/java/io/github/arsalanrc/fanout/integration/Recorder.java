@@ -46,8 +46,11 @@ public final class Recorder {
         }
 
         Query query = new Query(args[0], args[1], LocalDate.parse(args[2]), Integer.parseInt(args[3]));
+        // The main classpath, not the test one. A recording the tests could see
+        // and the running service could not would be a fixture that proves
+        // nothing about the demo.
         Path output = Path.of(args.length > 4 ? args[4]
-                : "integration/src/test/resources/fixtures/amadeus-"
+                : "integration/src/main/resources/fixtures/amadeus-"
                         + query.origin().toLowerCase(java.util.Locale.ROOT) + "-"
                         + query.destination().toLowerCase(java.util.Locale.ROOT) + ".json");
 
@@ -75,7 +78,7 @@ public final class Recorder {
          * or of a route with no flights, parses to nothing and would otherwise
          * sit in the repository looking like a working fixture.
          */
-        List<Fare> fares = new AmadeusParser("amadeus").parse(body, query);
+        List<Fare> fares = new AmadeusParser("amadeus").parse(body, query, java.time.Instant.now());
         System.out.println("Parsed " + fares.size() + " fares");
 
         if (fares.isEmpty()) {
