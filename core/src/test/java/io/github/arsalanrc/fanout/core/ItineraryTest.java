@@ -21,7 +21,7 @@ class ItineraryTest {
     }
 
     private static Fare fare(String supplier, Itinerary it, long minor) {
-        return new Fare(supplier, it, Money.of(minor, "EUR"), NOON.plusSeconds(600));
+        return Fare.inclusive(supplier, it, Money.of(minor, "EUR"), NOON.plusSeconds(600));
     }
 
     @Test
@@ -77,8 +77,9 @@ class ItineraryTest {
     void a_priced_itinerary_sorts_its_offers_so_the_best_is_never_a_guess() {
         Itinerary it = Itinerary.of(leg("LH", "992", "DUS", "LHR", 0, 95));
 
-        PricedItinerary priced = new PricedItinerary(it,
-                List.of(fare("gamma", it, 24_900), fare("alpha", it, 19_900), fare("beta", it, 21_500)));
+        PricedItinerary priced = PricedItinerary.of(it,
+                List.of(fare("gamma", it, 24_900), fare("alpha", it, 19_900), fare("beta", it, 21_500)),
+                Basket.SEAT_ONLY);
 
         assertEquals("alpha", priced.best().supplier());
         assertEquals(3, priced.sellers());
@@ -89,7 +90,7 @@ class ItineraryTest {
     @Test
     void a_fare_knows_when_it_has_lapsed() {
         Itinerary it = Itinerary.of(leg("LH", "992", "DUS", "LHR", 0, 95));
-        Fare quote = new Fare("alpha", it, Money.of(19_900, "EUR"), NOON.plusSeconds(600));
+        Fare quote = Fare.inclusive("alpha", it, Money.of(19_900, "EUR"), NOON.plusSeconds(600));
 
         assertFalse(quote.expiredAt(NOON.plusSeconds(599)));
         // Expiry is inclusive: a fare expiring exactly now has expired. The
@@ -115,7 +116,7 @@ class ItineraryTest {
         Itinerary it = Itinerary.of(leg("LH", "992", "DUS", "LHR", 0, 95));
 
         SearchResult partial = new SearchResult(query,
-                List.of(new PricedItinerary(it, List.of(fare("alpha", it, 19_900)))),
+                List.of(PricedItinerary.of(it, List.of(fare("alpha", it, 19_900)), Basket.SEAT_ONLY)),
                 List.of(SupplierOutcome.answered("alpha", Duration.ofMillis(400), List.of(fare("alpha", it, 19_900))),
                         SupplierOutcome.timedOut("beta", Duration.ofSeconds(20))));
 
