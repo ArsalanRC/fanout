@@ -159,9 +159,21 @@ class ConnectorTest {
         Connector slow = new FixtureConnector(
                 new LowCostParser("skyhop"), "/fixtures/skyhop-dus-stn.json", Duration.ofSeconds(5));
 
-        // A fixture that answers slower than the budget allows must not quietly
-        // overrun it. The fan-out is entitled to assume a connector respects
-        // the deadline it was handed.
+        /*
+         * A fixture that answers slower than the budget allows must not quietly
+         * overrun it. The fan-out is entitled to assume a connector respects
+         * the deadline it was handed.
+         *
+         * This case measures real time, so treat it as a behavioural check
+         * rather than the guard. It once passed on a laptop and failed in CI,
+         * because the connector truncated the remaining budget to whole
+         * milliseconds and woke a fraction before expiry. Put that truncation
+         * back and this test only notices about two runs in ten.
+         *
+         * The deterministic guard is `DeadlineTest.rounds_a_sliver_up_rather
+         * _than_down`, which pins the rounding with a clock driven by hand.
+         * Fix that one first if this ever starts flickering again.
+         */
         assertThrows(InterruptedException.class,
                 () -> slow.search(ONE_PASSENGER, Deadline.in(Duration.ofMillis(40))));
     }

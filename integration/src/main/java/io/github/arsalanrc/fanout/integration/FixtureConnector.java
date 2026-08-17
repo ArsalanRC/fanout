@@ -54,9 +54,16 @@ public final class FixtureConnector implements Connector {
              * shorter, then check. Sleeping the full latency first would let a
              * slow fixture overrun a deadline it was supposed to respect, and
              * the fan-out would look broken when the connector was.
+             *
+             * The budget comes from `remainingMillis`, which rounds up, and not
+             * from `remaining().toMillis()`, which truncates. That distinction
+             * is the bug this line used to have: truncating 39.7 milliseconds
+             * to 39 left the deadline a hair short of expired, so the connector
+             * returned normally when it should have given up. It passed on one
+             * machine and failed in CI, which is the worst shape a test takes.
              */
-            Duration wait = latency.compareTo(deadline.remaining()) < 0 ? latency : deadline.remaining();
-            Thread.sleep(wait.toMillis());
+            long budget = Math.min(latency.toMillis(), deadline.remainingMillis());
+            Thread.sleep(budget);
 
             if (deadline.expired()) throw new InterruptedException(id() + " ran past the deadline");
         }
