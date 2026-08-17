@@ -25,6 +25,7 @@
   -->
   <modules>
     <module>core</module>
+    <module>telemetry</module>
     <module>integration</module>
     <module>search</module>
   </modules>
