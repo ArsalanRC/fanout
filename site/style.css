@@ -1,0 +1,529 @@
+/*
+  fanout, the page.
+
+  Direction is evervault.com, opened and screenshotted rather than described
+  from memory. What transfers is the grammar and not the vocabulary: a row
+  carrying a mark, a monospace token, a provider chip, a status and a
+  right-aligned price is already a metasearch result. The footer readout of
+  volume and acceptance rate is already a search summary.
+
+  One decision here is the repository's argument rather than a colour choice.
+  A supplier that ran out of budget is amber and a supplier that failed is red,
+  because those are different things and the whole circuit breaker depends on
+  not confusing them. Painting both red would be the page contradicting the code.
+*/
+
+:root {
+  --ink: #0B0710;
+  --panel: #120C1A;
+  --raise: #191122;
+  --line: #241B31;
+  --text: #F2EEF7;
+  --dim: #8E85A0;
+  --faint: #5C5470;
+
+  --violet: #8B5CF6;
+  --ok: #34D399;
+  --late: #F5A524;
+  --broke: #F87171;
+
+  --sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --pad: clamp(1.25rem, 5vw, 4rem);
+  --max: 68rem;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+
+  /*
+    The accent is a bleed rather than a fill. Two soft violet washes behind
+    everything, fixed so they do not travel with the scroll.
+  */
+  background-image:
+    radial-gradient(60rem 40rem at 50% -10rem, rgba(139, 92, 246, 0.18), transparent 70%),
+    radial-gradient(40rem 30rem at 85% 40%, rgba(139, 92, 246, 0.07), transparent 70%);
+  background-attachment: fixed;
+}
+
+a { color: inherit; }
+
+.skip {
+  position: absolute;
+  left: -999px;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  background: var(--text);
+  color: var(--ink);
+  padding: .5rem .9rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem var(--pad);
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.brand {
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-size: 1.05rem;
+}
+
+.top nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .875rem;
+}
+
+.top nav a {
+  color: var(--dim);
+  text-decoration: none;
+}
+.top nav a:hover { color: var(--text); }
+
+.lang {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.lang button {
+  font: 500 .75rem/1 var(--mono);
+  letter-spacing: .06em;
+  background: none;
+  border: 0;
+  color: var(--faint);
+  padding: .45rem .6rem;
+  cursor: pointer;
+}
+.lang button.on { color: var(--text); background: rgba(139, 92, 246, 0.18); }
+
+/* -------------------------------------------------------------------- type */
+
+main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.eyebrow, .label {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 9vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  margin: 1.25rem 0 0;
+}
+
+.lit {
+  background: linear-gradient(96deg, #FFFFFF 10%, #C4B5FD 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3.6vw, 2.15rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  margin: .75rem 0 0;
+  max-width: 24ch;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 .35rem;
+}
+
+.hero { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(2.5rem, 6vw, 4rem); text-align: center; }
+.hero h1 { margin-inline: auto; }
+
+.lede, .body {
+  color: var(--dim);
+  font-size: 1.03rem;
+  max-width: 52ch;
+  margin: 1.25rem auto 0;
+}
+.body { margin-inline: 0; }
+
+/*
+  Hairline with a crosshair at each end, straight off the reference. The plus
+  marks are what stop a 1px line reading as a browser default.
+*/
+.rule {
+  position: relative;
+  border: 0;
+  height: 1px;
+  background: var(--line);
+  margin: clamp(3rem, 8vw, 5.5rem) 0;
+  overflow: visible;
+}
+.rule::before, .rule::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--faint);
+  font: 400 .8rem/1 var(--mono);
+}
+.rule::before { left: -.3rem; }
+.rule::after { right: -.3rem; }
+
+/* ------------------------------------------------------------------- stage */
+
+.stage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.controls { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+.seg {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.seg button {
+  font: 500 .78rem/1 var(--sans);
+  background: none;
+  border: 0;
+  color: var(--dim);
+  padding: .5rem .85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.seg button.on { background: var(--text); color: var(--ink); }
+
+.pill {
+  font: 500 .78rem/1 var(--sans);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--dim);
+  padding: .5rem .95rem;
+  cursor: pointer;
+}
+.pill:hover { color: var(--text); border-color: var(--faint); }
+
+.stage-note {
+  color: var(--faint);
+  font-size: .85rem;
+  margin: .9rem 0 1.5rem;
+  max-width: 60ch;
+}
+
+/* -------------------------------------------------------------------- lanes */
+
+.lanes {
+  display: grid;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+}
+
+.lane {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 5.5rem 6rem;
+  align-items: center;
+  gap: .75rem;
+  font-family: var(--mono);
+  font-size: .78rem;
+}
+
+.lane .who { color: var(--dim); }
+
+.track {
+  position: relative;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--raise);
+  overflow: hidden;
+}
+.track i {
+  position: absolute;
+  inset: 0 100% 0 0;
+  background: var(--violet);
+  border-radius: 4px;
+}
+.lane.done .track i { background: var(--ok); }
+.lane.late .track i { background: var(--late); }
+.lane.broke .track i { background: var(--broke); }
+
+.lane .ms { text-align: right; color: var(--faint); font-variant-numeric: tabular-nums; }
+
+/*
+  Labels the ends of the track, so the empty space to the right of a bar is
+  readable as budget left rather than as a bar that failed to fill.
+*/
+.axis {
+  display: flex;
+  justify-content: space-between;
+  margin: .4rem 0 1.5rem;
+  padding-left: 7.25rem;
+  padding-right: 12.25rem;
+  font: 400 .62rem/1 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.lane .state {
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--faint);
+}
+.lane.done .state { color: var(--ok); }
+.lane.late .state { color: var(--late); }
+.lane.broke .state { color: var(--broke); }
+
+/* -------------------------------------------------------------------- board */
+
+.board {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--panel), rgba(18, 12, 26, 0.4));
+  overflow: hidden;
+}
+
+.board-head, .row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1.1fr) minmax(6rem, 1fr) minmax(7rem, 1.1fr) 7rem;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem 1rem;
+}
+
+.board-head {
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  border-bottom: 1px solid var(--line);
+}
+.board-head span:last-child { text-align: right; }
+
+.row {
+  border-bottom: 1px solid rgba(36, 27, 49, 0.6);
+  transition: background .25s ease;
+}
+.row:last-child { border-bottom: 0; }
+.row.fresh { background: rgba(139, 92, 246, 0.12); }
+
+.flight { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+.flight img { width: 22px; height: 22px; flex: none; }
+.flight b { font: 500 .82rem/1.2 var(--mono); }
+.flight small { display: block; color: var(--faint); font-size: .7rem; font-weight: 400; }
+
+.route { font: 400 .78rem/1 var(--mono); color: var(--dim); }
+
+.chips { display: flex; gap: .3rem; flex-wrap: wrap; }
+.chip {
+  font: 400 .66rem/1 var(--mono);
+  background: var(--raise);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .25rem .5rem;
+  color: var(--dim);
+}
+.chip.best { border-color: rgba(52, 211, 153, .45); color: var(--ok); }
+
+.price { text-align: right; font: 500 .95rem/1 var(--mono); font-variant-numeric: tabular-nums; }
+.price small { display: block; margin-top: .2rem; font-size: .65rem; font-weight: 400; color: var(--faint); }
+
+.empty { padding: 2.5rem 1rem; text-align: center; color: var(--faint); font-size: .85rem; }
+
+/* ------------------------------------------------------------------ readout */
+
+.readout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1px;
+  margin-top: 1.25rem;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+/* `margin: 0` is load bearing: a dl keeps its default vertical margin, which
+   insets the cell and lets the container's hairline colour show as a stripe. */
+.stat { background: var(--ink); padding: .9rem 1rem; margin: 0; }
+.stat dt {
+  font: 400 .62rem/1 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.stat dd {
+  margin: .45rem 0 0;
+  font: 500 1.15rem/1 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.stat dd.good { color: var(--ok); }
+.stat dd.warn { color: var(--late); }
+
+/* ------------------------------------------------------------------ answers */
+
+.three {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: .75rem;
+  margin-top: 2rem;
+}
+.card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 1.1rem 1.2rem;
+}
+.card .q {
+  font: 400 .64rem/1 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.card .winner {
+  margin: .8rem 0 .1rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.card .amount { font: 500 .9rem/1 var(--mono); color: var(--dim); }
+.card .versus { margin-top: .7rem; font-size: .78rem; color: var(--faint); }
+.card.flip { border-color: rgba(139, 92, 246, .5); }
+.card.flip .winner { color: #C4B5FD; }
+
+.foot { color: var(--faint); font-size: .8rem; margin-top: 1.25rem; }
+
+/* --------------------------------------------------------------- arguments */
+
+.grid {
+  list-style: none;
+  counter-reset: n;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.75rem 2.5rem;
+}
+.grid li { counter-increment: n; }
+.grid li::before {
+  content: counter(n, decimal-leading-zero);
+  display: block;
+  font: 400 .68rem/1 var(--mono);
+  letter-spacing: .1em;
+  color: var(--violet);
+  margin-bottom: .6rem;
+}
+.grid p { color: var(--dim); font-size: .9rem; margin: 0; }
+
+/* -------------------------------------------------------------------- wire */
+
+.code {
+  font: 400 .8rem/1.7 var(--mono);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin: 1.75rem 0;
+  overflow-x: auto;
+  color: var(--dim);
+}
+.c-dim { color: var(--faint); }
+.c-key { color: var(--text); }
+.c-num { color: var(--ok); }
+
+.rules-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .9rem; }
+.rules-list li { font-size: .92rem; color: var(--dim); max-width: 62ch; }
+.rules-list strong { color: var(--text); font-weight: 600; }
+
+/* ------------------------------------------------------------------ honest */
+
+.two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 2rem;
+  margin-top: 1.75rem;
+}
+.two p { color: var(--dim); font-size: .9rem; margin: 0; }
+
+/* ------------------------------------------------------------------ footer */
+
+footer {
+  max-width: var(--max);
+  margin: clamp(3rem, 8vw, 5rem) auto 0;
+  padding: 2rem var(--pad) 3rem;
+  border-top: 1px solid var(--line);
+  font-size: .85rem;
+  color: var(--dim);
+}
+.foot-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+footer a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); }
+footer a:hover { border-color: var(--violet); }
+.sep { color: var(--faint); }
+.disclaimer { color: var(--faint); margin: .9rem 0 0; font-size: .8rem; }
+
+/* ------------------------------------------------------------------ small */
+
+@media (max-width: 640px) {
+  .lane { grid-template-columns: 5rem 1fr 4rem; }
+  .lane .state { display: none; }
+  .axis { padding-left: 5.75rem; padding-right: 4.75rem; }
+  .board-head, .row { grid-template-columns: 1fr 5.5rem; }
+  .board-head span:nth-child(2), .board-head span:nth-child(3),
+  .row .route, .row .chips { display: none; }
+  .stage-head { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .track i { transition: none !important; }
+  .row { transition: none; }
+}

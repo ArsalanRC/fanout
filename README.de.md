@@ -6,7 +6,12 @@ Eine Metasuche fragt acht Anbieter nach demselben Flug. Gibt man jedem drei Seku
 
 `fanout` ist eine kleine Metasuch-Architektur in Java. Zwei Services, ein gemeinsames Zeitbudget, und eine Antwort, die sagt welche Anbieter fehlen.
 
-Java 21+, **keine Laufzeit-Abhängigkeiten**, 135 Tests.
+Java 21+, **keine Laufzeit-Abhängigkeiten**, 138 Tests.
+
+**[Live ansehen](https://arsalanrc.github.io/fanout/?lang=de)**: der Fan-out in
+Echtzeit, mit echten aufgezeichneten Laufzeiten, auf Deutsch und Englisch. Setz
+das Budget unter das, was der langsamste Anbieter braucht, und sieh zu wie die
+Antwort unvollständig zurückkommt. Ohne Installation.
 
 ## Ausprobieren
 

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fanout · a metasearch architecture in Java</title>
+<meta name="description" content="Fan out to unreliable suppliers under one deadline, and return the best partial answer. Two services, zero runtime dependencies, Java 21.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230B0710'/><g fill='%238B5CF6'><rect x='12' y='16' width='40' height='6' rx='3'/><rect x='12' y='29' width='28' height='6' rx='3'/><rect x='12' y='42' width='16' height='6' rx='3'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#fanout" data-i18n="skip">Skip to the fan-out</a>
+
+<header class="top">
+  <span class="brand">fanout</span>
+  <nav>
+    <a href="https://github.com/ArsalanRC/fanout" target="_blank" rel="noopener">GitHub</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="on">EN</button>
+      <button type="button" data-lang="de">DE</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <p class="eyebrow" data-i18n="hero.eyebrow">Metasearch architecture · Java 21 · Zero runtime dependencies</p>
+    <h1><span data-i18n="hero.line1">Eight suppliers.</span><br><span class="lit" data-i18n="hero.line2">One deadline.</span></h1>
+    <p class="lede" data-i18n="hero.lede">Give every supplier its own timeout and the search costs the sum of them. One shared budget answers on time, and names whoever did not reply.</p>
+  </section>
+
+  <hr class="rule">
+
+  <section id="fanout" class="stage">
+    <div class="stage-head">
+      <p class="label" data-i18n="stage.label">The fan-out</p>
+      <div class="controls">
+        <div class="seg" role="group" data-control="basket">
+          <button type="button" data-value="cabin" class="on" data-i18n="ctl.cabin">Hand luggage</button>
+          <button type="button" data-value="checked" data-i18n="ctl.checked">With a suitcase</button>
+        </div>
+        <div class="seg" role="group" data-control="budget">
+          <button type="button" data-value="3000" class="on">3000 ms</button>
+          <button type="button" data-value="300">300 ms</button>
+        </div>
+        <button type="button" class="pill" id="replay" data-i18n="ctl.replay">Replay</button>
+      </div>
+    </div>
+
+    <p class="stage-note" data-i18n="stage.note">Düsseldorf to London Stansted, one passenger. Every bar below runs for exactly as long as that supplier really took.</p>
+
+    <div class="lanes" id="lanes"></div>
+    <p class="axis"><span data-i18n="axis.zero">Asked</span><span id="budget-mark">3000 ms</span></p>
+
+    <div class="board">
+      <div class="board-head">
+        <span data-i18n="board.flight">Flight</span>
+        <span data-i18n="board.route">Route</span>
+        <span data-i18n="board.sellers">Sellers</span>
+        <span data-i18n="board.price">Best price</span>
+      </div>
+      <div id="rows"></div>
+    </div>
+
+    <div class="readout" id="readout"></div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="answers">
+    <p class="label" data-i18n="answers.label">One question, three answers</p>
+    <h2 data-i18n="answers.title">There is no such thing as the price of a flight.</h2>
+    <p class="body" data-i18n="answers.body">There is the price for somebody. A budget carrier sells the seat and charges for the rest. A full service carrier sells the bag inside the fare. Sorting on the headline answers a question nobody asked.</p>
+    <div class="three" id="three"></div>
+    <p class="foot" data-i18n="answers.foot">Every figure here is read out of the recorded search, not typed in.</p>
+  </section>
+
+  <hr class="rule">
+
+  <section class="args">
+    <p class="label" data-i18n="args.label">Six ways this goes wrong</p>
+    <ol class="grid">
+      <li>
+        <h3 data-i18n="arg1.h">One deadline, not eight timeouts</h3>
+        <p data-i18n="arg1.p">The budget is set once, at the edge. Every call below gets what is left of it, never a fresh allowance.</p>
+      </li>
+      <li>
+        <h3 data-i18n="arg2.h">A partial answer beats none</h3>
+        <p data-i18n="arg2.p">A supplier that misses the deadline is reported beside the results. Failing the search because one of eight was slow is the expensive mistake.</p>
+      </li>
+      <li>
+        <h3 data-i18n="arg3.h">Late is not broken</h3>
+        <p data-i18n="arg3.p">A dead supplier stops being called. A slow one keeps being called, because counting slowness as failure drops suppliers that work.</p>
+      </li>
+      <li>
+        <h3 data-i18n="arg4.h">Normalisation hides the bugs</h3>
+        <p data-i18n="arg4.p">Per passenger or per booking, different currencies, local time with no offset. Comparing the numbers as they arrive compares different things.</p>
+      </li>
+      <li>
+        <h3 data-i18n="arg5.h">One flight, one row</h3>
+        <p data-i18n="arg5.p">The same seats sold by three suppliers is one row with three prices. Three rows look full and hide the spread.</p>
+      </li>
+      <li>
+        <h3 data-i18n="arg6.h">A lapsed fare is worse than none</h3>
+        <p data-i18n="arg6.p">It sorts to the top, gets clicked, and fails where somebody was about to pay. So it is dropped, and counted.</p>
+      </li>
+    </ol>
+  </section>
+
+  <hr class="rule">
+
+  <section class="wire">
+    <p class="label" data-i18n="wire.label">The boundary</p>
+    <h2 data-i18n="wire.title">The budget survives the hop, or it is not a budget.</h2>
+    <p class="body" data-i18n="wire.body">Two services, and the deadline crosses between them in a header. A budget that stops at a process boundary is a timeout with extra steps, and the service below quietly starts a fresh one.</p>
+<pre class="code"><span class="c-dim">GET</span> /suppliers/fineair/fares?origin=DUS&amp;destination=STN
+<span class="c-key">X-Fanout-Deadline-Ms:</span> <span class="c-num">842</span></pre>
+    <ul class="rules-list">
+      <li><strong data-i18n="wire.r1h">Shorten it, never extend it.</strong> <span data-i18n="wire.r1p">The service starts at its own ceiling and takes whichever is sooner. Ask for ten minutes, get five seconds.</span></li>
+      <li><strong data-i18n="wire.r2h">504 and 502 are different answers.</strong> <span data-i18n="wire.r2p">Out of budget against actually broken. The breaker counts one and ignores the other.</span></li>
+      <li><strong data-i18n="wire.r3h">Money crosses as minor units.</strong> <span data-i18n="wire.r3p">Never a decimal. Read back as a double, 21.49 times 100 is 2148.9999.</span></li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <section class="honest">
+    <p class="label" data-i18n="honest.label">What is real here</p>
+    <div class="two">
+      <div>
+        <h3 data-i18n="honest.t1">The airlines are invented</h3>
+        <p data-i18n="honest.p1">Fineair, Bizzair, Altair and Halcyon do not exist. There is no free flight-price API left to record from, so putting invented prices beside a real brand was not worth doing.</p>
+      </div>
+      <div>
+        <h3 data-i18n="honest.t2">The timings are measured</h3>
+        <p data-i18n="honest.p2">Every millisecond on this page came from a real search across two processes. Nothing here is rounded to look tidy, and no number was typed in by hand.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-row">
+    <span data-i18n="footer.built">Built by</span>
+    <a href="https://www.linkedin.com/in/muhammad-arsalan-khadim-b87550259/" target="_blank" rel="noopener">Arsalan Khadim</a>
+    <span class="sep">·</span>
+    <a href="https://github.com/ArsalanRC" target="_blank" rel="noopener">GitHub</a>
+    <span class="sep">·</span>
+    <a href="https://github.com/ArsalanRC/fanout" target="_blank" rel="noopener">Source</a>
+    <span class="sep">·</span>
+    <span>MIT</span>
+  </div>
+  <p class="disclaimer" data-i18n="footer.note">Fares and airlines are modelled. The code, the timings and the failures are not.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

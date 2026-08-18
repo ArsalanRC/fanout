@@ -54,7 +54,11 @@ public final class PageData {
             // The same search with a suitcase. A different airline wins.
             new Capture("search-checked", "basket=checked&budget=3000"),
             // Tighter than the slowest supplier answers, so it comes back partial.
-            new Capture("search-tight", "basket=cabin&budget=300"));
+            new Capture("search-tight", "basket=cabin&budget=300"),
+            // Both at once. The page offers basket and budget as two controls,
+            // so all four combinations have to exist or one of them is a dead
+            // button that quietly shows the wrong answer.
+            new Capture("search-checked-tight", "basket=checked&budget=300"));
 
     public record Capture(String name, String parameters) {
 
