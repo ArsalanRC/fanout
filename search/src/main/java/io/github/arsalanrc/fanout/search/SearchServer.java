@@ -351,9 +351,15 @@ public final class SearchServer implements AutoCloseable {
      * for somebody who has just cloned it.
      *
      * <pre>
-     *   mvn -q -pl search exec:java \
+     *   mvn -q install -DskipTests
+     *   FANOUT_INTEGRATION_URL=http://127.0.0.1:8081 mvn -q -pl search exec:java \
      *     -Dexec.mainClass=io.github.arsalanrc.fanout.search.SearchServer
      * </pre>
+     *
+     * <p>The install is not optional. {@code -pl} resolves the sibling modules
+     * from the local repository rather than from the reactor, so without it this
+     * starts against whatever was installed last and fails on a class that was
+     * added since.
      */
     public static void main(String[] args) throws Exception {
         int port = args.length > 0 ? Integer.parseInt(args[0])
