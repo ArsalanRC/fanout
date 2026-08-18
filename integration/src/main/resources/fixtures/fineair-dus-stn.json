@@ -3,7 +3,7 @@
   "flights": [
     {
       "currency": "EUR",
-      "fare": { "amount": 14.99, "type": "value" },
+      "fare": { "amount": 12.99, "type": "value" },
       "holdsUntil": "2026-09-01T06:15:00Z",
       "legs": [
         { "airline": "FE", "flightNo": "1108", "from": "DUS", "to": "STN",

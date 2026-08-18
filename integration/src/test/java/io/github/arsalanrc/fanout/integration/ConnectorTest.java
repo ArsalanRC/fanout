@@ -90,8 +90,8 @@ class ConnectorTest {
         Fare one = fares(fineair(), ONE).getFirst();
         Fare three = fares(fineair(), THREE).getFirst();
 
-        assertEquals(Money.of(1_499, "EUR"), one.base());
-        assertEquals(Money.of(4_497, "EUR"), three.base());
+        assertEquals(Money.of(1_299, "EUR"), one.base());
+        assertEquals(Money.of(3_897, "EUR"), three.base());
 
         // A bag is per passenger: 46.50 becomes 139.50.
         assertEquals(Money.of(13_950, "EUR"),
@@ -162,23 +162,52 @@ class ConnectorTest {
         Fare bizz = fares(bizzair(), ONE).getFirst();
         Fare altair = fares(openfare(), ONE).getFirst();
 
-        // Headlines: Fineair 14.99, Bizzair 19.99, Altair 89.00.
-        assertEquals(Money.of(1_499, "EUR"), fine.base());
+        // Headlines: Fineair 12.99, Bizzair 19.99, Altair 89.00. Fineair looks
+        // seven euros cheaper than Bizzair and seventy-six cheaper than Altair.
+        assertEquals(Money.of(1_299, "EUR"), fine.base());
         assertEquals(Money.of(1_999, "EUR"), bizz.base());
         assertEquals(Money.of(8_900, "EUR"), altair.base());
 
-        // Hand luggage: Fineair 14.99 plus a 6.50 card fee is 21.49, Bizzair
-        // 19.99 with no fee at all. Fineair still wins, by 1.50 rather than 5.
-        assertEquals(Money.of(2_149, "EUR"), fine.totalFor(Basket.HAND_LUGGAGE_ONLY));
+        // Hand luggage: Fineair 12.99 plus a 6.50 card fee is 19.49, Bizzair
+        // 19.99 with no fee at all. Fineair still wins, by fifty cents rather
+        // than by seven euros. The headline overstated the gap fourteen times.
+        assertEquals(Money.of(1_949, "EUR"), fine.totalFor(Basket.HAND_LUGGAGE_ONLY));
         assertEquals(Money.of(1_999, "EUR"), bizz.totalFor(Basket.HAND_LUGGAGE_ONLY));
+        assertTrue(fine.totalFor(Basket.HAND_LUGGAGE_ONLY)
+                .compareTo(bizz.totalFor(Basket.HAND_LUGGAGE_ONLY)) < 0);
 
-        // With a suitcase the order flips: Fineair 67.99, Bizzair 43.99. The
-        // airline with the cheapest headline is 24 euros dearer, and no
-        // headline comparison would ever say so.
-        assertEquals(Money.of(6_799, "EUR"), fine.totalFor(Basket.WITH_CHECKED_BAG));
+        // With a suitcase the order flips outright: Fineair 65.99, Bizzair
+        // 43.99. The airline with the cheapest headline is now twenty-two euros
+        // dearer, and no headline comparison would ever say so.
+        assertEquals(Money.of(6_599, "EUR"), fine.totalFor(Basket.WITH_CHECKED_BAG));
         assertEquals(Money.of(4_399, "EUR"), bizz.totalFor(Basket.WITH_CHECKED_BAG));
         assertTrue(bizz.totalFor(Basket.WITH_CHECKED_BAG)
                 .compareTo(fine.totalFor(Basket.WITH_CHECKED_BAG)) < 0);
+    }
+
+    @Test
+    @DisplayName("and the winner is a different airline depending on the bag")
+    void the_cheapest_carrier_changes_with_the_basket() throws Exception {
+        /*
+         * The guard for the claim the whole pricing model rests on. Three
+         * answers to what looks like one question, and a metasearch that never
+         * asks which one is being put to it has to pick one and be wrong twice.
+         *
+         * This is asserted on the fixtures rather than on hand-built fares,
+         * because the shipped market is what the page shows. A version of this
+         * repository once claimed the flip in its notes while the fixtures
+         * quietly had one carrier winning both baskets.
+         */
+        Fare fine = fares(fineair(), ONE).getFirst();
+        Fare bizz = fares(bizzair(), ONE).getFirst();
+
+        assertTrue(fine.base().compareTo(bizz.base()) < 0, "Fineair should lead on the headline");
+        assertTrue(fine.totalFor(Basket.HAND_LUGGAGE_ONLY)
+                .compareTo(bizz.totalFor(Basket.HAND_LUGGAGE_ONLY)) < 0,
+                "Fineair should still lead with hand luggage only");
+        assertTrue(bizz.totalFor(Basket.WITH_CHECKED_BAG)
+                .compareTo(fine.totalFor(Basket.WITH_CHECKED_BAG)) < 0,
+                "Bizzair should lead once a suitcase is in the basket");
     }
 
     @Test
@@ -187,12 +216,12 @@ class ConnectorTest {
         Fare morning = offers.getFirst();
         Fare afternoon = offers.get(1);
 
-        // 14.99 against 22.49 on the headline, so the morning looks cheaper.
+        // 12.99 against 22.49 on the headline, so the morning looks cheaper.
         assertTrue(morning.base().compareTo(afternoon.base()) < 0);
 
-        // With a bag: 67.99 against 60.99. Same airline, same route, same day,
-        // and the cheaper-looking flight costs seven euros more.
-        assertEquals(Money.of(6_799, "EUR"), morning.totalFor(Basket.WITH_CHECKED_BAG));
+        // With a bag: 65.99 against 60.99. Same airline, same route, same day,
+        // and the cheaper-looking flight costs five euros more.
+        assertEquals(Money.of(6_599, "EUR"), morning.totalFor(Basket.WITH_CHECKED_BAG));
         assertEquals(Money.of(6_099, "EUR"), afternoon.totalFor(Basket.WITH_CHECKED_BAG));
     }
 
@@ -205,9 +234,9 @@ class ConnectorTest {
         // Same aircraft, same departure, so the same key. One row, two prices.
         assertEquals(direct.itinerary().key(), resold.itinerary().key());
 
-        // 67.99 direct against 76.50 through the agent. Two rows would make the
+        // 65.99 direct against 76.50 through the agent. Two rows would make the
         // page look full and hide the only useful fact on it.
-        assertEquals(Money.of(6_799, "EUR"), direct.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(6_599, "EUR"), direct.totalFor(Basket.WITH_CHECKED_BAG));
         assertEquals(Money.of(7_650, "EUR"), resold.totalFor(Basket.WITH_CHECKED_BAG));
     }
 

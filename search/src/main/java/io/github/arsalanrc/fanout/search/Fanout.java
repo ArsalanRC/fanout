@@ -120,14 +120,20 @@ public final class Fanout {
             pool.shutdownNow();
         }
 
-        List<PricedItinerary> merged = merge(outcomes, basket, now);
+        Merged merged = merge(outcomes, basket, now);
         trace.root()
                 .attribute("suppliers.answered", outcomes.stream().filter(SupplierOutcome::contributed).count())
-                .attribute("itineraries", merged.size())
+                .attribute("itineraries", merged.rows().size())
+                .attribute("dropped.lapsed", merged.dropped().lapsed())
+                .attribute("dropped.unpriceable", merged.dropped().unpriceable())
                 .attribute("complete", outcomes.stream().allMatch(SupplierOutcome::contributed));
         trace.end();
 
-        return new SearchResult(query, merged, outcomes);
+        return new SearchResult(query, merged.rows(), outcomes, merged.dropped());
+    }
+
+    /** The rows, and what did not become one. */
+    private record Merged(List<PricedItinerary> rows, SearchResult.Dropped dropped) {
     }
 
     /** Runs on the virtual thread. Times itself and never throws. */
@@ -192,20 +198,34 @@ public final class Fanout {
      * fails where somebody was about to pay. A fare that cannot cover the
      * basket goes too, since it cannot be priced honestly for this traveller.
      */
-    private static List<PricedItinerary> merge(List<SupplierOutcome> outcomes, Basket basket, Instant now) {
+    private static Merged merge(List<SupplierOutcome> outcomes, Basket basket, Instant now) {
         Map<String, List<Fare>> byJourney = new LinkedHashMap<>();
+        int lapsed = 0;
+        int unpriceable = 0;
 
         for (SupplierOutcome outcome : outcomes) {
             for (Fare fare : outcome.fares()) {
-                if (fare.expiredAt(now) || !fare.satisfies(basket)) continue;
+                // Counted on the way past rather than filtered away. A fare that
+                // arrived and then vanished is worth a number somewhere, or the
+                // page shows a supplier answering and contributing nothing.
+                if (fare.expiredAt(now)) {
+                    lapsed++;
+                    continue;
+                }
+                if (!fare.satisfies(basket)) {
+                    unpriceable++;
+                    continue;
+                }
                 byJourney.computeIfAbsent(fare.itinerary().key(), key -> new ArrayList<>()).add(fare);
             }
         }
 
-        return byJourney.values().stream()
+        List<PricedItinerary> rows = byJourney.values().stream()
                 .map(offers -> PricedItinerary.of(offers.getFirst().itinerary(), offers, basket))
                 .sorted(Comparator.comparing(PricedItinerary::bestPrice))
                 .toList();
+
+        return new Merged(rows, new SearchResult.Dropped(lapsed, unpriceable));
     }
 
     private static Duration since(long startedNanos) {

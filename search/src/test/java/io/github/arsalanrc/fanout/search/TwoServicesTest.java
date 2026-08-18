@@ -145,6 +145,39 @@ class TwoServicesTest {
         }
 
         @Test
+        @DisplayName("a lapsed fare is dropped, counted, and would have been the cheapest")
+        void the_market_carries_one_expired_quote() throws Exception {
+            /*
+             * voyago sells BZ508 at 17.99, which is cheaper than anything else
+             * on the route, and its hold ran out half an hour before the market
+             * is quoted. So it never reaches the page.
+             *
+             * That is the correct behaviour and it is completely invisible,
+             * which is why the count exists. A lapsed quote sorts to the top,
+             * gets clicked, and fails at the moment somebody is paying.
+             */
+            Json result = search("basket=cabin&budget=3000");
+
+            assertEquals(1, result.path("dropped", "lapsed").minorUnits(0),
+                    "The expired offer should have been dropped and counted: " + result);
+
+            long cheapest = result.get("itineraries").array().getFirst()
+                    .get("best").get("minor").minorUnits(0);
+            assertTrue(cheapest > 1799,
+                    "A fare that had already lapsed is being shown at " + cheapest);
+        }
+
+        @Test
+        @DisplayName("the cheapest carrier is a different one once a suitcase is in the basket")
+        void the_winner_changes_with_the_basket() throws Exception {
+            String cabin = winner("basket=cabin&budget=3000");
+            String checked = winner("basket=checked&budget=3000");
+
+            assertEquals("Fineair", cabin, "Fineair should lead on hand luggage");
+            assertEquals("Bizzair", checked, "Bizzair should lead once a bag is counted");
+        }
+
+        @Test
         void a_budget_tighter_than_the_slowest_supplier_still_answers() throws Exception {
             long started = System.nanoTime();
             Json result = search("basket=cabin&budget=300");
@@ -329,6 +362,11 @@ class TwoServicesTest {
 
     private static String route() {
         return "origin=DUS&destination=STN&date=2026-09-01";
+    }
+
+    /** The carrier on the cheapest row, which is the only number a visitor reads. */
+    private String winner(String extra) throws Exception {
+        return search(extra).get("itineraries").array().getFirst().get("carrier").text();
     }
 
     private Json search(String extra) throws Exception {

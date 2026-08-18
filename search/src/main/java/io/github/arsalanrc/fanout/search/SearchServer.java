@@ -172,6 +172,14 @@ public final class SearchServer implements AutoCloseable {
         out.field("as_of", now.toString());
         out.field("complete", result.complete());
 
+        // What arrived and was not shown. A supplier can answer, be recorded as
+        // having answered, and put nothing on the page, and this is the only
+        // number that admits it.
+        out.object("dropped")
+                .field("lapsed", result.dropped().lapsed())
+                .field("unpriceable", result.dropped().unpriceable())
+                .end();
+
         out.array("itineraries");
         for (PricedItinerary priced : result.itineraries()) itinerary(out, priced);
         out.end();
