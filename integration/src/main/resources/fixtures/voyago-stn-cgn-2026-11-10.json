@@ -1,0 +1,215 @@
+{
+  "results": [
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "1108",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794288900000,
+      "arriveEpochMs": 1794293700000,
+      "equipment": "Boeing 737-800",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 1368,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 5250
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794298500000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "722",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794306000000,
+      "arriveEpochMs": 1794310800000,
+      "equipment": "Airbus A320",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 1962,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3000
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1794298500000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "412",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794290400000,
+      "arriveEpochMs": 1794295200000,
+      "equipment": "Airbus A320neo",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 8419,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794298500000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "NV",
+      "flightNumber": "3310",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794311700000,
+      "arriveEpochMs": 1794316500000,
+      "equipment": "Embraer E195-E2",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 5939,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 2500
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794298500000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "1142",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794316200000,
+      "arriveEpochMs": 1794321000000,
+      "equipment": "Boeing 737-800",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 2368,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3800
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794298500000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "508",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794325500000,
+      "arriveEpochMs": 1794330300000,
+      "equipment": "Airbus A320",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 1766,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3500
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1794281400000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "486",
+      "route": {
+        "from": "STN",
+        "to": "CGN"
+      },
+      "departEpochMs": 1794331800000,
+      "arriveEpochMs": 1794336600000,
+      "equipment": "Airbus A320neo",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 10595,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN",
+          "CHECKED"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794298500000
+    }
+  ]
+}

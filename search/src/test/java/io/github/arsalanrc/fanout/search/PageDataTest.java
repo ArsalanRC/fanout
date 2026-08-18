@@ -1,6 +1,7 @@
 package io.github.arsalanrc.fanout.search;
 
 import io.github.arsalanrc.fanout.integration.Json;
+import io.github.arsalanrc.fanout.integration.Market;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -43,14 +44,42 @@ class PageDataTest {
      * covers every route and both ends of the date range instead of one market
      * thirteen times.
      */
-    private static final int SAMPLE = 24;
+    /**
+     * How many recordings are re-run for content.
+     *
+     * <p>All 1456 would be honest and would add ten minutes to every CI run,
+     * which is how a guard becomes something people skip. So every market file
+     * is checked for existence and for holding every variant, which is instant
+     * and catches the real failure of a control with no data behind it. A
+     * spread is then re-run and compared properly.
+     */
+    private static final int SAMPLE = 20;
 
     @Test
-    @DisplayName("every recorded search exists")
-    void no_control_leads_to_a_missing_file() {
+    @DisplayName("every market holds every variant the page can ask for")
+    void no_control_leads_to_a_missing_variant() throws Exception {
         List<String> missing = new ArrayList<>();
-        for (PageData.Capture capture : PageData.CAPTURES) {
-            if (!Files.exists(locate(capture.name() + ".json"))) missing.add(capture.name());
+
+        for (String route : Market.ROUTES) {
+            for (java.time.LocalDate date : Market.DATES) {
+                Path file = locate(PageData.market(route, date) + ".json");
+                if (!Files.exists(file)) {
+                    missing.add(PageData.market(route, date));
+                    continue;
+                }
+                Json document = Json.parse(Files.readString(file));
+                java.util.Set<String> keys = new java.util.HashSet<>();
+                for (Json variant : document.get("variants").arrayOrEmpty()) {
+                    keys.add(variant.get("key").text());
+                }
+                for (String basket : PageData.BASKETS) {
+                    for (int party : PageData.PARTIES) {
+                        if (!keys.contains(basket + "-" + party)) {
+                            missing.add(PageData.market(route, date) + " " + basket + "-" + party);
+                        }
+                    }
+                }
+            }
         }
 
         assertTrue(missing.isEmpty(), """
@@ -72,13 +101,17 @@ class PageDataTest {
 
         for (int i = 0; i < PageData.CAPTURES.size(); i += stride) {
             PageData.Capture capture = PageData.CAPTURES.get(i);
-            Path file = locate(capture.name() + ".json");
+            Path file = locate(PageData.market(capture.route(), capture.date()) + ".json");
             assertTrue(Files.exists(file), "Missing " + file);
 
-            Json committed = Json.parse(Files.readString(file));
-            Json fresh = Json.parse(PageData.record(capture));
+            Json committed = null;
+            for (Json variant : Json.parse(Files.readString(file)).get("variants").arrayOrEmpty()) {
+                if (variant.get("key").text().equals(capture.name())) committed = variant.get("search");
+            }
+            assertNotNull(committed, "No variant " + capture.name() + " in " + file);
 
-            compare(capture.name(), committed, fresh, complaints);
+            compare(capture.route() + " " + capture.date() + " " + capture.name(),
+                    committed, Json.parse(PageData.record(capture)), complaints);
         }
 
         assertTrue(complaints.isEmpty(), """

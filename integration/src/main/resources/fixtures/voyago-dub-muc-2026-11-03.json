@@ -1,0 +1,149 @@
+{
+  "results": [
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "914",
+      "route": {
+        "from": "DUB",
+        "to": "MUC"
+      },
+      "departEpochMs": 1793690100000,
+      "arriveEpochMs": 1793699340000,
+      "equipment": "Airbus A320",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 3909,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3000
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1793693700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "902",
+      "route": {
+        "from": "DUB",
+        "to": "MUC"
+      },
+      "departEpochMs": 1793685000000,
+      "arriveEpochMs": 1793694240000,
+      "equipment": "Airbus A321neo",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 12247,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1793693700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "NV",
+      "flightNumber": "3402",
+      "route": {
+        "from": "DUB",
+        "to": "MUC"
+      },
+      "departEpochMs": 1793716800000,
+      "arriveEpochMs": 1793726040000,
+      "equipment": "Embraer E195-E2",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 9127,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 2500
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1793693700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "2204",
+      "route": {
+        "from": "DUB",
+        "to": "MUC"
+      },
+      "departEpochMs": 1793709300000,
+      "arriveEpochMs": 1793718540000,
+      "equipment": "Boeing 737-800",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 3276,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 5250
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1793693700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "938",
+      "route": {
+        "from": "DUB",
+        "to": "MUC"
+      },
+      "departEpochMs": 1793722800000,
+      "arriveEpochMs": 1793732040000,
+      "equipment": "Airbus A321neo",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 15191,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1793693700000
+    }
+  ]
+}

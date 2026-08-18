@@ -40,14 +40,42 @@ HERE = Path(__file__).parent
 # ---------------------------------------------------------------- the world
 
 # Summer offsets, so the block time and the clock agree.
-ROUTES = {
-    "CGN-STN": {"from": "CGN", "to": "STN", "off_from": "+02:00", "off_to": "+01:00", "block": 80},
-    "FRA-LHR": {"from": "FRA", "to": "LHR", "off_from": "+02:00", "off_to": "+01:00", "block": 105},
-    "BER-LGW": {"from": "BER", "to": "LGW", "off_from": "+02:00", "off_to": "+01:00", "block": 115},
-    "MUC-DUB": {"from": "MUC", "to": "DUB", "off_from": "+02:00", "off_to": "+01:00", "block": 154},
-    "BER-BCN": {"from": "BER", "to": "BCN", "off_from": "+02:00", "off_to": "+02:00", "block": 162},
-    "VIE-MAD": {"from": "VIE", "to": "MAD", "off_from": "+02:00", "off_to": "+02:00", "block": 189},
-    "AMS-LIS": {"from": "AMS", "to": "LIS", "off_from": "+02:00", "off_to": "+01:00", "block": 190},
+PAIRS = {
+    "CGN-STN": {"off_from": "+02:00", "off_to": "+01:00", "block": 80},
+    "FRA-LHR": {"off_from": "+02:00", "off_to": "+01:00", "block": 105},
+    "BER-LGW": {"off_from": "+02:00", "off_to": "+01:00", "block": 115},
+    "MUC-DUB": {"off_from": "+02:00", "off_to": "+01:00", "block": 154},
+    "BER-BCN": {"off_from": "+02:00", "off_to": "+02:00", "block": 162},
+    "VIE-MAD": {"off_from": "+02:00", "off_to": "+02:00", "block": 189},
+    "AMS-LIS": {"off_from": "+02:00", "off_to": "+01:00", "block": 190},
+}
+
+
+def _both_ways():
+    """Every pair in both directions, because a return trip needs the way back."""
+    out = {}
+    for pair, spec in PAIRS.items():
+        a, b = pair.split("-")
+        out["%s-%s" % (a, b)] = dict(spec, **{"from": a, "to": b})
+        out["%s-%s" % (b, a)] = dict(
+            spec, **{"from": b, "to": a,
+                     "off_from": spec["off_to"], "off_to": spec["off_from"]})
+    return out
+
+
+ROUTES = _both_ways()
+
+# A hub each long route can plausibly connect through, and a carrier that does
+# not fly it direct. The airports and the hub are real; the routing is invented,
+# exactly like the airlines. Nobody actually sells Vienna to Madrid via
+# Frankfurt on a carrier that does not exist.
+CONNECTIONS = {
+    "VIE-MAD": ("FRA", "NV", "3620", 75),
+    "MAD-VIE": ("FRA", "NV", "3621", 75),
+    "AMS-LIS": ("MAD", "KE", "740", 90),
+    "LIS-AMS": ("MAD", "KE", "741", 90),
+    "MUC-DUB": ("LHR", "NV", "3540", 65),
+    "DUB-MUC": ("LHR", "NV", "3541", 65),
 }
 
 # Weekly, three months of them.
@@ -174,6 +202,63 @@ def hold(date):
 
 # ------------------------------------------------------------------ writers
 
+def connecting(route, date):
+    """A two-leg offer through a hub, when the route has one declared.
+
+    Real metasearch results are mostly not direct, and an itinerary with one
+    leg exercises none of the interesting arithmetic: the journey time has to
+    span the wait, the dedup key has to cover both flights, and the row has to
+    say where you change. `Itinerary` has handled all of that since PR #1 and no
+    fixture ever used it.
+    """
+    if route not in CONNECTIONS:
+        return None
+
+    hub, code, number, wait = CONNECTIONS[route]
+    r = ROUTES[route]
+    first = round(r["block"] * 0.55)
+    second = round(r["block"] * 0.6)
+
+    dep = "07:30"
+    hub_in = clock(minutes(dep) + first)
+    hub_out = clock(minutes(hub_in) + wait)
+    arrive = clock(minutes(hub_out) + second + (int(r["off_to"][:3]) - int(r["off_from"][:3])) * 60)
+
+    equip, _ = equipment(code, first)
+    fare = price_on(5400, date, r["block"])
+
+    return {
+        "type": "flight-offer", "id": "c1", "source": "GDS",
+        "itineraries": [{
+            "duration": "PT%dH%02dM" % ((first + wait + second) // 60, (first + wait + second) % 60),
+            "segments": [
+                {"departure": {"iataCode": r["from"], "at": "%sT%s:00" % (date, dep)},
+                 "arrival": {"iataCode": hub, "at": "%sT%s:00" % (date, hub_in)},
+                 "carrierCode": code, "number": number, "id": "1", "numberOfStops": 0,
+                 "aircraft": {"code": equip}},
+                {"departure": {"iataCode": hub, "at": "%sT%s:00" % (date, hub_out)},
+                 "arrival": {"iataCode": r["to"], "at": "%sT%s:00" % (date, arrive)},
+                 "carrierCode": code, "number": str(int(number) + 40), "id": "2",
+                 "numberOfStops": 0, "aircraft": {"code": equip}},
+            ],
+        }],
+        "price": {"currency": "EUR", "total": "%.2f" % (fare / 100),
+                  "grandTotal": "%.2f" % (fare / 100),
+                  "base": "%.2f" % (round(fare * 0.7) / 100)},
+        "travelerPricings": [{
+            "travelerId": "1", "fareOption": "STANDARD", "travelerType": "ADULT",
+            "price": {"currency": "EUR", "total": "%.2f" % (fare / 100),
+                      "base": "%.2f" % (round(fare * 0.7) / 100)},
+            "fareDetailsBySegment": [
+                {"segmentId": "1", "cabin": "ECONOMY", "class": "M",
+                 "includedCheckedBags": {"quantity": 1}},
+                {"segmentId": "2", "cabin": "ECONOMY", "class": "M",
+                 "includedCheckedBags": {"quantity": 1}},
+            ],
+        }],
+    }
+
+
 def amadeus(route, date):
     """The GDS aggregator. Local times with no offset, prices for the booking."""
     r = ROUTES[route]
@@ -207,6 +292,11 @@ def amadeus(route, date):
                 }],
             }],
         })
+
+    hop = connecting(route, date)
+    if hop:
+        data.append(hop)
+
     return {"meta": {"count": len(data)}, "data": data}
 
 

@@ -1,0 +1,292 @@
+{
+  "meta": {
+    "count": 5
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H55M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LGW",
+                "at": "2026-11-03T07:00:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-11-03T09:55:00"
+              },
+              "carrierCode": "AL",
+              "number": "412",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32N"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "87.33",
+        "grandTotal": "87.33",
+        "base": "61.13"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "87.33",
+            "base": "61.13"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H55M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LGW",
+                "at": "2026-11-03T09:45:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-11-03T12:40:00"
+              },
+              "carrierCode": "HY",
+              "number": "204",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "131.48",
+        "grandTotal": "131.48",
+        "base": "92.04"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "131.48",
+            "base": "92.04"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H55M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LGW",
+                "at": "2026-11-03T12:55:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-11-03T15:50:00"
+              },
+              "carrierCode": "NV",
+              "number": "3310",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "62.80",
+        "grandTotal": "62.80",
+        "base": "43.96"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "62.80",
+            "base": "43.96"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H55M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LGW",
+                "at": "2026-11-03T20:15:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-11-03T23:10:00"
+              },
+              "carrierCode": "KE",
+              "number": "881",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "48.57",
+        "grandTotal": "48.57",
+        "base": "34.00"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "48.57",
+            "base": "34.00"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "5",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H55M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LGW",
+                "at": "2026-11-03T18:30:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-11-03T21:25:00"
+              },
+              "carrierCode": "AL",
+              "number": "486",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32N"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "109.90",
+        "grandTotal": "109.90",
+        "base": "76.93"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "109.90",
+            "base": "76.93"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

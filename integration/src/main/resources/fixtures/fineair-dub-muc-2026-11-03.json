@@ -1,0 +1,30 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 27.76,
+        "type": "value"
+      },
+      "holdsUntil": "2026-11-03T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "2204",
+          "from": "DUB",
+          "to": "MUC",
+          "departsAt": "2026-11-03T13:35:00+01:00",
+          "arrivesAt": "2026-11-03T17:09:00+02:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 46.5,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    }
+  ]
+}

@@ -61,6 +61,9 @@
 }
 
 * { box-sizing: border-box; }
+/* `hidden` has to beat the display rules below it, or a field that is meant to
+   be gone is merely transparent about being there. */
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 
 body {
@@ -405,4 +408,83 @@ footer a:hover { border-color: var(--accent); }
   html { scroll-behavior: auto; }
   .track i, .htrack i { transition: none !important; }
   .result { animation: none; }
+}
+
+/* ------------------------------------------------------- the search form */
+
+.finder { display: block; }
+.finder-row {
+  display: grid; grid-template-columns: 1fr auto 1fr 1fr 1fr auto 1.1fr auto;
+  gap: .55rem; align-items: end;
+}
+.finder-row .field.narrow { min-width: 6.5rem; }
+
+.trip { display: inline-flex; gap: .25rem; margin-bottom: .9rem; }
+.trip button {
+  font: 500 .8rem/1 var(--sans); background: none; border: 1px solid transparent;
+  color: var(--dim); padding: .45rem .8rem; border-radius: 999px; cursor: pointer;
+}
+.trip button.on { background: var(--raise); border-color: var(--line); color: var(--text); }
+
+.swap {
+  width: 32px; height: 2.6rem; display: grid; place-items: center;
+  background: none; border: 0; color: var(--faint); cursor: pointer;
+}
+.swap svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.swap:hover { color: var(--text); }
+
+.dateish {
+  font: 500 .88rem/1.2 var(--sans); color: var(--text); text-align: left;
+  background: var(--raise); border: 1px solid var(--line); border-radius: 10px;
+  padding: .6rem .7rem; width: 100%; cursor: pointer;
+}
+.dateish:hover { border-color: var(--faint); }
+
+.stepper {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  background: var(--raise); border: 1px solid var(--line); border-radius: 10px;
+}
+.stepper button {
+  background: none; border: 0; color: var(--dim); cursor: pointer;
+  font: 500 1rem/1 var(--sans); padding: .55rem .6rem;
+}
+.stepper button:hover { color: var(--text); }
+.stepper output { text-align: center; font: 500 .9rem/1 var(--mono); }
+
+/* ---------------------------------------------------------------- calendar */
+
+.calendar {
+  margin-top: .9rem; padding: .9rem; max-width: 20rem;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--raise);
+}
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .6rem; }
+.cal-head span { font: 500 .85rem/1 var(--sans); }
+.cal-head button {
+  background: none; border: 1px solid var(--line); border-radius: 8px;
+  color: var(--dim); cursor: pointer; width: 26px; height: 26px;
+}
+.cal-head button:hover { color: var(--text); }
+
+.cal-days, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-days span {
+  text-align: center; font: 400 .58rem/1.8 var(--mono);
+  letter-spacing: .08em; text-transform: uppercase; color: var(--faint);
+}
+.cal-cell {
+  aspect-ratio: 1; border: 0; border-radius: 7px; cursor: pointer;
+  background: none; color: var(--text); font: 400 .78rem/1 var(--mono);
+}
+.cal-cell:hover:not(.shut) { background: var(--panel); }
+.cal-cell.shut { color: var(--faint); opacity: .35; cursor: default; }
+.cal-cell.empty { visibility: hidden; }
+.cal-cell.on { background: var(--accent); color: #fff; }
+.cal-note { margin: .7rem 0 0; font-size: .68rem; color: var(--faint); line-height: 1.5; }
+
+.stops.via { color: var(--late); }
+.each { font: 400 .7rem/1.3 var(--mono); color: var(--dim); }
+
+@media (max-width: 1000px) {
+  .finder-row { grid-template-columns: 1fr 1fr; }
+  .swap { display: none; }
+  .finder-row .btn { grid-column: 1 / -1; }
 }

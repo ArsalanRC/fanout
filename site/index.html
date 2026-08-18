@@ -87,33 +87,59 @@
     <h2 data-i18n="search.title">Find a flight</h2>
 
     <form class="finder" id="finder" autocomplete="off">
-      <label class="field">
-        <span data-i18n="search.from">From</span>
-        <select id="route"></select>
-      </label>
-      <label class="field">
-        <span data-i18n="search.to">To</span>
-        <output id="to"></output>
-      </label>
-      <label class="field">
-        <span data-i18n="search.when">Departing</span>
-        <select id="date"></select>
-      </label>
-      <label class="field">
-        <span data-i18n="search.who">Travelling with</span>
-        <select id="basket">
-          <option value="cabin" data-i18n="search.cabin">Hand luggage</option>
-          <option value="checked" data-i18n="search.checked">Hand luggage and a suitcase</option>
-        </select>
-      </label>
-      <label class="field narrow">
-        <span data-i18n="search.budget">Answer within</span>
-        <select id="budget">
-          <option value="3000">3000 ms</option>
-          <option value="300">300 ms</option>
-        </select>
-      </label>
-      <button type="submit" class="btn btn-primary" data-i18n="search.go">Search</button>
+      <div class="trip" role="group">
+        <button type="button" data-trip="one" class="on" data-i18n="trip.one">One way</button>
+        <button type="button" data-trip="return" data-i18n="trip.return">Return</button>
+      </div>
+
+      <div class="finder-row">
+        <label class="field">
+          <span data-i18n="search.from">From</span>
+          <select id="from"></select>
+        </label>
+        <button type="button" class="swap" id="swap" aria-label="Swap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v13M7 4L4 7.5M7 4l3 3.5M17 20V7M17 20l3-3.5M17 20l-3-3.5"/></svg>
+        </button>
+        <label class="field">
+          <span data-i18n="search.to">To</span>
+          <select id="to"></select>
+        </label>
+        <label class="field">
+          <span data-i18n="search.out">Departing</span>
+          <button type="button" class="dateish" id="out-btn"></button>
+        </label>
+        <label class="field" id="back-field" hidden>
+          <span data-i18n="search.back">Returning</span>
+          <button type="button" class="dateish" id="back-btn"></button>
+        </label>
+        <label class="field narrow">
+          <span data-i18n="search.who">Travellers</span>
+          <div class="stepper">
+            <button type="button" id="fewer" aria-label="One fewer">&minus;</button>
+            <output id="pax">1</output>
+            <button type="button" id="more" aria-label="One more">+</button>
+          </div>
+        </label>
+        <label class="field">
+          <span data-i18n="search.bags">Bags</span>
+          <select id="basket">
+            <option value="cabin" data-i18n="search.cabin">Hand luggage</option>
+            <option value="checked" data-i18n="search.checked">Hand luggage and a suitcase</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-primary" data-i18n="search.go">Search</button>
+      </div>
+
+      <div class="calendar" id="calendar" hidden>
+        <div class="cal-head">
+          <button type="button" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+          <span id="cal-month"></span>
+          <button type="button" id="cal-next" aria-label="Next month">&rsaquo;</button>
+        </div>
+        <div class="cal-days" id="cal-days"></div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <p class="cal-note" data-i18n="cal.note"></p>
+      </div>
     </form>
 
     <div class="lanes" id="lanes"></div>

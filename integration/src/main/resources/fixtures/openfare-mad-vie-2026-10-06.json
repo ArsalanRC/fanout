@@ -1,0 +1,374 @@
+{
+  "meta": {
+    "count": 6
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H09M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "VIE",
+                "at": "2026-10-06T09:59:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "131.72",
+        "grandTotal": "131.72",
+        "base": "92.20"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "131.72",
+            "base": "92.20"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H09M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "VIE",
+                "at": "2026-10-06T13:14:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "197.58",
+        "grandTotal": "197.58",
+        "base": "138.31"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "197.58",
+            "base": "138.31"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H09M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "VIE",
+                "at": "2026-10-06T18:49:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "100.06",
+        "grandTotal": "100.06",
+        "base": "70.04"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "100.06",
+            "base": "70.04"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H09M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "VIE",
+                "at": "2026-10-06T23:04:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "74.72",
+        "grandTotal": "74.72",
+        "base": "52.30"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "74.72",
+            "base": "52.30"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "5",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H09M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T17:20:00"
+              },
+              "arrival": {
+                "iataCode": "VIE",
+                "at": "2026-10-06T20:29:00"
+              },
+              "carrierCode": "AL",
+              "number": "938",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "163.38",
+        "grandTotal": "163.38",
+        "base": "114.37"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "163.38",
+            "base": "114.37"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "c1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT4H52M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T07:30:00"
+              },
+              "arrival": {
+                "iataCode": "FRA",
+                "at": "2026-10-06T09:14:00"
+              },
+              "carrierCode": "NV",
+              "number": "3621",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            },
+            {
+              "departure": {
+                "iataCode": "FRA",
+                "at": "2026-10-06T10:29:00"
+              },
+              "arrival": {
+                "iataCode": "VIE",
+                "at": "2026-10-06T12:22:00"
+              },
+              "carrierCode": "NV",
+              "number": "3661",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "68.39",
+        "grandTotal": "68.39",
+        "base": "47.87"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "68.39",
+            "base": "47.87"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            },
+            {
+              "segmentId": "2",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
