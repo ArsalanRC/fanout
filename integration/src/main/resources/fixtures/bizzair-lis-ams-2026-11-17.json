@@ -1,0 +1,30 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 41.88,
+        "type": "value"
+      },
+      "holdsUntil": "2026-11-17T06:15:00Z",
+      "legs": [
+        {
+          "airline": "BZ",
+          "flightNo": "914",
+          "from": "LIS",
+          "to": "AMS",
+          "departsAt": "2026-11-17T08:15:00+01:00",
+          "arrivesAt": "2026-11-17T12:25:00+02:00",
+          "aircraft": "Airbus A320"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 24.0,
+        "seat": 7.5,
+        "paymentFee": 0.0
+      }
+    }
+  ]
+}

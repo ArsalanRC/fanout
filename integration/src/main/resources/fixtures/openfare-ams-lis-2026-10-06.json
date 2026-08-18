@@ -1,6 +1,6 @@
 {
   "meta": {
-    "count": 5
+    "count": 6
   },
   "data": [
     {
@@ -278,6 +278,88 @@
           "fareDetailsBySegment": [
             {
               "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "c1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT5H09M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "AMS",
+                "at": "2026-10-06T07:30:00"
+              },
+              "arrival": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T09:15:00"
+              },
+              "carrierCode": "KE",
+              "number": "740",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            },
+            {
+              "departure": {
+                "iataCode": "MAD",
+                "at": "2026-10-06T10:45:00"
+              },
+              "arrival": {
+                "iataCode": "LIS",
+                "at": "2026-10-06T11:39:00"
+              },
+              "carrierCode": "KE",
+              "number": "780",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "68.58",
+        "grandTotal": "68.58",
+        "base": "48.01"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "68.58",
+            "base": "48.01"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            },
+            {
+              "segmentId": "2",
               "cabin": "ECONOMY",
               "class": "M",
               "includedCheckedBags": {

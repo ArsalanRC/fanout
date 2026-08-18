@@ -3,6 +3,7 @@ package io.github.arsalanrc.fanout.search;
 import io.github.arsalanrc.fanout.integration.Connector;
 import io.github.arsalanrc.fanout.integration.HttpConnector;
 import io.github.arsalanrc.fanout.integration.IntegrationServer;
+import io.github.arsalanrc.fanout.integration.JsonWriter;
 import io.github.arsalanrc.fanout.integration.Market;
 import io.github.arsalanrc.fanout.telemetry.SpanSink;
 import io.github.arsalanrc.fanout.telemetry.Tracer;
@@ -55,6 +56,11 @@ public final class PageData {
      * page turns those into buttons and a combination with no file behind it is
      * a button that quietly shows the wrong answer.
      */
+    /** How many people are travelling, recorded separately because the answer differs. */
+    public static final List<Integer> PARTIES = List.of(1, 2, 3, 4);
+
+    public static final List<String> BASKETS = List.of("cabin", "checked");
+
     public static final List<Capture> CAPTURES = build();
 
     private static List<Capture> build() {
@@ -62,20 +68,23 @@ public final class PageData {
         for (String route : Market.ROUTES) {
             String[] parts = route.split("-");
             for (java.time.LocalDate date : Market.DATES) {
-                for (String basket : List.of("cabin", "checked")) {
-                    for (String budget : List.of("3000", "300")) {
+                for (String basket : BASKETS) {
+                    for (int party : PARTIES) {
                         all.add(new Capture(
-                                "search-" + route.toLowerCase(java.util.Locale.ROOT)
-                                        + "-" + date + "-" + basket + "-" + budget,
-                                route, date,
+                                basket + "-" + party, route, date,
                                 "origin=" + parts[0] + "&destination=" + parts[1]
                                         + "&date=" + date + "&basket=" + basket
-                                        + "&budget=" + budget));
+                                        + "&passengers=" + party + "&budget=3000"));
                     }
                 }
             }
         }
         return List.copyOf(all);
+    }
+
+    /** One market: a route on a date, and every variant recorded for it. */
+    public static String market(String route, java.time.LocalDate date) {
+        return "search-" + route.toLowerCase(java.util.Locale.ROOT) + "-" + date;
     }
 
     public record Capture(String name, String route, java.time.LocalDate date, String query) {
@@ -87,31 +96,49 @@ public final class PageData {
     public static void main(String[] args) throws Exception {
         Path out = Path.of(args.length > 0 ? args[0] : "site/data");
         Files.createDirectories(out);
-        int written = 0;
 
-        java.util.Map<String, List<Capture>> byMarket = new java.util.LinkedHashMap<>();
+        /*
+         * One file per market rather than one per search.
+         *
+         * Fourteen routes crossed with thirteen dates, two baskets and four
+         * party sizes is 1456 searches. As separate files that is 1456 of them
+         * for a page that only ever reads one at a time. Grouped by market it
+         * is 182, the browser still fetches exactly one, and the variants sit
+         * inside it keyed by basket and party size.
+         */
+        java.util.Map<String, List<Capture>> markets = new java.util.LinkedHashMap<>();
         for (Capture capture : CAPTURES) {
-            byMarket.computeIfAbsent(capture.route() + capture.date(), k -> new java.util.ArrayList<>())
-                    .add(capture);
+            markets.computeIfAbsent(market(capture.route(), capture.date()),
+                    key -> new java.util.ArrayList<>()).add(capture);
         }
 
-        for (List<Capture> market : byMarket.values()) {
-            List<String> answers = record(market);
-            for (int i = 0; i < market.size(); i++) {
-                Files.writeString(out.resolve(market.get(i).name() + ".json"), answers.get(i) + "\n");
-                written++;
+        int written = 0;
+        for (java.util.Map.Entry<String, List<Capture>> entry : markets.entrySet()) {
+            List<Capture> variants = entry.getValue();
+            List<String> answers = record(variants);
+
+            JsonWriter file = new JsonWriter().object();
+            file.field("route", variants.getFirst().route());
+            file.field("date", variants.getFirst().date().toString());
+            file.array("variants");
+            for (int i = 0; i < variants.size(); i++) {
+                file.object()
+                        .field("key", variants.get(i).name())
+                        .rawField("search", answers.get(i))
+                        .end();
             }
-            System.out.println("recorded " + market.getFirst().route()
-                    + " on " + market.getFirst().date());
+            file.end();
+
+            Files.writeString(out.resolve(entry.getKey() + ".json"), file.end().done() + "\n");
+            written++;
+            System.out.println("recorded " + entry.getKey() + ", " + variants.size() + " variants");
         }
 
-        System.out.println("\n" + written + " searches written to " + out);
         System.out.println();
-        System.out.println("Every timing in those files was measured across two processes.");
-        System.out.println("Fares are modelled. See fixtures/README.md.");
+        System.out.println(written + " markets, " + CAPTURES.size() + " searches, written to " + out);
+        System.out.println("Every timing measured across two processes. Fares are modelled.");
     }
 
-    /** One search, through both services, exactly as a browser would get it. */
     public static String record(Capture capture) throws Exception {
         return record(List.of(capture)).getFirst();
     }

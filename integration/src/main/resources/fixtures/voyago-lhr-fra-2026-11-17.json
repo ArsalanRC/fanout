@@ -1,0 +1,215 @@
+{
+  "results": [
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "1108",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794893700000,
+      "arriveEpochMs": 1794900000000,
+      "equipment": "Boeing 737-800",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 1546,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 5250
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794903300000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "722",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794910800000,
+      "arriveEpochMs": 1794917100000,
+      "equipment": "Airbus A320",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 2218,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3000
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1794903300000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "412",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794895200000,
+      "arriveEpochMs": 1794901500000,
+      "equipment": "Airbus A320neo",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 9514,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794903300000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "NV",
+      "flightNumber": "3310",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794916500000,
+      "arriveEpochMs": 1794922800000,
+      "equipment": "Embraer E195-E2",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 6712,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 2500
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794903300000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "1142",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794921000000,
+      "arriveEpochMs": 1794927300000,
+      "equipment": "Boeing 737-800",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 2676,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3800
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794903300000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "508",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794930300000,
+      "arriveEpochMs": 1794936600000,
+      "equipment": "Airbus A320",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 1995,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 3500
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1794886200000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "486",
+      "route": {
+        "from": "LHR",
+        "to": "FRA"
+      },
+      "departEpochMs": 1794936600000,
+      "arriveEpochMs": 1794942900000,
+      "equipment": "Airbus A320neo",
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 11973,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN",
+          "CHECKED"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1794903300000
+    }
+  ]
+}

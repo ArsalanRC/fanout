@@ -1,0 +1,55 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 22.12,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-27T06:15:00Z",
+      "legs": [
+        {
+          "airline": "BZ",
+          "flightNo": "722",
+          "from": "LGW",
+          "to": "BER",
+          "departsAt": "2026-10-27T11:20:00+01:00",
+          "arrivesAt": "2026-10-27T14:15:00+02:00",
+          "aircraft": "Airbus A320"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 24.0,
+        "seat": 7.5,
+        "paymentFee": 0.0
+      }
+    },
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 19.91,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-27T06:15:00Z",
+      "legs": [
+        {
+          "airline": "BZ",
+          "flightNo": "508",
+          "from": "LGW",
+          "to": "BER",
+          "departsAt": "2026-10-27T16:45:00+01:00",
+          "arrivesAt": "2026-10-27T19:40:00+02:00",
+          "aircraft": "Airbus A320"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 29.0,
+        "seat": 7.5,
+        "paymentFee": 0.0
+      }
+    }
+  ]
+}

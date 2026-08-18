@@ -72,8 +72,25 @@ public final class Market {
      * this market flew Düsseldorf to Stansted direct, which is not a route:
      * the shortest real itinerary between those two takes two hours and a stop.
      */
-    public static final List<String> ROUTES =
-            List.of("CGN-STN", "FRA-LHR", "BER-LGW", "MUC-DUB", "BER-BCN", "VIE-MAD", "AMS-LIS");
+    public static final List<String> ROUTES = bothWays(
+            List.of("CGN-STN", "FRA-LHR", "BER-LGW", "MUC-DUB", "BER-BCN", "VIE-MAD", "AMS-LIS"));
+
+    /**
+     * Each pair in both directions.
+     *
+     * <p>A return trip is two one-way searches, so the way back has to be a
+     * route in its own right. Without this a traveller can fly to Lisbon and
+     * not come home.
+     */
+    private static List<String> bothWays(List<String> pairs) {
+        List<String> out = new java.util.ArrayList<>();
+        for (String pair : pairs) {
+            String[] ends = pair.split("-");
+            out.add(pair);
+            out.add(ends[1] + "-" + ends[0]);
+        }
+        return List.copyOf(out);
+    }
 
     /** Every departure date recorded: weekly, across three months. */
     public static final List<java.time.LocalDate> DATES = weekly();

@@ -75,6 +75,25 @@ public final class JsonWriter {
         return this;
     }
 
+    /**
+     * A member whose value is already a JSON document.
+     *
+     * <p>For nesting something that was serialised elsewhere, which is what the
+     * page recorder does with a whole search response. Passing it through
+     * {@link #field(String, String)} would encode it as a string, and the far
+     * side would have to parse twice to get at it.
+     *
+     * <p><b>The one method here that trusts its caller.</b> Nothing checks that
+     * the text is valid JSON, so anything reaching it from outside this
+     * codebase would need checking first. Every current caller is passing the
+     * body of a response this repository just produced.
+     */
+    public JsonWriter rawField(String name, String json) {
+        key(name);
+        out.append(json);
+        return this;
+    }
+
     /** An element of an array, rather than a member of an object. */
     public JsonWriter value(String element) {
         separate();

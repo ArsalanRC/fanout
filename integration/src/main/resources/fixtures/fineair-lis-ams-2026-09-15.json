@@ -1,0 +1,30 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 33.7,
+        "type": "value"
+      },
+      "holdsUntil": "2026-09-15T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "2204",
+          "from": "LIS",
+          "to": "AMS",
+          "departsAt": "2026-09-15T13:35:00+01:00",
+          "arrivesAt": "2026-09-15T17:45:00+02:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 46.5,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    }
+  ]
+}
