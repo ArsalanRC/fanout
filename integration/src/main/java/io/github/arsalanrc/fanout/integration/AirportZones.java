@@ -53,7 +53,9 @@ public final class AirportZones {
             Map.entry("WAW", ZoneId.of("Europe/Warsaw")),
             Map.entry("KRK", ZoneId.of("Europe/Warsaw")),
             Map.entry("BUD", ZoneId.of("Europe/Budapest")),
-            Map.entry("OTP", ZoneId.of("Europe/Bucharest"))
+            Map.entry("OTP", ZoneId.of("Europe/Bucharest")),
+            Map.entry("AMS", ZoneId.of("Europe/Amsterdam")),
+            Map.entry("LIS", ZoneId.of("Europe/Lisbon"))
     );
 
     private AirportZones() {

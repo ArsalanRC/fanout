@@ -23,19 +23,19 @@ class ConnectorTest {
     private static final Query THREE = new Query("CGN", "STN", LocalDate.of(2026, 9, 1), 3);
 
     private static Connector openfare() {
-        return new FixtureConnector(new AmadeusParser("openfare"), "/fixtures/openfare-cgn-stn.json");
+        return new FixtureConnector(new AmadeusParser("openfare"), "/fixtures/openfare-cgn-stn-2026-09-01.json");
     }
 
     private static Connector fineair() {
-        return new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn.json");
+        return new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn-2026-09-01.json");
     }
 
     private static Connector bizzair() {
-        return new FixtureConnector(new LowCostParser("bizzair"), "/fixtures/bizzair-cgn-stn.json");
+        return new FixtureConnector(new LowCostParser("bizzair"), "/fixtures/bizzair-cgn-stn-2026-09-01.json");
     }
 
     private static Connector voyago() {
-        return new FixtureConnector(new ResellerParser("voyago"), "/fixtures/voyago-cgn-stn.json");
+        return new FixtureConnector(new ResellerParser("voyago"), "/fixtures/voyago-cgn-stn-2026-09-01.json");
     }
 
     private static List<Fare> fares(Connector connector, Query query) throws Exception {
@@ -80,8 +80,8 @@ class ConnectorTest {
     void a_booking_price_stays_a_booking_price() throws Exception {
         // The GDS shape quotes the whole booking. Multiplying here would
         // quadruple a fare that was already right for a family of four.
-        assertEquals(Money.of(8_900, "EUR"), fares(openfare(), ONE).getFirst().base());
-        assertEquals(Money.of(8_900, "EUR"), fares(openfare(), THREE).getFirst().base());
+        assertEquals(Money.of(7_942, "EUR"), fares(openfare(), ONE).getFirst().base());
+        assertEquals(Money.of(7_942, "EUR"), fares(openfare(), THREE).getFirst().base());
     }
 
     @Test
@@ -90,8 +90,8 @@ class ConnectorTest {
         Fare one = fares(fineair(), ONE).getFirst();
         Fare three = fares(fineair(), THREE).getFirst();
 
-        assertEquals(Money.of(1_299, "EUR"), one.base());
-        assertEquals(Money.of(3_897, "EUR"), three.base());
+        assertEquals(Money.of(1_159, "EUR"), one.base());
+        assertEquals(Money.of(3_477, "EUR"), three.base());
 
         // A bag is per passenger: 46.50 becomes 139.50.
         assertEquals(Money.of(13_950, "EUR"),
@@ -100,7 +100,7 @@ class ConnectorTest {
         // The card fee is charged once on the booking. Scaling it with the rest
         // is a small plausible overcharge that makes this carrier look worse
         // than it is, and nothing downstream could tell.
-        assertEquals(Money.of(650, "EUR"),
+        assertEquals(Money.of(450, "EUR"),
                 three.find(Ancillary.Kind.PAYMENT_FEE).orElseThrow().price());
     }
 
@@ -109,8 +109,8 @@ class ConnectorTest {
         // Third shape, third convention: amounts arrive as integers, so there is
         // no decimal to parse and no chance of a double. A parser assuming
         // decimals everywhere would read 1533 as 1533 euros.
-        assertEquals(Money.of(1_533, "EUR"), fares(voyago(), ONE).getFirst().base());
-        assertEquals(Money.of(4_599, "EUR"), fares(voyago(), THREE).getFirst().base());
+        assertEquals(Money.of(1_368, "EUR"), fares(voyago(), ONE).getFirst().base());
+        assertEquals(Money.of(4_104, "EUR"), fares(voyago(), THREE).getFirst().base());
     }
 
     // ------------------------------------------------------------------- bags
@@ -164,23 +164,23 @@ class ConnectorTest {
 
         // Headlines: Fineair 12.99, Bizzair 19.99, Altair 89.00. Fineair looks
         // seven euros cheaper than Bizzair and seventy-six cheaper than Altair.
-        assertEquals(Money.of(1_299, "EUR"), fine.base());
-        assertEquals(Money.of(1_999, "EUR"), bizz.base());
-        assertEquals(Money.of(8_900, "EUR"), altair.base());
+        assertEquals(Money.of(1_159, "EUR"), fine.base());
+        assertEquals(Money.of(1_784, "EUR"), bizz.base());
+        assertEquals(Money.of(7_942, "EUR"), altair.base());
 
         // Hand luggage: Fineair 12.99 plus a 6.50 card fee is 19.49, Bizzair
         // 19.99 with no fee at all. Fineair still wins, by fifty cents rather
         // than by seven euros. The headline overstated the gap fourteen times.
-        assertEquals(Money.of(1_949, "EUR"), fine.totalFor(Basket.HAND_LUGGAGE_ONLY));
-        assertEquals(Money.of(1_999, "EUR"), bizz.totalFor(Basket.HAND_LUGGAGE_ONLY));
+        assertEquals(Money.of(1_609, "EUR"), fine.totalFor(Basket.HAND_LUGGAGE_ONLY));
+        assertEquals(Money.of(1_784, "EUR"), bizz.totalFor(Basket.HAND_LUGGAGE_ONLY));
         assertTrue(fine.totalFor(Basket.HAND_LUGGAGE_ONLY)
                 .compareTo(bizz.totalFor(Basket.HAND_LUGGAGE_ONLY)) < 0);
 
         // With a suitcase the order flips outright: Fineair 65.99, Bizzair
         // 43.99. The airline with the cheapest headline is now twenty-two euros
         // dearer, and no headline comparison would ever say so.
-        assertEquals(Money.of(6_599, "EUR"), fine.totalFor(Basket.WITH_CHECKED_BAG));
-        assertEquals(Money.of(4_399, "EUR"), bizz.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(6_259, "EUR"), fine.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(4_184, "EUR"), bizz.totalFor(Basket.WITH_CHECKED_BAG));
         assertTrue(bizz.totalFor(Basket.WITH_CHECKED_BAG)
                 .compareTo(fine.totalFor(Basket.WITH_CHECKED_BAG)) < 0);
     }
@@ -221,8 +221,8 @@ class ConnectorTest {
 
         // With a bag: 65.99 against 60.99. Same airline, same route, same day,
         // and the cheaper-looking flight costs five euros more.
-        assertEquals(Money.of(6_599, "EUR"), morning.totalFor(Basket.WITH_CHECKED_BAG));
-        assertEquals(Money.of(6_099, "EUR"), afternoon.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(6_259, "EUR"), morning.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(5_657, "EUR"), afternoon.totalFor(Basket.WITH_CHECKED_BAG));
     }
 
     @Test
@@ -236,8 +236,8 @@ class ConnectorTest {
 
         // 65.99 direct against 67.83 through the agent. Two rows would make the
         // page look full and hide the only useful fact on it.
-        assertEquals(Money.of(6_599, "EUR"), direct.totalFor(Basket.WITH_CHECKED_BAG));
-        assertEquals(Money.of(6_783, "EUR"), resold.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(6_259, "EUR"), direct.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(6_618, "EUR"), resold.totalFor(Basket.WITH_CHECKED_BAG));
         /*
          * Which of the two is cheaper depends on the basket, and that is not a
          * flaw in the fixture. The agent marks the seat up and charges no card
@@ -264,7 +264,7 @@ class ConnectorTest {
     @Test
     void a_connector_gives_up_when_the_deadline_does() {
         Connector slow = new FixtureConnector(
-                new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn.json", Duration.ofSeconds(5));
+                new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn-2026-09-01.json", Duration.ofSeconds(5));
 
         /*
          * A fixture answering slower than the budget allows must not quietly

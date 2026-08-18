@@ -44,7 +44,7 @@ class IntegrationServerTest {
     void start() throws IOException {
         http = HttpClient.newHttpClient();
         service = new IntegrationServer(0, List.of(
-                new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn.json"),
+                new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn-2026-09-01.json"),
                 watching("watcher"),
                 slow("sluggish", Duration.ofSeconds(30)),
                 broken("brokenly")));

@@ -6,7 +6,7 @@ A metasearch asks eight suppliers for the same flight. Give each one a three sec
 
 `fanout` is a small metasearch architecture in Java. Two services, one shared deadline, and an answer that says which suppliers it is missing.
 
-Java 21+, **zero runtime dependencies**, 138 tests.
+Java 21+, **zero runtime dependencies**, 139 tests.
 
 **[Watch it run](https://arsalanrc.github.io/fanout/)**: the fan-out replayed at
 1x on real recorded timings, in English and German. Set the budget below what

@@ -1,0 +1,55 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 12.31,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-20T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "1108",
+          "from": "CGN",
+          "to": "STN",
+          "departsAt": "2026-10-20T06:35:00+02:00",
+          "arrivesAt": "2026-10-20T06:55:00+01:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 46.5,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    },
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 21.31,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-20T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "1142",
+          "from": "CGN",
+          "to": "STN",
+          "departsAt": "2026-10-20T14:10:00+02:00",
+          "arrivesAt": "2026-10-20T14:30:00+01:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 32.0,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    }
+  ]
+}

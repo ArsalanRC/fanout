@@ -60,22 +60,25 @@ public final class PageData {
     private static List<Capture> build() {
         List<Capture> all = new java.util.ArrayList<>();
         for (String route : Market.ROUTES) {
-            String slug = route.toLowerCase(java.util.Locale.ROOT);
             String[] parts = route.split("-");
-            for (String basket : List.of("cabin", "checked")) {
-                for (String budget : List.of("3000", "300")) {
-                    all.add(new Capture(
-                            "search-" + slug + "-" + basket + "-" + budget,
-                            route,
-                            "origin=" + parts[0] + "&destination=" + parts[1]
-                                    + "&date=2026-09-01&basket=" + basket + "&budget=" + budget));
+            for (java.time.LocalDate date : Market.DATES) {
+                for (String basket : List.of("cabin", "checked")) {
+                    for (String budget : List.of("3000", "300")) {
+                        all.add(new Capture(
+                                "search-" + route.toLowerCase(java.util.Locale.ROOT)
+                                        + "-" + date + "-" + basket + "-" + budget,
+                                route, date,
+                                "origin=" + parts[0] + "&destination=" + parts[1]
+                                        + "&date=" + date + "&basket=" + basket
+                                        + "&budget=" + budget));
+                    }
                 }
             }
         }
         return List.copyOf(all);
     }
 
-    public record Capture(String name, String route, String query) {
+    public record Capture(String name, String route, java.time.LocalDate date, String query) {
     }
 
     private PageData() {
@@ -84,13 +87,25 @@ public final class PageData {
     public static void main(String[] args) throws Exception {
         Path out = Path.of(args.length > 0 ? args[0] : "site/data");
         Files.createDirectories(out);
+        int written = 0;
 
+        java.util.Map<String, List<Capture>> byMarket = new java.util.LinkedHashMap<>();
         for (Capture capture : CAPTURES) {
-            String body = record(capture);
-            Files.writeString(out.resolve(capture.name() + ".json"), body + "\n");
-            System.out.println("wrote " + capture.name() + ".json, " + body.length() + " bytes");
+            byMarket.computeIfAbsent(capture.route() + capture.date(), k -> new java.util.ArrayList<>())
+                    .add(capture);
         }
 
+        for (List<Capture> market : byMarket.values()) {
+            List<String> answers = record(market);
+            for (int i = 0; i < market.size(); i++) {
+                Files.writeString(out.resolve(market.get(i).name() + ".json"), answers.get(i) + "\n");
+                written++;
+            }
+            System.out.println("recorded " + market.getFirst().route()
+                    + " on " + market.getFirst().date());
+        }
+
+        System.out.println("\n" + written + " searches written to " + out);
         System.out.println();
         System.out.println("Every timing in those files was measured across two processes.");
         System.out.println("Fares are modelled. See fixtures/README.md.");
@@ -98,19 +113,39 @@ public final class PageData {
 
     /** One search, through both services, exactly as a browser would get it. */
     public static String record(Capture capture) throws Exception {
-        try (IntegrationServer suppliers = new IntegrationServer(0, Market.suppliers(capture.route()))) {
+        return record(List.of(capture)).getFirst();
+    }
+
+    /**
+     * Records a run of captures that share a market, on one pair of servers.
+     *
+     * <p>Every capture in the list must be for the same route and date, because
+     * the servers are built for one market. Starting a fresh pair for each of
+     * four baskets against the same fixtures is a few hundred milliseconds
+     * spent proving nothing, and there are three hundred and sixty four of them.
+     */
+    public static List<String> record(List<Capture> captures) throws Exception {
+        Capture first = captures.getFirst();
+
+        try (IntegrationServer suppliers =
+                     new IntegrationServer(0, Market.suppliers(first.route(), first.date()))) {
             suppliers.start();
 
             List<Connector> remote = HttpConnector.discover(
                     "http://127.0.0.1:" + suppliers.port(), Duration.ofSeconds(2));
 
-            Fanout fanout = new Fanout(remote, new Breaker(3, Duration.ofSeconds(30)),
-                    new Tracer(SpanSink.NONE));
+            List<String> answers = new java.util.ArrayList<>();
+            for (Capture capture : captures) {
+                Fanout fanout = new Fanout(remote, new Breaker(3, Duration.ofSeconds(30)),
+                        new Tracer(SpanSink.NONE));
 
-            try (SearchServer edge = new SearchServer(0, fanout, Market::asOf, "distributed")) {
-                edge.start();
-                return get("http://127.0.0.1:" + edge.port() + "/search?" + capture.query());
+                try (SearchServer edge = new SearchServer(
+                        0, fanout, () -> Market.asOf(capture.date()), "distributed")) {
+                    edge.start();
+                    answers.add(get("http://127.0.0.1:" + edge.port() + "/search?" + capture.query()));
+                }
             }
+            return answers;
         }
     }
 

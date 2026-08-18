@@ -30,16 +30,50 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PageDataTest {
 
+    /**
+     * How many recordings are re-run for content.
+     *
+     * <p>All of them would be honest and would add three minutes to every CI
+     * run, which is how a guard becomes something people skip. So every file is
+     * checked for existence, which is instant and catches the common failure of
+     * a control with no data behind it, and a spread of them is re-run and
+     * compared properly.
+     *
+     * <p>The sample is a stride through the list rather than the first N, so it
+     * covers every route and both ends of the date range instead of one market
+     * thirteen times.
+     */
+    private static final int SAMPLE = 24;
+
     @Test
-    @DisplayName("every recorded search still matches what the services produce")
+    @DisplayName("every recorded search exists")
+    void no_control_leads_to_a_missing_file() {
+        List<String> missing = new ArrayList<>();
+        for (PageData.Capture capture : PageData.CAPTURES) {
+            if (!Files.exists(locate(capture.name() + ".json"))) missing.add(capture.name());
+        }
+
+        assertTrue(missing.isEmpty(), """
+                %d recorded searches are missing, so those controls lead nowhere. Run the \
+                recorder and commit what it writes:
+
+                  mvn -q install -DskipTests
+                  mvn -q -pl search exec:java -Dexec.mainClass=%s
+
+                %s""".formatted(missing.size(), PageData.class.getName(),
+                String.join("\n  ", missing.subList(0, Math.min(10, missing.size())))));
+    }
+
+    @Test
+    @DisplayName("a spread of them still matches what the services produce")
     void the_page_data_has_not_gone_stale() throws Exception {
         List<String> complaints = new ArrayList<>();
+        int stride = Math.max(1, PageData.CAPTURES.size() / SAMPLE);
 
-        for (PageData.Capture capture : PageData.CAPTURES) {
+        for (int i = 0; i < PageData.CAPTURES.size(); i += stride) {
+            PageData.Capture capture = PageData.CAPTURES.get(i);
             Path file = locate(capture.name() + ".json");
-            assertTrue(Files.exists(file), """
-                    Missing %s. Run PageData to write it, and commit the result.
-                    """.formatted(file));
+            assertTrue(Files.exists(file), "Missing " + file);
 
             Json committed = Json.parse(Files.readString(file));
             Json fresh = Json.parse(PageData.record(capture));

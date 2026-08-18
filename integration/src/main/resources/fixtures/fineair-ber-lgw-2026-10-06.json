@@ -1,0 +1,55 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 13.15,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-06T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "1108",
+          "from": "BER",
+          "to": "LGW",
+          "departsAt": "2026-10-06T06:35:00+02:00",
+          "arrivesAt": "2026-10-06T07:30:00+01:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 46.5,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    },
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 22.77,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-06T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "1142",
+          "from": "BER",
+          "to": "LGW",
+          "departsAt": "2026-10-06T14:10:00+02:00",
+          "arrivesAt": "2026-10-06T15:05:00+01:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 32.0,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    }
+  ]
+}
