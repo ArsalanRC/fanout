@@ -300,9 +300,15 @@ public final class IntegrationServer implements AutoCloseable {
      * Runs the service on the modelled market.
      *
      * <pre>
+     *   mvn -q install -DskipTests
      *   mvn -q -pl integration exec:java \
      *     -Dexec.mainClass=io.github.arsalanrc.fanout.integration.IntegrationServer
      * </pre>
+     *
+     * <p>The install is not optional. {@code -pl} resolves the sibling modules
+     * from the local repository rather than from the reactor, so without it the
+     * services start against whatever was installed last and fail on a class
+     * that was added since.
      */
     public static void main(String[] args) throws IOException {
         int port = args.length > 0 ? Integer.parseInt(args[0])
