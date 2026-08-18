@@ -43,7 +43,16 @@ HERE = Path(__file__).parent
 ROUTES = {
     "CGN-STN": {"from": "CGN", "to": "STN", "off_from": "+02:00", "off_to": "+01:00", "block": 80},
     "FRA-LHR": {"from": "FRA", "to": "LHR", "off_from": "+02:00", "off_to": "+01:00", "block": 105},
+    "BER-LGW": {"from": "BER", "to": "LGW", "off_from": "+02:00", "off_to": "+01:00", "block": 115},
+    "MUC-DUB": {"from": "MUC", "to": "DUB", "off_from": "+02:00", "off_to": "+01:00", "block": 154},
+    "BER-BCN": {"from": "BER", "to": "BCN", "off_from": "+02:00", "off_to": "+02:00", "block": 162},
+    "VIE-MAD": {"from": "VIE", "to": "MAD", "off_from": "+02:00", "off_to": "+02:00", "block": 189},
+    "AMS-LIS": {"from": "AMS", "to": "LIS", "off_from": "+02:00", "off_to": "+01:00", "block": 190},
 }
+
+# Weekly, three months of them.
+import datetime as _dt
+DATES = [(_dt.date(2026, 9, 1) + _dt.timedelta(weeks=w)).isoformat() for w in range(13)]
 
 CARRIERS = {
     "FE": {"name": "Fineair",  "equip": "738", "type": "Boeing 737-800"},
@@ -54,42 +63,84 @@ CARRIERS = {
     "KE": {"name": "Kestrel",  "equip": "7M8", "type": "Boeing 737 MAX 8"},
 }
 
-DATE = "2026-09-01"
+# Which type each carrier puts on which length of route. Real types, invented
+# carriers: a 737-800 on a short European hop is a fact about the hop, not a
+# claim about anybody's fares.
+FLEET = {
+    "FE": [("738", "Boeing 737-800")],
+    "BZ": [("320", "Airbus A320")],
+    "AL": [("32N", "Airbus A320neo"), ("32Q", "Airbus A321neo")],
+    "HY": [("32Q", "Airbus A321neo")],
+    "NV": [("295", "Embraer E195-E2")],
+    "KE": [("7M8", "Boeing 737 MAX 8")],
+}
+
+
+def equipment(code, block):
+    """The bigger option once a route is long enough to want it."""
+    options = FLEET[code]
+    return options[-1] if block > 150 and len(options) > 1 else options[0]
+
+
+def price_on(base, date, block):
+    """
+    What the same seat costs on a different day.
+
+    Fares move, and a demo where every date is identical makes the date picker
+    decoration. Weekends carry a premium, midweek is the trough, and longer
+    routes cost more per seat. Deterministic rather than random, so the fixtures
+    regenerate byte for byte and the staleness test stays meaningful.
+    """
+    day = _dt.date.fromisoformat(date)
+    weekend = 1.18 if day.weekday() in (4, 6) else 1.0        # Friday and Sunday
+    midweek = 0.92 if day.weekday() in (1, 2) else 1.0         # Tuesday, Wednesday
+    season = 1.0 + 0.06 * ((day.isocalendar().week % 5) - 2) / 2
+    distance = 1.0 + max(0, block - 80) / 260
+    return max(900, round(base * weekend * midweek * season * distance))
 
 # base is the headline fare in cents. bag is the checked bag, 0 when included.
 # fee is the card fee, charged whether or not anybody asked for it.
-FLIGHTS = [
-    # route,     carrier, number, dep local, base, cabin, bag,  fee
-    ("CGN-STN", "FE", "1108", "06:35", 1299, 0,    4650, 650),
-    ("CGN-STN", "FE", "1142", "14:10", 2249, 0,    3200, 650),
-    ("CGN-STN", "BZ", "722",  "11:20", 1999, 0,    2400, 0),
-    ("CGN-STN", "BZ", "508",  "16:45", 1799, 0,    2900, 0),
-    ("CGN-STN", "AL", "412",  "07:00", 8900, None, None, 0),
-    ("CGN-STN", "AL", "486",  "18:30", 11200, None, 0,   0),
-    ("CGN-STN", "HY", "204",  "09:45", 13400, None, None, 0),
-    ("CGN-STN", "NV", "3310", "12:55", 6400, None, 1900, 0),
-    ("CGN-STN", "KE", "881",  "20:15", 4950, 0,    2600, 0),
-
-    ("FRA-LHR", "AL", "902",  "06:50", 10400, None, None, 0),
-    ("FRA-LHR", "AL", "938",  "17:20", 12900, None, None, 0),
-    ("FRA-LHR", "HY", "118",  "10:05", 15600, None, None, 0),
-    ("FRA-LHR", "FE", "2204", "13:35", 2499, 0,    4650, 650),
-    ("FRA-LHR", "BZ", "914",  "08:15", 3199, 0,    2400, 0),
-    ("FRA-LHR", "NV", "3402", "15:40", 7900, None, 1900, 0),
-    ("FRA-LHR", "KE", "612",  "19:55", 5900, 0,    2600, 0),
+# Who flies where, and at what time. One row per flight, repeated on every
+# recorded date, which is how a real schedule works: the same wave of departures
+# most days, at prices that move.
+#
+#      carrier, number, departure, base fare in cents, checked bag, card fee
+SHORT = [
+    ("FE", "1108", "06:35", 1299, 4650, 450),
+    ("BZ", "722",  "11:20", 1999, 2400, 0),
+    ("AL", "412",  "07:00", 8900, None, 0),
+    ("HY", "204",  "09:45", 13400, None, 0),
+    ("NV", "3310", "12:55", 6400, 1900, 0),
+    ("KE", "881",  "20:15", 4950, 2600, 0),
+    ("FE", "1142", "14:10", 2249, 3200, 450),
+    ("BZ", "508",  "16:45", 1799, 2900, 0),
+    ("AL", "486",  "18:30", 11200, 0,   0),
 ]
 
-# Who sells what. openfare is the aggregator and carries the full-service side;
-# the two budget carriers sell direct; voyago resells at a markup.
+# Longer routes are thinner: fewer daily departures, dearer seats, and the
+# deep-discount carrier does not always bother.
+LONG = [
+    ("BZ", "914",  "08:15", 3199, 2400, 0),
+    ("AL", "902",  "06:50", 10400, None, 0),
+    ("HY", "118",  "10:05", 15600, None, 0),
+    ("NV", "3402", "15:40", 7900, 1900, 0),
+    ("KE", "612",  "19:55", 5900, 2600, 0),
+    ("FE", "2204", "13:35", 2499, 4650, 450),
+    ("AL", "938",  "17:20", 12900, None, 0),
+]
+
+
+def schedule(route):
+    return SHORT if ROUTES[route]["block"] <= 120 else LONG
+
+
 DIRECT = {"FE": "fineair", "BZ": "bizzair"}
 AGGREGATED = {"AL", "HY", "NV", "KE"}
 RESOLD = {"FE": 118, "BZ": 110, "AL": 106, "NV": 104}   # percent of the base
 
-HOLD = {"CGN-STN": "2026-09-01T06:15:00Z", "FRA-LHR": "2026-09-01T06:15:00Z"}
-
-# One quote in the reseller's inventory has already lapsed. Dropping it is
-# correct and completely invisible, which is why the search counts drops.
-LAPSED = ("CGN-STN", "BZ", "508")
+# One quote in the agent's inventory has already lapsed on every date. Dropping
+# it is correct and completely invisible, which is why the search counts drops.
+LAPSED_NUMBER = "508"
 
 
 # ------------------------------------------------------------------ helpers
@@ -110,43 +161,46 @@ def arrival_local(route, dep):
     return clock(minutes(dep) + r["block"] + shift * 60)
 
 
-def epoch_ms(route, hhmm, at_destination=False):
-    import datetime
+def epoch_ms(route, date, hhmm, at_destination=False):
     r = ROUTES[route]
     off = r["off_to"] if at_destination else r["off_from"]
-    stamp = "%sT%s:00%s" % (DATE, hhmm, off)
-    return int(datetime.datetime.fromisoformat(stamp).timestamp() * 1000)
+    return int(_dt.datetime.fromisoformat("%sT%s:00%s" % (date, hhmm, off)).timestamp() * 1000)
 
 
-def for_route(route):
-    return [f for f in FLIGHTS if f[0] == route]
+def hold(date):
+    """Quotes hold until a quarter past six on the morning of travel."""
+    return "%sT06:15:00Z" % date
 
 
 # ------------------------------------------------------------------ writers
 
-def amadeus(route):
+def amadeus(route, date):
     """The GDS aggregator. Local times with no offset, prices for the booking."""
+    r = ROUTES[route]
     data = []
-    for i, (_, code, number, dep, base, _cabin, bag, _fee) in enumerate(
-            f for f in for_route(route) if f[1] in AGGREGATED):
-        r = ROUTES[route]
+    for i, (code, number, dep, base, bag, _fee) in enumerate(
+            f for f in schedule(route) if f[0] in AGGREGATED):
+        fare = price_on(base, date, r["block"])
+        equip, _ = equipment(code, r["block"])
         data.append({
             "type": "flight-offer", "id": str(i + 1), "source": "GDS",
             "itineraries": [{
                 "duration": "PT%dH%02dM" % (r["block"] // 60, r["block"] % 60),
                 "segments": [{
-                    "departure": {"iataCode": r["from"], "at": "%sT%s:00" % (DATE, dep)},
-                    "arrival": {"iataCode": r["to"], "at": "%sT%s:00" % (DATE, arrival_local(route, dep))},
+                    "departure": {"iataCode": r["from"], "at": "%sT%s:00" % (date, dep)},
+                    "arrival": {"iataCode": r["to"],
+                                "at": "%sT%s:00" % (date, arrival_local(route, dep))},
                     "carrierCode": code, "number": number, "id": "1", "numberOfStops": 0,
-                    "aircraft": {"code": CARRIERS[code]["equip"]},
+                    "aircraft": {"code": equip},
                 }],
             }],
-            "price": {"currency": "EUR", "total": "%.2f" % (base / 100),
-                      "grandTotal": "%.2f" % (base / 100), "base": "%.2f" % (base * 0.7 / 100)},
+            "price": {"currency": "EUR", "total": "%.2f" % (fare / 100),
+                      "grandTotal": "%.2f" % (fare / 100),
+                      "base": "%.2f" % (round(fare * 0.7) / 100)},
             "travelerPricings": [{
                 "travelerId": "1", "fareOption": "STANDARD", "travelerType": "ADULT",
-                "price": {"currency": "EUR", "total": "%.2f" % (base / 100),
-                          "base": "%.2f" % (base * 0.7 / 100)},
+                "price": {"currency": "EUR", "total": "%.2f" % (fare / 100),
+                          "base": "%.2f" % (round(fare * 0.7) / 100)},
                 "fareDetailsBySegment": [{
                     "segmentId": "1", "cabin": "ECONOMY", "class": "M",
                     "includedCheckedBags": {"quantity": 0 if bag == 0 else 1},
@@ -156,37 +210,38 @@ def amadeus(route):
     return {"meta": {"count": len(data)}, "data": data}
 
 
-def lowcost(route, code):
+def lowcost(route, date, carrier):
     """A budget carrier selling direct. Offsets present, extras priced beside."""
+    r = ROUTES[route]
     flights = []
-    for _, c, number, dep, base, cabin, bag, fee in for_route(route):
-        if c != code:
+    for code, number, dep, base, bag, fee in schedule(route):
+        if code != carrier:
             continue
-        r = ROUTES[route]
+        _, name = equipment(code, r["block"])
         flights.append({
             "currency": "EUR",
-            "fare": {"amount": round(base / 100, 2), "type": "value"},
-            "holdsUntil": HOLD[route],
+            "fare": {"amount": round(price_on(base, date, r["block"]) / 100, 2), "type": "value"},
+            "holdsUntil": hold(date),
             "legs": [{
-                "airline": c, "flightNo": number, "from": r["from"], "to": r["to"],
-                "departsAt": "%sT%s:00%s" % (DATE, dep, r["off_from"]),
-                "arrivesAt": "%sT%s:00%s" % (DATE, arrival_local(route, dep), r["off_to"]),
-                "aircraft": CARRIERS[c]["type"],
+                "airline": code, "flightNo": number, "from": r["from"], "to": r["to"],
+                "departsAt": "%sT%s:00%s" % (date, dep, r["off_from"]),
+                "arrivesAt": "%sT%s:00%s" % (date, arrival_local(route, dep), r["off_to"]),
+                "aircraft": name,
             }],
-            "extras": {"cabinBag": cabin or 0, "checkedBag": round(bag / 100, 2),
-                       "seat": 9 if c == "FE" else 7.5, "paymentFee": round(fee / 100, 2)},
+            "extras": {"cabinBag": 0, "checkedBag": round(bag / 100, 2),
+                       "seat": 9 if code == "FE" else 7.5, "paymentFee": round(fee / 100, 2)},
         })
     return {"currency": "EUR", "flights": flights}
 
 
-def reseller(route):
+def reseller(route, date):
     """The agent. Epoch milliseconds, minor units, a markup on everything."""
+    r = ROUTES[route]
     results = []
-    for _, code, number, dep, base, cabin, bag, _fee in for_route(route):
+    for code, number, dep, base, bag, _fee in schedule(route):
         if code not in RESOLD:
             continue
-        r = ROUTES[route]
-        lapsed = (route, code, number) == LAPSED
+        _, name = equipment(code, r["block"])
         included = ["CABIN"]
         buyable = []
         if bag == 0:
@@ -197,15 +252,19 @@ def reseller(route):
         results.append({
             "seller": "voyago", "operatedBy": code, "flightNumber": number,
             "route": {"from": r["from"], "to": r["to"]},
-            "departEpochMs": epoch_ms(route, dep),
-            "arriveEpochMs": epoch_ms(route, arrival_local(route, dep), True),
-            "equipment": CARRIERS[code]["type"],
+            "departEpochMs": epoch_ms(route, date, dep),
+            "arriveEpochMs": epoch_ms(route, date, arrival_local(route, dep), True),
+            "equipment": name,
             "pricing": {"currencyCode": "EUR",
-                        "totalMinor": round(base * RESOLD[code] / 100),
+                        "totalMinor": round(price_on(base, date, r["block"]) * RESOLD[code] / 100),
                         "perPassenger": True},
             "baggage": {"included": included, "buyable": buyable},
             "fees": [] if code != "BZ" else [{"kind": "PAYMENT", "priceMinor": 199}],
-            "holdsUntilEpochMs": 1788233400000 if lapsed else epoch_ms(route, "08:15"),
+            # The lapsed one: held until half past three, quoted at four.
+            "holdsUntilEpochMs": (
+                int(_dt.datetime.fromisoformat("%sT03:30:00+00:00" % date).timestamp() * 1000)
+                if number == LAPSED_NUMBER
+                else int(_dt.datetime.fromisoformat("%sT08:15:00+00:00" % date).timestamp() * 1000)),
         })
     return {"results": results}
 
@@ -213,18 +272,21 @@ def reseller(route):
 def main():
     written = 0
     for route in ROUTES:
-        slug = route.lower()
-        files = {
-            "openfare-%s.json" % slug: amadeus(route),
-            "fineair-%s.json" % slug: lowcost(route, "FE"),
-            "bizzair-%s.json" % slug: lowcost(route, "BZ"),
-            "voyago-%s.json" % slug: reseller(route),
-        }
-        for name, payload in files.items():
-            (HERE / name).write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
-            written += 1
-            print("wrote", name)
-    print("\n%d files. Airlines invented, aircraft and block times real." % written)
+        for date in DATES:
+            slug = "%s-%s" % (route.lower(), date)
+            files = {
+                "openfare-%s.json" % slug: amadeus(route, date),
+                "fineair-%s.json" % slug: lowcost(route, date, "FE"),
+                "bizzair-%s.json" % slug: lowcost(route, date, "BZ"),
+                "voyago-%s.json" % slug: reseller(route, date),
+            }
+            for name, payload in files.items():
+                (HERE / name).write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                written += 1
+
+    print("%d files: %d routes x %d dates x 4 suppliers."
+          % (written, len(ROUTES), len(DATES)))
+    print("Airlines invented. Routes, block times and aircraft real.")
 
 
 if __name__ == "__main__":

@@ -27,10 +27,23 @@ const MARKS = {
 const PLACES = {
   CGN: "Cologne Bonn (CGN)", STN: "London Stansted (STN)",
   FRA: "Frankfurt (FRA)", LHR: "London Heathrow (LHR)",
+  BER: "Berlin (BER)", LGW: "London Gatwick (LGW)",
+  MUC: "Munich (MUC)", DUB: "Dublin (DUB)",
+  BCN: "Barcelona (BCN)", VIE: "Vienna (VIE)",
+  MAD: "Madrid (MAD)", AMS: "Amsterdam (AMS)", LIS: "Lisbon (LIS)",
 };
 
+/* Every market recorded. Seven routes, weekly for three months, and the page
+   only offers what exists: a control with no file behind it is a button that
+   shows the wrong answer. */
+const ROUTES = ["CGN-STN", "FRA-LHR", "BER-LGW", "MUC-DUB", "BER-BCN", "VIE-MAD", "AMS-LIS"];
+const DATES = Array.from({ length: 13 }, (_, week) => {
+  const day = new Date(Date.UTC(2026, 8, 1) + week * 7 * 86400000);
+  return day.toISOString().slice(0, 10);
+});
+
 const $ = (s) => document.querySelector(s);
-const state = { route: "CGN-STN", basket: "cabin", budget: "3000", sort: "best", data: {}, timers: [] };
+const state = { route: "CGN-STN", date: DATES[0], basket: "cabin", budget: "3000", sort: "best", data: {}, timers: [] };
 
 const chrome = initChrome(STRINGS, { prefix: "fanout" });
 const say = (key) => STRINGS[chrome.lang()]?.[key] ?? STRINGS.en[key] ?? key;
@@ -47,7 +60,8 @@ const hm = (mins) => Math.floor(mins / 60) + "h " + String(mins % 60).padStart(2
 
 // --------------------------------------------------------------------- data
 
-const file = () => `data/search-${state.route.toLowerCase()}-${state.basket}-${state.budget}.json`;
+const file = () =>
+  `data/search-${state.route.toLowerCase()}-${state.date}-${state.basket}-${state.budget}.json`;
 
 async function load() {
   const key = file();
@@ -236,7 +250,7 @@ function finish(search) {
 
 /** The same fan-out, smaller and on a loop, as the thing the hero shows. */
 async function heroLoop() {
-  const search = await fetch("data/search-cgn-stn-cabin-300.json").then((r) => r.json());
+  const search = await fetch("data/search-cgn-stn-2026-09-01-cabin-300.json").then((r) => r.json());
   const lanes = $("#hero-lanes");
   const budget = Number(search.budget_ms);
 
@@ -282,9 +296,23 @@ async function heroLoop() {
 
 // --------------------------------------------------------------------- wire
 
+function fillPickers() {
+  const long = (d) => new Date(d + "T00:00:00Z").toLocaleDateString(locale(),
+    { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+
+  $("#route").innerHTML = ROUTES
+    .map((r) => `<option value="${r}"${r === state.route ? " selected" : ""}>${PLACES[r.split("-")[0]]}</option>`)
+    .join("");
+  $("#date").innerHTML = DATES
+    .map((d) => `<option value="${d}"${d === state.date ? " selected" : ""}>${long(d)}</option>`)
+    .join("");
+  $("#to").textContent = PLACES[state.route.split("-")[1]];
+}
+
 $("#finder").addEventListener("submit", (e) => {
   e.preventDefault();
   state.route = $("#route").value;
+  state.date = $("#date").value;
   state.basket = $("#basket").value;
   state.budget = $("#budget").value;
   run();
@@ -307,7 +335,7 @@ $("#sorts").addEventListener("click", (e) => {
 // Re-render on a language change: prices, times and labels are all formatted.
 chrome.onLangChange(() => {
   $("#sort-hint").textContent = say("sort.hint." + state.sort);
-  $("#to").textContent = PLACES[state.route.split("-")[1]];
+  fillPickers();
   load().then((search) => {
     render(search, new Set(search.suppliers
       .filter((s) => s.status === "ANSWERED").map((s) => s.supplier)));
@@ -316,6 +344,7 @@ chrome.onLangChange(() => {
 });
 
 $("#sort-hint").textContent = say("sort.hint.best");
+fillPickers();
 heroLoop();
 
 // Wait until the search is on screen before replaying it, so nobody arrives at

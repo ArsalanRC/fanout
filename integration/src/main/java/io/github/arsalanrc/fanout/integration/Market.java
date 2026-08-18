@@ -65,46 +65,68 @@ public final class Market {
      * takes the longest because an agent has to ask everybody else first, which
      * is exactly why real ones are slow.
      */
-    /** Every route this modelled market covers. */
-    public static final List<String> ROUTES = List.of("CGN-STN", "FRA-LHR");
+    /**
+     * Every route this market covers, with real block times behind them.
+     *
+     * <p>Checked rather than assumed on 18 August 2026. An earlier version of
+     * this market flew Düsseldorf to Stansted direct, which is not a route:
+     * the shortest real itinerary between those two takes two hours and a stop.
+     */
+    public static final List<String> ROUTES =
+            List.of("CGN-STN", "FRA-LHR", "BER-LGW", "MUC-DUB", "BER-BCN", "VIE-MAD", "AMS-LIS");
 
-    /** The default, and the one the page opens on. */
+    /** Every departure date recorded: weekly, across three months. */
+    public static final List<java.time.LocalDate> DATES = weekly();
+
+    private static List<java.time.LocalDate> weekly() {
+        List<java.time.LocalDate> out = new java.util.ArrayList<>();
+        java.time.LocalDate day = java.time.LocalDate.of(2026, 9, 1);
+        for (int week = 0; week < 13; week++) out.add(day.plusWeeks(week));
+        return List.copyOf(out);
+    }
+
     public static final String DEFAULT_ROUTE = "CGN-STN";
+    public static final java.time.LocalDate DEFAULT_DATE = java.time.LocalDate.of(2026, 9, 1);
 
     public static List<Connector> suppliers() {
-        return suppliers(DEFAULT_ROUTE);
+        return suppliers(DEFAULT_ROUTE, DEFAULT_DATE);
     }
 
     /**
-     * Every supplier on one route, answering at a different speed.
+     * Every supplier on one route and date, answering at a different speed.
      *
      * <p>The latencies are not decoration. A fan-out where everything returns
      * instantly proves nothing about deadlines, and the whole architecture is
-     * built around one supplier always being slower than the rest. `voyago`
-     * takes the longest because an agent has to ask everybody else first, which
-     * is exactly why real ones are slow.
+     * built around one supplier always being slower than the rest. {@code
+     * voyago} takes the longest because an agent has to ask everybody else
+     * first, which is exactly why real ones are slow.
      *
-     * @param route origin and destination joined by a hyphen, as in CGN-STN.
-     *              Refused rather than defaulted when it is not one this market
-     *              carries: a silent fallback would answer a question nobody
-     *              asked with prices for somewhere else.
+     * <p>An unknown route or date is refused rather than defaulted. A silent
+     * fallback would answer with prices for somewhere else, or another day, and
+     * look entirely normal doing it.
      */
-    public static List<Connector> suppliers(String route) {
+    public static List<Connector> suppliers(String route, java.time.LocalDate date) {
         if (!ROUTES.contains(route)) {
             throw new IllegalArgumentException(
                     "No fixtures for " + route + ". This market carries " + ROUTES);
         }
-        String slug = route.toLowerCase(java.util.Locale.ROOT);
+        if (!DATES.contains(date)) {
+            throw new IllegalArgumentException(
+                    "No fixtures for " + date + ". This market runs weekly from "
+                            + DATES.getFirst() + " to " + DATES.getLast());
+        }
+        String slug = route.toLowerCase(java.util.Locale.ROOT) + "-" + date;
+        Instant quoted = asOf(date);
 
         return List.of(
                 new FixtureConnector(new AmadeusParser("openfare"),
-                        "/fixtures/openfare-" + slug + ".json", Duration.ofMillis(120), asOf()),
+                        "/fixtures/openfare-" + slug + ".json", Duration.ofMillis(120), quoted),
                 new FixtureConnector(new LowCostParser("fineair"),
-                        "/fixtures/fineair-" + slug + ".json", Duration.ofMillis(80), asOf()),
+                        "/fixtures/fineair-" + slug + ".json", Duration.ofMillis(80), quoted),
                 new FixtureConnector(new LowCostParser("bizzair"),
-                        "/fixtures/bizzair-" + slug + ".json", Duration.ofMillis(200), asOf()),
+                        "/fixtures/bizzair-" + slug + ".json", Duration.ofMillis(200), quoted),
                 new FixtureConnector(new ResellerParser("voyago"),
-                        "/fixtures/voyago-" + slug + ".json", Duration.ofMillis(650), asOf()));
+                        "/fixtures/voyago-" + slug + ".json", Duration.ofMillis(650), quoted));
     }
 
     /**
@@ -130,7 +152,12 @@ public final class Market {
      * actually receives.
      */
     public static Instant asOf() {
-        return Instant.parse("2026-09-01T04:00:00Z");
+        return asOf(DEFAULT_DATE);
+    }
+
+    /** The moment the market for one departure date is quoted at. */
+    public static Instant asOf(java.time.LocalDate date) {
+        return date.atTime(4, 0).toInstant(java.time.ZoneOffset.UTC);
     }
 
     /** The airline behind a two-letter code, for anything that shows one. */

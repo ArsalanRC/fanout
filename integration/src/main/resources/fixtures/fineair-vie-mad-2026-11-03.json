@@ -1,0 +1,30 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 30.67,
+        "type": "value"
+      },
+      "holdsUntil": "2026-11-03T06:15:00Z",
+      "legs": [
+        {
+          "airline": "FE",
+          "flightNo": "2204",
+          "from": "VIE",
+          "to": "MAD",
+          "departsAt": "2026-11-03T13:35:00+02:00",
+          "arrivesAt": "2026-11-03T16:44:00+02:00",
+          "aircraft": "Boeing 737-800"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 46.5,
+        "seat": 9,
+        "paymentFee": 4.5
+      }
+    }
+  ]
+}

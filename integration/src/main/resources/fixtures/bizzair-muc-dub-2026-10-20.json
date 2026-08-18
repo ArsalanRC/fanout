@@ -1,0 +1,30 @@
+{
+  "currency": "EUR",
+  "flights": [
+    {
+      "currency": "EUR",
+      "fare": {
+        "amount": 38.94,
+        "type": "value"
+      },
+      "holdsUntil": "2026-10-20T06:15:00Z",
+      "legs": [
+        {
+          "airline": "BZ",
+          "flightNo": "914",
+          "from": "MUC",
+          "to": "DUB",
+          "departsAt": "2026-10-20T08:15:00+02:00",
+          "arrivesAt": "2026-10-20T09:49:00+01:00",
+          "aircraft": "Airbus A320"
+        }
+      ],
+      "extras": {
+        "cabinBag": 0,
+        "checkedBag": 24.0,
+        "seat": 7.5,
+        "paymentFee": 0.0
+      }
+    }
+  ]
+}
