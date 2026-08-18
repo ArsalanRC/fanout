@@ -48,23 +48,34 @@ import java.util.List;
 public final class PageData {
 
     /** The searches the page shows, and why each one is there. */
-    public static final List<Capture> CAPTURES = List.of(
-            // The ordinary case. Everybody answers, and one journey is sold twice.
-            new Capture("search-cabin", "basket=cabin&budget=3000"),
-            // The same search with a suitcase. A different airline wins.
-            new Capture("search-checked", "basket=checked&budget=3000"),
-            // Tighter than the slowest supplier answers, so it comes back partial.
-            new Capture("search-tight", "basket=cabin&budget=300"),
-            // Both at once. The page offers basket and budget as two controls,
-            // so all four combinations have to exist or one of them is a dead
-            // button that quietly shows the wrong answer.
-            new Capture("search-checked-tight", "basket=checked&budget=300"));
+    /**
+     * The searches the page shows.
+     *
+     * <p>Every route crossed with every control the page offers, because the
+     * page turns those into buttons and a combination with no file behind it is
+     * a button that quietly shows the wrong answer.
+     */
+    public static final List<Capture> CAPTURES = build();
 
-    public record Capture(String name, String parameters) {
-
-        public String query() {
-            return "origin=DUS&destination=STN&date=2026-09-01&" + parameters;
+    private static List<Capture> build() {
+        List<Capture> all = new java.util.ArrayList<>();
+        for (String route : Market.ROUTES) {
+            String slug = route.toLowerCase(java.util.Locale.ROOT);
+            String[] parts = route.split("-");
+            for (String basket : List.of("cabin", "checked")) {
+                for (String budget : List.of("3000", "300")) {
+                    all.add(new Capture(
+                            "search-" + slug + "-" + basket + "-" + budget,
+                            route,
+                            "origin=" + parts[0] + "&destination=" + parts[1]
+                                    + "&date=2026-09-01&basket=" + basket + "&budget=" + budget));
+                }
+            }
         }
+        return List.copyOf(all);
+    }
+
+    public record Capture(String name, String route, String query) {
     }
 
     private PageData() {
@@ -87,7 +98,7 @@ public final class PageData {
 
     /** One search, through both services, exactly as a browser would get it. */
     public static String record(Capture capture) throws Exception {
-        try (IntegrationServer suppliers = new IntegrationServer(0, Market.suppliers())) {
+        try (IntegrationServer suppliers = new IntegrationServer(0, Market.suppliers(capture.route()))) {
             suppliers.start();
 
             List<Connector> remote = HttpConnector.discover(

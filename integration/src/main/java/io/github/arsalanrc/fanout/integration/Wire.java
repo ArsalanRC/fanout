@@ -48,9 +48,10 @@ import java.util.List;
  *     "base": { "minor": 1499, "currency": "EUR" },
  *     "expiresAt": "2026-09-01T06:15:00Z",
  *     "legs": [{ "carrier": "FE", "number": "1108",
- *                "origin": "DUS", "destination": "STN",
+ *                "origin": "CGN", "destination": "STN",
  *                "departure": "2026-09-01T04:35:00Z",
- *                "arrival": "2026-09-01T05:55:00Z" }],
+ *                "arrival": "2026-09-01T05:55:00Z",
+ *                "aircraft": "Boeing 737-800" }],
  *     "ancillaries": [{ "kind": "CABIN_BAG", "minor": 0,
  *                       "currency": "EUR", "included": true }]
  *   }]
@@ -111,6 +112,7 @@ public final class Wire {
                     .field("destination", leg.destination())
                     .field("departure", leg.departure().toString())
                     .field("arrival", leg.arrival().toString())
+                    .field("aircraft", leg.aircraft())
                     .end();
         }
         out.end();
@@ -158,7 +160,11 @@ public final class Wire {
                     leg.get("origin").text(),
                     leg.get("destination").text(),
                     Instant.parse(leg.get("departure").text()),
-                    Instant.parse(leg.get("arrival").text())));
+                    Instant.parse(leg.get("arrival").text()),
+                    // Absent stays absent. A supplier that did not say which
+                    // aircraft has not said "unknown", and the page leaves the
+                    // field out rather than printing a placeholder.
+                    leg.get("aircraft").isMissing() ? null : leg.get("aircraft").text()));
         }
 
         List<Ancillary> ancillaries = new ArrayList<>();

@@ -161,10 +161,20 @@ class TwoServicesTest {
             assertEquals(1, result.path("dropped", "lapsed").minorUnits(0),
                     "The expired offer should have been dropped and counted: " + result);
 
-            long cheapest = result.get("itineraries").array().getFirst()
-                    .get("best").get("minor").minorUnits(0);
-            assertTrue(cheapest > 1799,
-                    "A fare that had already lapsed is being shown at " + cheapest);
+            /*
+             * Checked by seller and flight rather than by price. An earlier
+             * version asserted that nothing cheaper than the lapsed fare was
+             * shown, which quietly stopped meaning anything the moment a
+             * legitimately cheaper fare existed: the reseller undercuts the
+             * carrier on hand luggage, because it charges no card fee.
+             */
+            for (Json row : result.get("itineraries").array()) {
+                if (!row.get("key").text().startsWith("BZ508@")) continue;
+                for (Json offer : row.get("offers").array()) {
+                    assertFalse(offer.get("supplier").text().equals("voyago"),
+                            "voyago's BZ508 quote had lapsed and is on the page anyway");
+                }
+            }
         }
 
         @Test
@@ -303,7 +313,7 @@ class TwoServicesTest {
 
         @Test
         void a_missing_parameter_is_a_400() throws Exception {
-            assertEquals(400, raw("/search?origin=DUS").statusCode());
+            assertEquals(400, raw("/search?origin=CGN").statusCode());
         }
 
         @Test
@@ -361,7 +371,7 @@ class TwoServicesTest {
     }
 
     private static String route() {
-        return "origin=DUS&destination=STN&date=2026-09-01";
+        return "origin=CGN&destination=STN&date=2026-09-01";
     }
 
     /** The carrier on the cheapest row, which is the only number a visitor reads. */

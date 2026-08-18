@@ -1,0 +1,292 @@
+{
+  "meta": {
+    "count": 5
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "CGN",
+                "at": "2026-09-01T07:00:00"
+              },
+              "arrival": {
+                "iataCode": "STN",
+                "at": "2026-09-01T07:20:00"
+              },
+              "carrierCode": "AL",
+              "number": "412",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32N"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "89.00",
+        "grandTotal": "89.00",
+        "base": "62.30"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "89.00",
+            "base": "62.30"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "CGN",
+                "at": "2026-09-01T18:30:00"
+              },
+              "arrival": {
+                "iataCode": "STN",
+                "at": "2026-09-01T18:50:00"
+              },
+              "carrierCode": "AL",
+              "number": "486",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32N"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "112.00",
+        "grandTotal": "112.00",
+        "base": "78.40"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "112.00",
+            "base": "78.40"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "CGN",
+                "at": "2026-09-01T09:45:00"
+              },
+              "arrival": {
+                "iataCode": "STN",
+                "at": "2026-09-01T10:05:00"
+              },
+              "carrierCode": "HY",
+              "number": "204",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "134.00",
+        "grandTotal": "134.00",
+        "base": "93.80"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "134.00",
+            "base": "93.80"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "CGN",
+                "at": "2026-09-01T12:55:00"
+              },
+              "arrival": {
+                "iataCode": "STN",
+                "at": "2026-09-01T13:15:00"
+              },
+              "carrierCode": "NV",
+              "number": "3310",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "64.00",
+        "grandTotal": "64.00",
+        "base": "44.80"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "64.00",
+            "base": "44.80"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "5",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H20M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "CGN",
+                "at": "2026-09-01T20:15:00"
+              },
+              "arrival": {
+                "iataCode": "STN",
+                "at": "2026-09-01T20:35:00"
+              },
+              "carrierCode": "KE",
+              "number": "881",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "49.50",
+        "grandTotal": "49.50",
+        "base": "34.65"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "49.50",
+            "base": "34.65"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

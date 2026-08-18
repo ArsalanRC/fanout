@@ -216,6 +216,7 @@ public final class SearchServer implements AutoCloseable {
                     .field("destination", leg.destination())
                     .field("departure", leg.departure().toString())
                     .field("arrival", leg.arrival().toString())
+                    .field("aircraft", leg.aircraft())
                     .end();
         }
         out.end();

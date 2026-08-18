@@ -30,7 +30,7 @@ class WireTest {
     private static final Instant EXPIRES = Instant.parse("2026-09-01T06:15:00Z");
 
     private static Fare fineair() {
-        Leg leg = new Leg("FE", "1108", "DUS", "STN",
+        Leg leg = new Leg("FE", "1108", "CGN", "STN",
                 Instant.parse("2026-09-01T04:35:00Z"), Instant.parse("2026-09-01T05:55:00Z"));
 
         return new Fare("fineair", new Itinerary(List.of(leg)), Money.of(1499, "EUR"),

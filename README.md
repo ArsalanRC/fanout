@@ -28,10 +28,10 @@ FANOUT_INTEGRATION_URL=http://127.0.0.1:8081 mvn -q -pl search exec:java \
 
 The install matters. `-pl` resolves the sibling modules from your local repository, not from the reactor.
 
-Now search. Düsseldorf to London Stansted, hand luggage only:
+Now search. Cologne Bonn to London Stansted, hand luggage only:
 
 ```bash
-curl 'http://127.0.0.1:8080/search?origin=DUS&destination=STN&date=2026-09-01&basket=cabin'
+curl 'http://127.0.0.1:8080/search?origin=CGN&destination=STN&date=2026-09-01&basket=cabin'
 ```
 
 ```
@@ -115,7 +115,7 @@ Three refusals come with it. A payment fee is charged whether or not the basket 
 Two services is only worth the trouble if the budget survives the hop between them. A deadline that stops at a process boundary is a timeout with extra steps.
 
 ```
-GET /suppliers/fineair/fares?origin=DUS&destination=STN&date=2026-09-01
+GET /suppliers/fineair/fares?origin=CGN&destination=STN&date=2026-09-01
 X-Fanout-Deadline-Ms: 842
 ```
 

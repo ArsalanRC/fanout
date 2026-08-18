@@ -10,9 +10,26 @@ import java.util.Objects;
  * A flight leaving Düsseldorf at 07:00 and landing in London at 07:20 has not
  * taken twenty minutes, and every duration calculation on local times gets that
  * wrong twice a year in the other direction as well.
+ *
+ * <p>{@code aircraft} is here because somebody comparing two fares an hour
+ * apart is often really comparing two aircraft, and because it is the one field
+ * on this record that is not invented. The carriers in this project are
+ * fictional. The aircraft are the types that really fly these routes.
  */
 public record Leg(String carrier, String number, String origin, String destination,
-                  Instant departure, Instant arrival) {
+                  Instant departure, Instant arrival, String aircraft) {
+
+    /**
+     * A leg whose aircraft the supplier did not state.
+     *
+     * <p>Common, and not an error: plenty of suppliers omit the type, and one
+     * that does has said nothing rather than said "unknown". Left null so the
+     * page can leave the field out instead of printing a placeholder.
+     */
+    public Leg(String carrier, String number, String origin, String destination,
+               Instant departure, Instant arrival) {
+        this(carrier, number, origin, destination, departure, arrival, null);
+    }
 
     public Leg {
         Objects.requireNonNull(carrier, "carrier");

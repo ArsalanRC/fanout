@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Nordvel">
+  <title>Nordvel</title>
+  <!--
+    Nordvel, NV. The regional carrier, flying an Embraer E195-E2 on routes the
+    bigger jets are too large for. Cold blue and a compass needle pointing
+    north, which is what the name is doing.
+
+    Two triangles rather than one, so it survives at 16px as a shape rather
+    than dissolving into a sliver.
+  -->
+  <rect width="64" height="64" rx="14" fill="#1E4E79"/>
+  <path d="M32 11 L44 45 L32 37 Z" fill="#FFFFFF"/>
+  <path d="M32 11 L20 45 L32 37 Z" fill="#FFFFFF" opacity="0.55"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Kestrel">
+  <title>Kestrel</title>
+  <!--
+    Kestrel, KE. The leisure carrier: full aircraft, cheap seats, one Boeing
+    737 MAX 8 turned around all day. Warm orange, because that is the colour
+    the holiday end of the market has always used.
+
+    A kestrel hovers, which is the one thing everybody knows about the bird. So
+    the mark is a pair of held wings above a still point rather than anything
+    in forward flight.
+  -->
+  <rect width="64" height="64" rx="14" fill="#D2541C"/>
+  <path d="M12 26 C21 18 28 20 32 27 C36 20 43 18 52 26 C43 30 36 30 32 34 C28 30 21 30 12 26 Z"
+        fill="#FFFFFF"/>
+  <circle cx="32" cy="45" r="4.2" fill="#FFFFFF" opacity="0.75"/>
+</svg>

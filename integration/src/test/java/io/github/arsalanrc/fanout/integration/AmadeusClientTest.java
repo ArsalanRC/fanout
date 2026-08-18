@@ -80,14 +80,14 @@ class AmadeusClientTest {
         exchange.close();
     }
 
-    private static final Query QUERY = new Query("DUS", "STN", LocalDate.of(2026, 9, 1), 2);
+    private static final Query QUERY = new Query("CGN", "STN", LocalDate.of(2026, 9, 1), 2);
 
     @Test
     void builds_the_request_the_api_actually_expects() throws Exception {
         client().fetch(QUERY, Deadline.in(Duration.ofSeconds(10)));
 
         String search = paths.getLast();
-        assertTrue(search.contains("originLocationCode=DUS"), search);
+        assertTrue(search.contains("originLocationCode=CGN"), search);
         assertTrue(search.contains("destinationLocationCode=STN"), search);
         assertTrue(search.contains("departureDate=2026-09-01"), search);
         assertTrue(search.contains("adults=2"), search);
@@ -141,12 +141,12 @@ class AmadeusClientTest {
 
     @Test
     void the_live_client_and_the_fixture_produce_the_same_fares() throws Exception {
-        searchBody = new String(getClass().getResourceAsStream("/fixtures/openfare-dus-stn.json")
+        searchBody = new String(getClass().getResourceAsStream("/fixtures/openfare-cgn-stn.json")
                 .readAllBytes(), StandardCharsets.UTF_8);
 
         List<Fare> live = client().search(QUERY, Deadline.in(Duration.ofSeconds(10)));
         List<Fare> fromDisk = new FixtureConnector(new AmadeusParser("amadeus"),
-                "/fixtures/openfare-dus-stn.json").search(QUERY, Deadline.in(Duration.ofSeconds(10)));
+                "/fixtures/openfare-cgn-stn.json").search(QUERY, Deadline.in(Duration.ofSeconds(10)));
 
         // The whole argument for the demo: one parser, one code path, and the
         // only difference is where the bytes came from.

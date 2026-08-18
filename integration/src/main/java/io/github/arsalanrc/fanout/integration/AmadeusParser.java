@@ -80,7 +80,9 @@ public final class AmadeusParser implements SupplierParser {
                     from,
                     to,
                     AirportZones.instantAt(LocalDateTime.parse(segment.path("departure", "at").text()), from),
-                    AirportZones.instantAt(LocalDateTime.parse(segment.path("arrival", "at").text()), to)));
+                    AirportZones.instantAt(LocalDateTime.parse(segment.path("arrival", "at").text()), to),
+                    // Amadeus sends an equipment code, not a name.
+                    Aircraft.name(segment.path("aircraft", "code"))));
         }
 
         return new Itinerary(legs);
