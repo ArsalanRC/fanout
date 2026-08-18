@@ -92,6 +92,35 @@
       },
       "fees": [],
       "holdsUntilEpochMs": 1788243300000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "508",
+      "route": {
+        "from": "DUS",
+        "to": "STN"
+      },
+      "departEpochMs": 1788245400000,
+      "arriveEpochMs": 1788250200000,
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 1799,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 2900
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1788233400000
     }
   ]
 }

@@ -12,10 +12,39 @@ import java.util.Optional;
  * page that presents it as the whole market is lying by omission, and the
  * cheapest fare on it may not be the cheapest fare available.
  */
-public record SearchResult(Query query, List<PricedItinerary> itineraries, List<SupplierOutcome> outcomes) {
+public record SearchResult(Query query, List<PricedItinerary> itineraries,
+                           List<SupplierOutcome> outcomes, Dropped dropped) {
+
+    /**
+     * Offers a supplier really sent, which were then not shown.
+     *
+     * <p>Counted rather than discarded quietly. A supplier can answer, be
+     * recorded as having answered, and still contribute nothing to the page.
+     * Without a number for this there is nothing anywhere that says so, and
+     * that is a genuinely hard state to debug: every status is green and a row
+     * is missing.
+     *
+     * <p>It is also the only place the freshness rule becomes visible.
+     * Dropping a lapsed fare is the correct behaviour and it is invisible by
+     * construction, so it gets counted instead.
+     */
+    public record Dropped(int lapsed, int unpriceable) {
+
+        public static final Dropped NONE = new Dropped(0, 0);
+
+        public int total() {
+            return lapsed + unpriceable;
+        }
+    }
+
+    /** A result with nothing dropped, which is the ordinary case. */
+    public SearchResult(Query query, List<PricedItinerary> itineraries, List<SupplierOutcome> outcomes) {
+        this(query, itineraries, outcomes, Dropped.NONE);
+    }
 
     public SearchResult {
         Objects.requireNonNull(query, "query");
+        Objects.requireNonNull(dropped, "dropped");
         itineraries = List.copyOf(itineraries);
         outcomes = List.copyOf(outcomes);
     }
