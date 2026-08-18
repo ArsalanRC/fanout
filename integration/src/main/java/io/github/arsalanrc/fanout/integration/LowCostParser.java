@@ -94,7 +94,9 @@ public final class LowCostParser implements SupplierParser {
                     // An offset is present, so this is a real instant already.
                     // No airport table needed and no assumption made.
                     java.time.OffsetDateTime.parse(hop.get("departsAt").text()).toInstant(),
-                    java.time.OffsetDateTime.parse(hop.get("arrivesAt").text()).toInstant()));
+                    java.time.OffsetDateTime.parse(hop.get("arrivesAt").text()).toInstant(),
+                    // A carrier selling direct knows its own fleet and says so.
+                    hop.get("aircraft").isMissing() ? null : hop.get("aircraft").text()));
         }
 
         return new Itinerary(legs);

@@ -65,16 +65,46 @@ public final class Market {
      * takes the longest because an agent has to ask everybody else first, which
      * is exactly why real ones are slow.
      */
+    /** Every route this modelled market covers. */
+    public static final List<String> ROUTES = List.of("CGN-STN", "FRA-LHR");
+
+    /** The default, and the one the page opens on. */
+    public static final String DEFAULT_ROUTE = "CGN-STN";
+
     public static List<Connector> suppliers() {
+        return suppliers(DEFAULT_ROUTE);
+    }
+
+    /**
+     * Every supplier on one route, answering at a different speed.
+     *
+     * <p>The latencies are not decoration. A fan-out where everything returns
+     * instantly proves nothing about deadlines, and the whole architecture is
+     * built around one supplier always being slower than the rest. `voyago`
+     * takes the longest because an agent has to ask everybody else first, which
+     * is exactly why real ones are slow.
+     *
+     * @param route origin and destination joined by a hyphen, as in CGN-STN.
+     *              Refused rather than defaulted when it is not one this market
+     *              carries: a silent fallback would answer a question nobody
+     *              asked with prices for somewhere else.
+     */
+    public static List<Connector> suppliers(String route) {
+        if (!ROUTES.contains(route)) {
+            throw new IllegalArgumentException(
+                    "No fixtures for " + route + ". This market carries " + ROUTES);
+        }
+        String slug = route.toLowerCase(java.util.Locale.ROOT);
+
         return List.of(
                 new FixtureConnector(new AmadeusParser("openfare"),
-                        "/fixtures/openfare-dus-stn.json", Duration.ofMillis(120), asOf()),
+                        "/fixtures/openfare-" + slug + ".json", Duration.ofMillis(120), asOf()),
                 new FixtureConnector(new LowCostParser("fineair"),
-                        "/fixtures/fineair-dus-stn.json", Duration.ofMillis(80), asOf()),
+                        "/fixtures/fineair-" + slug + ".json", Duration.ofMillis(80), asOf()),
                 new FixtureConnector(new LowCostParser("bizzair"),
-                        "/fixtures/bizzair-dus-stn.json", Duration.ofMillis(200), asOf()),
+                        "/fixtures/bizzair-" + slug + ".json", Duration.ofMillis(200), asOf()),
                 new FixtureConnector(new ResellerParser("voyago"),
-                        "/fixtures/voyago-dus-stn.json", Duration.ofMillis(650), asOf()));
+                        "/fixtures/voyago-" + slug + ".json", Duration.ofMillis(650), asOf()));
     }
 
     /**
@@ -110,6 +140,8 @@ public final class Market {
             case "BZ" -> "Bizzair";
             case "AL" -> "Altair";
             case "HY" -> "Halcyon";
+            case "NV" -> "Nordvel";
+            case "KE" -> "Kestrel";
             default -> code;
         };
     }

@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class IntegrationServerTest {
 
-    private static final Query QUERY = new Query("DUS", "STN", LocalDate.parse("2026-09-01"), 1);
+    private static final Query QUERY = new Query("CGN", "STN", LocalDate.parse("2026-09-01"), 1);
 
     private IntegrationServer service;
     private HttpClient http;
@@ -44,7 +44,7 @@ class IntegrationServerTest {
     void start() throws IOException {
         http = HttpClient.newHttpClient();
         service = new IntegrationServer(0, List.of(
-                new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-dus-stn.json"),
+                new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn.json"),
                 watching("watcher"),
                 slow("sluggish", Duration.ofSeconds(30)),
                 broken("brokenly")));
@@ -88,7 +88,7 @@ class IntegrationServerTest {
 
         @Test
         void a_missing_parameter_is_a_400_rather_than_a_guess() throws Exception {
-            HttpResponse<String> response = get("/suppliers/fineair/fares?origin=DUS");
+            HttpResponse<String> response = get("/suppliers/fineair/fares?origin=CGN");
 
             assertEquals(400, response.statusCode());
             assertTrue(Json.parse(response.body()).get("error").text().contains("destination"));
@@ -201,7 +201,7 @@ class IntegrationServerTest {
     // ------------------------------------------------------------- helpers
 
     private static String params() {
-        return "origin=DUS&destination=STN&date=2026-09-01&passengers=1";
+        return "origin=CGN&destination=STN&date=2026-09-01&passengers=1";
     }
 
     private HttpResponse<String> get(String path) throws Exception {

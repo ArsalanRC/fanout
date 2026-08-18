@@ -19,23 +19,23 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ConnectorTest {
 
-    private static final Query ONE = new Query("DUS", "STN", LocalDate.of(2026, 9, 1), 1);
-    private static final Query THREE = new Query("DUS", "STN", LocalDate.of(2026, 9, 1), 3);
+    private static final Query ONE = new Query("CGN", "STN", LocalDate.of(2026, 9, 1), 1);
+    private static final Query THREE = new Query("CGN", "STN", LocalDate.of(2026, 9, 1), 3);
 
     private static Connector openfare() {
-        return new FixtureConnector(new AmadeusParser("openfare"), "/fixtures/openfare-dus-stn.json");
+        return new FixtureConnector(new AmadeusParser("openfare"), "/fixtures/openfare-cgn-stn.json");
     }
 
     private static Connector fineair() {
-        return new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-dus-stn.json");
+        return new FixtureConnector(new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn.json");
     }
 
     private static Connector bizzair() {
-        return new FixtureConnector(new LowCostParser("bizzair"), "/fixtures/bizzair-dus-stn.json");
+        return new FixtureConnector(new LowCostParser("bizzair"), "/fixtures/bizzair-cgn-stn.json");
     }
 
     private static Connector voyago() {
-        return new FixtureConnector(new ResellerParser("voyago"), "/fixtures/voyago-dus-stn.json");
+        return new FixtureConnector(new ResellerParser("voyago"), "/fixtures/voyago-cgn-stn.json");
     }
 
     private static List<Fare> fares(Connector connector, Query query) throws Exception {
@@ -49,7 +49,7 @@ class ConnectorTest {
     void resolves_local_times_through_the_airport_timezone() throws Exception {
         Leg leg = fares(openfare(), ONE).getFirst().itinerary().legs().getFirst();
 
-        // The payload says 07:00 at DUS and 07:20 at STN, both without an
+        // The payload says 07:00 at CGN and 07:20 at STN, both without an
         // offset. Read as written that is a twenty minute flight, and it would
         // sort to the top of any fastest-first list in Europe. Germany is an
         // hour ahead of the UK, so it is eighty minutes.
@@ -108,9 +108,9 @@ class ConnectorTest {
     void the_reseller_prices_per_passenger_but_in_minor_units_already() throws Exception {
         // Third shape, third convention: amounts arrive as integers, so there is
         // no decimal to parse and no chance of a double. A parser assuming
-        // decimals everywhere would read 2450 as 2450 euros.
-        assertEquals(Money.of(2_450, "EUR"), fares(voyago(), ONE).getFirst().base());
-        assertEquals(Money.of(7_350, "EUR"), fares(voyago(), THREE).getFirst().base());
+        // decimals everywhere would read 1533 as 1533 euros.
+        assertEquals(Money.of(1_533, "EUR"), fares(voyago(), ONE).getFirst().base());
+        assertEquals(Money.of(4_599, "EUR"), fares(voyago(), THREE).getFirst().base());
     }
 
     // ------------------------------------------------------------------- bags
@@ -234,10 +234,21 @@ class ConnectorTest {
         // Same aircraft, same departure, so the same key. One row, two prices.
         assertEquals(direct.itinerary().key(), resold.itinerary().key());
 
-        // 65.99 direct against 76.50 through the agent. Two rows would make the
+        // 65.99 direct against 67.83 through the agent. Two rows would make the
         // page look full and hide the only useful fact on it.
         assertEquals(Money.of(6_599, "EUR"), direct.totalFor(Basket.WITH_CHECKED_BAG));
-        assertEquals(Money.of(7_650, "EUR"), resold.totalFor(Basket.WITH_CHECKED_BAG));
+        assertEquals(Money.of(6_783, "EUR"), resold.totalFor(Basket.WITH_CHECKED_BAG));
+        /*
+         * Which of the two is cheaper depends on the basket, and that is not a
+         * flaw in the fixture. The agent marks the seat up and charges no card
+         * fee; the carrier charges the fee and sells a cheaper bag. So the
+         * agent wins on hand luggage and loses with a suitcase, on the same
+         * seats, from the same aircraft.
+         */
+        assertTrue(direct.totalFor(Basket.WITH_CHECKED_BAG)
+                .compareTo(resold.totalFor(Basket.WITH_CHECKED_BAG)) < 0);
+        assertTrue(resold.totalFor(Basket.HAND_LUGGAGE_ONLY)
+                .compareTo(direct.totalFor(Basket.HAND_LUGGAGE_ONLY)) < 0);
     }
 
     // ---------------------------------------------------------------- refusals
@@ -253,7 +264,7 @@ class ConnectorTest {
     @Test
     void a_connector_gives_up_when_the_deadline_does() {
         Connector slow = new FixtureConnector(
-                new LowCostParser("fineair"), "/fixtures/fineair-dus-stn.json", Duration.ofSeconds(5));
+                new LowCostParser("fineair"), "/fixtures/fineair-cgn-stn.json", Duration.ofSeconds(5));
 
         /*
          * A fixture answering slower than the budget allows must not quietly

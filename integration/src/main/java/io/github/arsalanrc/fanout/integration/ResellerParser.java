@@ -67,7 +67,10 @@ public final class ResellerParser implements SupplierParser {
                     result.path("route", "from").text(),
                     result.path("route", "to").text(),
                     Instant.ofEpochMilli(result.get("departEpochMs").minorUnits(0)),
-                    Instant.ofEpochMilli(result.get("arriveEpochMs").minorUnits(0)));
+                    Instant.ofEpochMilli(result.get("arriveEpochMs").minorUnits(0)),
+                    // The agent passes through whatever the carrier told it,
+                    // already spelled out.
+                    result.get("equipment").isMissing() ? null : result.get("equipment").text());
 
             /*
              * Already minor units, so no decimal handling. Per passenger, like

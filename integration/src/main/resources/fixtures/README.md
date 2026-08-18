@@ -8,24 +8,42 @@ rather than skipping it.
 
 ## Provenance, stated rather than implied
 
-| File | Supplier | Shape | Where the data comes from |
-|---|---|---|---|
-| `openfare-dus-stn.json` | GDS aggregator | Amadeus Flight Offers Search | **Shape real, values modelled** |
-| `fineair-dus-stn.json` | Fineair direct | Low-cost carrier direct | **Shape and values modelled** |
-| `bizzair-dus-stn.json` | Bizzair direct | Low-cost carrier direct | **Shape and values modelled** |
-| `voyago-dus-stn.json` | Online travel agent | Reseller | **Shape and values modelled** |
+Written by `generate.py` in this directory, from one table. Twelve files kept by
+hand drift: a departure gets edited in one and not the other, deduplication
+quietly stops working, and the demo shows two rows where it showed one.
 
-Every airline named here is invented, and that is deliberate. Fineair, Bizzair,
-Altair and Halcyon do not exist. Modelling a real carrier under its own name
-would put invented prices beside a real brand, and somebody would read them as
-that airline's actual charges.
+| Supplier | Shape | Sells |
+|---|---|---|
+| `openfare-*` | Amadeus Flight Offers Search | The full-service carriers |
+| `fineair-*` | Low-cost carrier direct | Fineair only |
+| `bizzair-*` | Low-cost carrier direct | Bizzair only |
+| `voyago-*` | Reseller | A bit of everything, at a markup |
 
-## Why these sit on the main classpath
+### What is real
 
-They are in `src/main/resources`, not `src/test/resources`, because the
-integration service serves them at runtime. A fixture only the tests could reach
-would make the running demo a different code path from the tested one, and that
-is the exact failure this arrangement exists to prevent.
+The routes, the block times and the aircraft, checked on 18 August 2026.
+
+| Route | Block time | Aircraft |
+|---|---|---|
+| CGN to STN | 1h20m, 491 km | Boeing 737-800 |
+| FRA to LHR | 1h45m | Airbus A320 family |
+
+Fare levels follow what European short haul actually costs: low-cost base fares
+of roughly 15 to 60 euros one way, a 20 kg bag adding about 19 to 60, and legacy
+short haul near 90 to 180 with the bag in the fare.
+
+The earlier version of these fixtures modelled DUS to STN as a direct flight.
+It is not one. That was caught by looking the route up rather than assuming it.
+
+### What is invented
+
+Every airline. Fineair, Bizzair, Altair, Halcyon, Nordvel and Kestrel do not
+exist, and no real carrier is modelled under its own name or near its livery.
+Invented prices beside a real brand get read as that airline's charges.
+
+Flight numbers and exact fares are invented too, arranged so the ranking flips
+between baskets and one quote has already lapsed. Real data would not reliably
+do either.
 
 ## Why nothing here is a real recording
 

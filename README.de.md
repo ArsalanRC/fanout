@@ -29,10 +29,10 @@ FANOUT_INTEGRATION_URL=http://127.0.0.1:8081 mvn -q -pl search exec:java \
 
 Das `install` ist Pflicht. `-pl` holt die Nachbarmodule aus dem lokalen Repository und nicht aus dem Reactor.
 
-Jetzt suchen. Düsseldorf nach London Stansted, nur mit Handgepäck:
+Jetzt suchen. Köln/Bonn nach London Stansted, nur mit Handgepäck:
 
 ```bash
-curl 'http://127.0.0.1:8080/search?origin=DUS&destination=STN&date=2026-09-01&basket=cabin'
+curl 'http://127.0.0.1:8080/search?origin=CGN&destination=STN&date=2026-09-01&basket=cabin'
 ```
 
 ```
@@ -116,7 +116,7 @@ Dazu kommen drei Verweigerungen. Eine Zahlungsgebühr fällt an, egal ob der War
 Zwei Services lohnen sich nur, wenn das Budget den Sprung dazwischen übersteht. Ein Budget, das an der Prozessgrenze endet, ist ein Timeout mit Umweg.
 
 ```
-GET /suppliers/fineair/fares?origin=DUS&destination=STN&date=2026-09-01
+GET /suppliers/fineair/fares?origin=CGN&destination=STN&date=2026-09-01
 X-Fanout-Deadline-Ms: 842
 ```
 
