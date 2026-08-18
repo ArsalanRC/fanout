@@ -4,7 +4,7 @@
 
 Eine Metasuche fragt acht Anbieter nach demselben Flug. Gibt man jedem drei Sekunden Timeout, dauert die Suche im schlechtesten Fall vierundzwanzig. Jeder einzelne Timeout ist richtig gesetzt. Das System ist trotzdem kaputt.
 
-`fanout` ist eine kleine Metasuch-Architektur in Java. Zwei Services, ein gemeinsames Zeitbudget, und eine Antwort, die sagt welche Anbieter fehlen.
+`fanout` ist eine kleine Metasuch-Architektur in Java. Zwei Services, ein gemeinsames Zeitbudget, und eine Antwort, die sagt, welche Anbieter fehlen.
 
 Java 21+, **keine Laufzeit-Abhängigkeiten**, 138 Tests.
 
