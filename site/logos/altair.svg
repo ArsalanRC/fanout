@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 64" width="264" height="64" role="img" aria-label="Altair">
+  <title>Altair</title>
+  <rect width="64" height="64" rx="14" fill="#12294A"/>
+  <circle cx="32" cy="32" r="20.5" fill="none" stroke="#C9A227" stroke-width="2.25" opacity="0.5"/>
+  <path d="M32 11 C33.2 24 40 30.8 53 32 C40 33.2 33.2 40 32 53
+           C30.8 40 24 33.2 11 32 C24 30.8 30.8 24 32 11 Z"
+        fill="#C9A227"/>
+  <!-- Wide tracking, medium weight. Legacy carriers take up the room. -->
+  <text x="82" y="41" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="25" font-weight="500" letter-spacing="4.5"
+        fill="#12294A">ALTAIR</text>
+</svg>

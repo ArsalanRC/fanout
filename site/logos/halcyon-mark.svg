@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Halcyon">
+  <title>Halcyon</title>
+  <!--
+    Halcyon, HY. The premium carrier: dearest headline, two bags included.
+    Deep green and champagne, quieter than the other three, which is how the
+    top of the market signals itself.
+
+    An H whose crossbar lifts. Two attempts at a literal kingfisher came first
+    and both read as a leaf, because a smooth closed curve with no shaft or
+    notch is a leaf whatever you intended. A monogram does not have that
+    problem, it holds its shape at 16px, and the rise carries the flight.
+  -->
+  <rect width="64" height="64" rx="14" fill="#0C3A31"/>
+  <g fill="#D8C08A">
+    <rect x="17" y="17" width="7.5" height="30" rx="3.75"/>
+    <rect x="39.5" y="17" width="7.5" height="30" rx="3.75"/>
+    <!--
+      A gentle rise, five pixels over fifteen. The first version climbed nine
+      and stopped reading as an H at all: a steep crossbar meeting the right
+      stem high turns the whole monogram into a Cyrillic И.
+    -->
+    <path d="M24.5 32 L39.5 27 L39.5 34.5 L24.5 39.5 Z"/>
+  </g>
+</svg>

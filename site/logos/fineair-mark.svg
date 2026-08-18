@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Fineair">
+  <title>Fineair</title>
+  <!--
+    Fineair, FE. The deep discount carrier: tiny headline fare, dear bags,
+    a payment fee on top. The mark is loud on purpose, because that is how
+    a carrier competing purely on the first number presents itself.
+
+    Three swept bars, longest in the middle, reading as speed lines and as a
+    wing at the same time. No thin strokes anywhere, so it survives being
+    rendered at 20px in a results row.
+  -->
+  <rect width="64" height="64" rx="14" fill="#E23A11"/>
+  <g fill="#FFFFFF">
+    <path d="M26 16 H50 L42 24 H18 Z"/>
+    <path d="M20 28 H50 L42 36 H12 Z"/>
+    <path d="M30 40 H50 L42 48 H22 Z"/>
+  </g>
+</svg>

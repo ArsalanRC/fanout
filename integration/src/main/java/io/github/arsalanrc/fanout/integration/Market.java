@@ -46,6 +46,10 @@ import java.util.List;
  * <p>So Fineair flight 1108 appears twice, from {@code fineair} and from
  * {@code voyago}, at different prices. That is the case deduplication exists
  * for, and it is the case a page gets wrong by showing two rows.
+ *
+ * <p>Each carrier has a mark and a livery colour in {@code site/logos}, which
+ * the results page uses. They are invented along with the airlines, and the
+ * README there says so.
  */
 public final class Market {
 

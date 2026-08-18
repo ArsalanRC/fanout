@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Altair">
+  <title>Altair</title>
+  <!--
+    Altair, AL. The full service carrier: cabin bag and checked bag in the
+    fare. Navy and gold, because that is what a legacy flag carrier looks
+    like, and the contrast against Fineair's red is the point of the set.
+
+    Altair is the brightest star in Aquila, so the mark is a star. The ring is
+    doing real work rather than decorating: a bare four-point star reads as the
+    sparkle emoji, and it loses all its mass below about 20px. The ring holds
+    the silhouette together and puts it closer to a compass rose.
+  -->
+  <rect width="64" height="64" rx="14" fill="#12294A"/>
+  <circle cx="32" cy="32" r="20.5" fill="none" stroke="#C9A227" stroke-width="2.25" opacity="0.5"/>
+  <path d="M32 11 C33.2 24 40 30.8 53 32 C40 33.2 33.2 40 32 53
+           C30.8 40 24 33.2 11 32 C24 30.8 30.8 24 32 11 Z"
+        fill="#C9A227"/>
+</svg>

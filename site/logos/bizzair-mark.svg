@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Bizzair">
+  <title>Bizzair</title>
+  <!--
+    Bizzair, BZ. Budget, but the honest kind: low base, moderate bags, and no
+    payment fee. So the mark is friendly rather than aggressive, which is the
+    whole difference between this carrier and Fineair.
+
+    A dart, climbing. Solid rather than stroked: a bird drawn as a single line
+    was tried first and read as a squiggle at row size, because a thin even
+    stroke has no silhouette to recognise. A filled shape survives 16px.
+  -->
+  <rect width="64" height="64" rx="14" fill="#0E9E8F"/>
+  <path d="M54 11 L10 29 L27.5 34.5 L33 52 Z" fill="#FFFFFF"/>
+  <path d="M27.5 34.5 L54 11 L33 52 Z" fill="#0E9E8F" opacity="0.22"/>
+</svg>
