@@ -25,6 +25,11 @@ import java.util.List;
  * Multiplying by the passenger count double-counts, and on a search for four it
  * quadruples a fare that was already right.
  *
+ * <p><b>One offer is one product, and {@code itineraries} is a list because a
+ * round trip is two of them.</b> The total covers the pair, so reading the list
+ * as a loop and giving each entry the full price invents a second ticket at
+ * double the fare. See {@link #journeyOf(Json)}.
+ *
  * <p><b>Bags are in the fare.</b> This is a legacy carrier, so a cabin bag and
  * usually a checked bag are included, and they are recorded as included rather
  * than left out. An absent ancillary and an included one mean opposite things
@@ -58,13 +63,42 @@ public final class AmadeusParser implements SupplierParser {
                             : price.get("grandTotal").minorUnits(currency.getDefaultFractionDigits()),
                     currency);
 
-            for (Json itinerary : offer.get("itineraries").arrayOrEmpty()) {
-                fares.add(new Fare(supplier, legsOf(itinerary), total,
-                        included(offer, currency), expiry(receivedAt)));
-            }
+            fares.add(new Fare(supplier, journeyOf(offer), total,
+                    included(offer, currency), expiry(receivedAt)));
         }
 
         return fares;
+    }
+
+    /**
+     * One offer, one product, however many directions it covers.
+     *
+     * <p><b>{@code itineraries} is a list because a round trip is two of them</b>,
+     * and {@code price.grandTotal} covers the pair. Reading the list as a loop
+     * and hanging the same total on each entry produced two one-ways that each
+     * cost the whole return, which is the failure this repository keeps choosing
+     * to hunt: no error, no missing row, just a price that is quietly double.
+     *
+     * <p>Three or more is a multi-city or open-jaw offer. It is refused rather
+     * than folded into a return, because pricing the first two directions and
+     * dropping the third would be the same defect wearing a different hat.
+     */
+    private static Journey journeyOf(Json offer) {
+        List<Json> itineraries = offer.get("itineraries").arrayOrEmpty();
+
+        if (itineraries.isEmpty()) {
+            throw new IllegalArgumentException("A flight offer with no itineraries has nothing to sell");
+        }
+        if (itineraries.size() > 2) {
+            throw new IllegalArgumentException(
+                    "This offer carries " + itineraries.size() + " itineraries, so it is a multi-city "
+                            + "booking rather than a return. Refusing to price it as one.");
+        }
+
+        Itinerary outbound = legsOf(itineraries.getFirst());
+        return itineraries.size() == 1
+                ? Journey.oneWay(outbound)
+                : Journey.roundTrip(outbound, legsOf(itineraries.get(1)));
     }
 
     private static Itinerary legsOf(Json itinerary) {
