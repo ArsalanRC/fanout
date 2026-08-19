@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "count": 4
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LIS",
+                "at": "2026-10-13T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "AMS",
+                "at": "2026-10-13T11:00:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "AMS",
+                "at": "2026-10-20T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "LIS",
+                "at": "2026-10-20T09:00:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "243.23",
+        "grandTotal": "243.23",
+        "base": "170.26"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "243.23",
+            "base": "170.26"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LIS",
+                "at": "2026-10-13T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "AMS",
+                "at": "2026-10-13T14:15:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "AMS",
+                "at": "2026-10-20T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "LIS",
+                "at": "2026-10-20T12:15:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "364.86",
+        "grandTotal": "364.86",
+        "base": "255.40"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "364.86",
+            "base": "255.40"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LIS",
+                "at": "2026-10-13T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "AMS",
+                "at": "2026-10-13T19:50:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "AMS",
+                "at": "2026-10-20T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "LIS",
+                "at": "2026-10-20T17:50:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "184.76",
+        "grandTotal": "184.76",
+        "base": "129.33"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "184.76",
+            "base": "129.33"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LIS",
+                "at": "2026-10-13T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "AMS",
+                "at": "2026-10-13T00:05:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT3H10M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "AMS",
+                "at": "2026-10-20T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "LIS",
+                "at": "2026-10-20T22:05:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "137.98",
+        "grandTotal": "137.98",
+        "base": "96.59"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "137.98",
+            "base": "96.59"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

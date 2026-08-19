@@ -32,6 +32,10 @@ import java.util.List;
  *       per item or a quantity. Same information, third encoding.
  *   <li><b>Fees are a list of kinds</b>, and an empty list is a real answer
  *       meaning this seller charges none.
+ *   <li><b>A return is a nested {@code inbound} object</b>, where the GDS shape
+ *       makes it a second entry in a list. Fifth encoding of the same journey,
+ *       and the reason a connector cannot assume that two directions look the
+ *       same way twice.
  * </ol>
  */
 public final class ResellerParser implements SupplierParser {
@@ -61,16 +65,19 @@ public final class ResellerParser implements SupplierParser {
         for (Json result : root.get("results").arrayOrEmpty()) {
             Currency currency = Currency.getInstance(result.path("pricing", "currencyCode").text());
 
-            Leg leg = new Leg(
-                    result.get("operatedBy").text(),
-                    result.get("flightNumber").text(),
-                    result.path("route", "from").text(),
-                    result.path("route", "to").text(),
-                    Instant.ofEpochMilli(result.get("departEpochMs").minorUnits(0)),
-                    Instant.ofEpochMilli(result.get("arriveEpochMs").minorUnits(0)),
-                    // The agent passes through whatever the carrier told it,
-                    // already spelled out.
-                    result.get("equipment").isMissing() ? null : result.get("equipment").text());
+            String carrier = result.get("operatedBy").text();
+            Itinerary outbound = new Itinerary(List.of(legOf(result, carrier)));
+
+            /*
+             * A return is a nested object here, not a second entry in a list
+             * the way the GDS does it. Same journey, fifth disagreement, and
+             * the reason a connector cannot assume every supplier expresses
+             * two directions the same way.
+             */
+            Json inbound = result.get("inbound");
+            Journey journey = inbound.isMissing()
+                    ? Journey.oneWay(outbound)
+                    : Journey.roundTrip(outbound, new Itinerary(List.of(legOf(inbound, carrier))));
 
             /*
              * Already minor units, so no decimal handling. Per passenger, like
@@ -82,12 +89,33 @@ public final class ResellerParser implements SupplierParser {
             boolean perPassenger = result.path("pricing", "perPassenger").bool();
             Money base = perPassenger ? each.times(query.passengers()) : each;
 
-            fares.add(new Fare(supplier, new Itinerary(List.of(leg)), base,
+            fares.add(new Fare(supplier, journey, base,
                     baggage(result, currency, query.passengers()),
                     Instant.ofEpochMilli(result.get("holdsUntilEpochMs").minorUnits(0))));
         }
 
         return fares;
+    }
+
+    /**
+     * One flight, from either the top-level result or its nested inbound.
+     *
+     * <p>The two carry identical field names, so they share this. The carrier is
+     * passed in because only the outbound states {@code operatedBy}: the agent
+     * does not repeat it on the way home, and defaulting it to anything would
+     * invent an airline.
+     */
+    private static Leg legOf(Json node, String carrier) {
+        return new Leg(
+                carrier,
+                node.get("flightNumber").text(),
+                node.path("route", "from").text(),
+                node.path("route", "to").text(),
+                Instant.ofEpochMilli(node.get("departEpochMs").minorUnits(0)),
+                Instant.ofEpochMilli(node.get("arriveEpochMs").minorUnits(0)),
+                // The agent passes through whatever the carrier told it,
+                // already spelled out.
+                node.get("equipment").isMissing() ? null : node.get("equipment").text());
     }
 
     private static List<Ancillary> baggage(Json result, Currency currency, int passengers) {

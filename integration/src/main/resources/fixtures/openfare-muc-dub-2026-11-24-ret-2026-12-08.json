@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "count": 4
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MUC",
+                "at": "2026-11-24T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "DUB",
+                "at": "2026-11-24T08:24:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "DUB",
+                "at": "2026-12-08T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "MUC",
+                "at": "2026-12-08T10:24:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "213.08",
+        "grandTotal": "213.08",
+        "base": "149.16"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "213.08",
+            "base": "149.16"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MUC",
+                "at": "2026-11-24T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "DUB",
+                "at": "2026-11-24T11:39:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "DUB",
+                "at": "2026-12-08T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "MUC",
+                "at": "2026-12-08T13:39:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "319.62",
+        "grandTotal": "319.62",
+        "base": "223.73"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "319.62",
+            "base": "223.73"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MUC",
+                "at": "2026-11-24T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "DUB",
+                "at": "2026-11-24T17:14:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "DUB",
+                "at": "2026-12-08T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "MUC",
+                "at": "2026-12-08T19:14:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "161.86",
+        "grandTotal": "161.86",
+        "base": "113.30"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "161.86",
+            "base": "113.30"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "MUC",
+                "at": "2026-11-24T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "DUB",
+                "at": "2026-11-24T21:29:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H34M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "DUB",
+                "at": "2026-12-08T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "MUC",
+                "at": "2026-12-08T23:29:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "120.89",
+        "grandTotal": "120.89",
+        "base": "84.62"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "120.89",
+            "base": "84.62"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

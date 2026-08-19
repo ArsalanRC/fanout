@@ -1,0 +1,164 @@
+{
+  "results": [
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "914",
+      "route": {
+        "from": "MAD",
+        "to": "VIE"
+      },
+      "departEpochMs": 1790662500000,
+      "arriveEpochMs": 1790673840000,
+      "equipment": "Airbus A320",
+      "inbound": {
+        "flightNumber": "914",
+        "route": {
+          "from": "VIE",
+          "to": "MAD"
+        },
+        "departEpochMs": 1791872100000,
+        "arriveEpochMs": 1791883440000,
+        "equipment": "Airbus A320"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 7844,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 6000
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1790669700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "902",
+      "route": {
+        "from": "MAD",
+        "to": "VIE"
+      },
+      "departEpochMs": 1790657400000,
+      "arriveEpochMs": 1790668740000,
+      "equipment": "Airbus A321neo",
+      "inbound": {
+        "flightNumber": "902",
+        "route": {
+          "from": "VIE",
+          "to": "MAD"
+        },
+        "departEpochMs": 1791867000000,
+        "arriveEpochMs": 1791878340000,
+        "equipment": "Airbus A321neo"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 24573,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1790669700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "NV",
+      "flightNumber": "3402",
+      "route": {
+        "from": "MAD",
+        "to": "VIE"
+      },
+      "departEpochMs": 1790689200000,
+      "arriveEpochMs": 1790700540000,
+      "equipment": "Embraer E195-E2",
+      "inbound": {
+        "flightNumber": "3402",
+        "route": {
+          "from": "VIE",
+          "to": "MAD"
+        },
+        "departEpochMs": 1791898800000,
+        "arriveEpochMs": 1791910140000,
+        "equipment": "Embraer E195-E2"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 18314,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 5000
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1790669700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "2204",
+      "route": {
+        "from": "MAD",
+        "to": "VIE"
+      },
+      "departEpochMs": 1790681700000,
+      "arriveEpochMs": 1790693040000,
+      "equipment": "Boeing 737-800",
+      "inbound": {
+        "flightNumber": "2204",
+        "route": {
+          "from": "VIE",
+          "to": "MAD"
+        },
+        "departEpochMs": 1791891300000,
+        "arriveEpochMs": 1791902640000,
+        "equipment": "Boeing 737-800"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 6573,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 10500
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1790669700000
+    }
+  ]
+}

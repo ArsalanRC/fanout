@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "count": 4
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "FRA",
+                "at": "2026-10-27T07:00:00"
+              },
+              "arrival": {
+                "iataCode": "LHR",
+                "at": "2026-10-27T07:45:00"
+              },
+              "carrierCode": "AL",
+              "number": "412",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32N"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LHR",
+                "at": "2026-11-03T07:00:00"
+              },
+              "arrival": {
+                "iataCode": "FRA",
+                "at": "2026-11-03T09:45:00"
+              },
+              "carrierCode": "AL",
+              "number": "412",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32N"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "157.97",
+        "grandTotal": "157.97",
+        "base": "110.58"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "157.97",
+            "base": "110.58"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "FRA",
+                "at": "2026-10-27T09:45:00"
+              },
+              "arrival": {
+                "iataCode": "LHR",
+                "at": "2026-10-27T10:30:00"
+              },
+              "carrierCode": "HY",
+              "number": "204",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LHR",
+                "at": "2026-11-03T09:45:00"
+              },
+              "arrival": {
+                "iataCode": "FRA",
+                "at": "2026-11-03T12:30:00"
+              },
+              "carrierCode": "HY",
+              "number": "204",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "237.84",
+        "grandTotal": "237.84",
+        "base": "166.49"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "237.84",
+            "base": "166.49"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "FRA",
+                "at": "2026-10-27T12:55:00"
+              },
+              "arrival": {
+                "iataCode": "LHR",
+                "at": "2026-10-27T13:40:00"
+              },
+              "carrierCode": "NV",
+              "number": "3310",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LHR",
+                "at": "2026-11-03T12:55:00"
+              },
+              "arrival": {
+                "iataCode": "FRA",
+                "at": "2026-11-03T15:40:00"
+              },
+              "carrierCode": "NV",
+              "number": "3310",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "113.59",
+        "grandTotal": "113.59",
+        "base": "79.51"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "113.59",
+            "base": "79.51"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "FRA",
+                "at": "2026-10-27T20:15:00"
+              },
+              "arrival": {
+                "iataCode": "LHR",
+                "at": "2026-10-27T21:00:00"
+              },
+              "carrierCode": "KE",
+              "number": "881",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT1H45M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LHR",
+                "at": "2026-11-03T20:15:00"
+              },
+              "arrival": {
+                "iataCode": "FRA",
+                "at": "2026-11-03T23:00:00"
+              },
+              "carrierCode": "KE",
+              "number": "881",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "87.85",
+        "grandTotal": "87.85",
+        "base": "61.50"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "87.85",
+            "base": "61.50"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
