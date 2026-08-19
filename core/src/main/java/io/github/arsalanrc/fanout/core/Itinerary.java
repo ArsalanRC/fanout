@@ -1,6 +1,7 @@
 package io.github.arsalanrc.fanout.core;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -46,9 +47,19 @@ public record Itinerary(List<Leg> legs) {
         return legs.getLast().destination();
     }
 
+    /** When this journey leaves, which is the first leg pushing back. */
+    public Instant departure() {
+        return legs.getFirst().departure();
+    }
+
+    /** When it lands for the last time, connections already behind it. */
+    public Instant arrival() {
+        return legs.getLast().arrival();
+    }
+
     /** Gate to gate, including time spent connecting. */
     public Duration total() {
-        return Duration.between(legs.getFirst().departure(), legs.getLast().arrival());
+        return Duration.between(departure(), arrival());
     }
 
     public int stops() {

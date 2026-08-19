@@ -23,12 +23,24 @@ import java.util.Optional;
  * that has lapsed is worse than no quote: it survives to the top of a sorted
  * list, gets clicked, and fails where somebody was about to pay.
  */
-public record Fare(String supplier, Itinerary itinerary, Money base,
+public record Fare(String supplier, Journey journey, Money base,
                    List<Ancillary> ancillaries, Instant expiresAt) {
+
+    /**
+     * A price for one direction, which is what most suppliers quote.
+     *
+     * <p>Here so that pricing a {@link Journey} did not have to be a change at
+     * every call site that only ever sells one way. Same reason {@link Leg} has
+     * a constructor without an aircraft.
+     */
+    public Fare(String supplier, Itinerary itinerary, Money base,
+                List<Ancillary> ancillaries, Instant expiresAt) {
+        this(supplier, Journey.oneWay(itinerary), base, ancillaries, expiresAt);
+    }
 
     public Fare {
         Objects.requireNonNull(supplier, "supplier");
-        Objects.requireNonNull(itinerary, "itinerary");
+        Objects.requireNonNull(journey, "journey");
         Objects.requireNonNull(base, "base");
         Objects.requireNonNull(expiresAt, "expiresAt");
         ancillaries = ancillaries == null ? List.of() : List.copyOf(ancillaries);
@@ -54,6 +66,27 @@ public record Fare(String supplier, Itinerary itinerary, Money base,
     /** A fare with nothing sold beside it, which is how a fully inclusive carrier quotes. */
     public static Fare inclusive(String supplier, Itinerary itinerary, Money base, Instant expiresAt) {
         return new Fare(supplier, itinerary, base, List.of(), expiresAt);
+    }
+
+    /** The same, for a supplier selling both directions as one product. */
+    public static Fare inclusive(String supplier, Journey journey, Money base, Instant expiresAt) {
+        return new Fare(supplier, journey, base, List.of(), expiresAt);
+    }
+
+    /**
+     * The outbound this fare covers.
+     *
+     * <p>Kept because almost everything reading a fare wants the direction the
+     * traveller is searching, and because a one-way fare has nothing else. Ask
+     * {@link #journey()} when both directions matter.
+     */
+    public Itinerary itinerary() {
+        return journey.outbound();
+    }
+
+    /** Whether this is one price for both directions rather than for one. */
+    public boolean isReturn() {
+        return journey.isReturn();
     }
 
     /**
