@@ -1,0 +1,164 @@
+{
+  "results": [
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "914",
+      "route": {
+        "from": "LIS",
+        "to": "AMS"
+      },
+      "departEpochMs": 1790666100000,
+      "arriveEpochMs": 1790677500000,
+      "equipment": "Airbus A320",
+      "inbound": {
+        "flightNumber": "914",
+        "route": {
+          "from": "AMS",
+          "to": "LIS"
+        },
+        "departEpochMs": 1791872100000,
+        "arriveEpochMs": 1791883500000,
+        "equipment": "Airbus A320"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 7865,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 6000
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1790669700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "902",
+      "route": {
+        "from": "LIS",
+        "to": "AMS"
+      },
+      "departEpochMs": 1790661000000,
+      "arriveEpochMs": 1790672400000,
+      "equipment": "Airbus A321neo",
+      "inbound": {
+        "flightNumber": "902",
+        "route": {
+          "from": "AMS",
+          "to": "LIS"
+        },
+        "departEpochMs": 1791867000000,
+        "arriveEpochMs": 1791878400000,
+        "equipment": "Airbus A321neo"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 24640,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1790669700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "NV",
+      "flightNumber": "3402",
+      "route": {
+        "from": "LIS",
+        "to": "AMS"
+      },
+      "departEpochMs": 1790692800000,
+      "arriveEpochMs": 1790704200000,
+      "equipment": "Embraer E195-E2",
+      "inbound": {
+        "flightNumber": "3402",
+        "route": {
+          "from": "AMS",
+          "to": "LIS"
+        },
+        "departEpochMs": 1791898800000,
+        "arriveEpochMs": 1791910200000,
+        "equipment": "Embraer E195-E2"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 18363,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 5000
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1790669700000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "2204",
+      "route": {
+        "from": "LIS",
+        "to": "AMS"
+      },
+      "departEpochMs": 1790685300000,
+      "arriveEpochMs": 1790696700000,
+      "equipment": "Boeing 737-800",
+      "inbound": {
+        "flightNumber": "2204",
+        "route": {
+          "from": "AMS",
+          "to": "LIS"
+        },
+        "departEpochMs": 1791891300000,
+        "arriveEpochMs": 1791902700000,
+        "equipment": "Boeing 737-800"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 6590,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 10500
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1790669700000
+    }
+  ]
+}

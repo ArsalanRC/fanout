@@ -1,0 +1,164 @@
+{
+  "results": [
+    {
+      "seller": "voyago",
+      "operatedBy": "FE",
+      "flightNumber": "1108",
+      "route": {
+        "from": "LGW",
+        "to": "BER"
+      },
+      "departEpochMs": 1795498500000,
+      "arriveEpochMs": 1795505400000,
+      "equipment": "Boeing 737-800",
+      "inbound": {
+        "flightNumber": "1108",
+        "route": {
+          "from": "BER",
+          "to": "LGW"
+        },
+        "departEpochMs": 1796704500000,
+        "arriveEpochMs": 1796711400000,
+        "equipment": "Boeing 737-800"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 2774,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 10500
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1795508100000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "BZ",
+      "flightNumber": "722",
+      "route": {
+        "from": "LGW",
+        "to": "BER"
+      },
+      "departEpochMs": 1795515600000,
+      "arriveEpochMs": 1795522500000,
+      "equipment": "Airbus A320",
+      "inbound": {
+        "flightNumber": "722",
+        "route": {
+          "from": "BER",
+          "to": "LGW"
+        },
+        "departEpochMs": 1796721600000,
+        "arriveEpochMs": 1796728500000,
+        "equipment": "Airbus A320"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 3979,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 6000
+          }
+        ]
+      },
+      "fees": [
+        {
+          "kind": "PAYMENT",
+          "priceMinor": 199
+        }
+      ],
+      "holdsUntilEpochMs": 1795508100000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "AL",
+      "flightNumber": "412",
+      "route": {
+        "from": "LGW",
+        "to": "BER"
+      },
+      "departEpochMs": 1795500000000,
+      "arriveEpochMs": 1795506900000,
+      "equipment": "Airbus A320neo",
+      "inbound": {
+        "flightNumber": "412",
+        "route": {
+          "from": "BER",
+          "to": "LGW"
+        },
+        "departEpochMs": 1796706000000,
+        "arriveEpochMs": 1796712900000,
+        "equipment": "Airbus A320neo"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 17072,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": []
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1795508100000
+    },
+    {
+      "seller": "voyago",
+      "operatedBy": "NV",
+      "flightNumber": "3310",
+      "route": {
+        "from": "LGW",
+        "to": "BER"
+      },
+      "departEpochMs": 1795521300000,
+      "arriveEpochMs": 1795528200000,
+      "equipment": "Embraer E195-E2",
+      "inbound": {
+        "flightNumber": "3310",
+        "route": {
+          "from": "BER",
+          "to": "LGW"
+        },
+        "departEpochMs": 1796727300000,
+        "arriveEpochMs": 1796734200000,
+        "equipment": "Embraer E195-E2"
+      },
+      "pricing": {
+        "currencyCode": "EUR",
+        "totalMinor": 12045,
+        "perPassenger": true
+      },
+      "baggage": {
+        "included": [
+          "CABIN"
+        ],
+        "buyable": [
+          {
+            "type": "CHECKED",
+            "priceMinor": 5000
+          }
+        ]
+      },
+      "fees": [],
+      "holdsUntilEpochMs": 1795508100000
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "count": 4
+  },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BCN",
+                "at": "2026-09-08T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-09-08T09:32:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BER",
+                "at": "2026-09-22T06:50:00"
+              },
+              "arrival": {
+                "iataCode": "BCN",
+                "at": "2026-09-22T09:32:00"
+              },
+              "carrierCode": "AL",
+              "number": "902",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "228.16",
+        "grandTotal": "228.16",
+        "base": "159.71"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "228.16",
+            "base": "159.71"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BCN",
+                "at": "2026-09-08T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-09-08T12:47:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BER",
+                "at": "2026-09-22T10:05:00"
+              },
+              "arrival": {
+                "iataCode": "BCN",
+                "at": "2026-09-22T12:47:00"
+              },
+              "carrierCode": "HY",
+              "number": "118",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "32Q"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "342.22",
+        "grandTotal": "342.22",
+        "base": "239.55"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "342.22",
+            "base": "239.55"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BCN",
+                "at": "2026-09-08T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-09-08T18:22:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BER",
+                "at": "2026-09-22T15:40:00"
+              },
+              "arrival": {
+                "iataCode": "BCN",
+                "at": "2026-09-22T18:22:00"
+              },
+              "carrierCode": "NV",
+              "number": "3402",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "295"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "173.31",
+        "grandTotal": "173.31",
+        "base": "121.32"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "173.31",
+            "base": "121.32"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "4",
+      "source": "GDS",
+      "itineraries": [
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BCN",
+                "at": "2026-09-08T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "BER",
+                "at": "2026-09-08T22:37:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "1",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        },
+        {
+          "duration": "PT2H42M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "BER",
+                "at": "2026-09-22T19:55:00"
+              },
+              "arrival": {
+                "iataCode": "BCN",
+                "at": "2026-09-22T22:37:00"
+              },
+              "carrierCode": "KE",
+              "number": "612",
+              "id": "2",
+              "numberOfStops": 0,
+              "aircraft": {
+                "code": "7M8"
+              }
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "EUR",
+        "total": "129.43",
+        "grandTotal": "129.43",
+        "base": "90.60"
+      },
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "EUR",
+            "total": "129.43",
+            "base": "90.60"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "1",
+              "cabin": "ECONOMY",
+              "class": "M",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
